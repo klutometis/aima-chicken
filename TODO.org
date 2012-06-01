@@ -1,0 +1,87 @@
+* TODO Environments
+  We'll worry about utilities later; or, rather, along the way. It
+  looks like [[http://wiki.call-cc.org/eggref/4/coops][coops]] is the way to go, incidentally:
+
+  #+BEGIN_QUOTE
+  05:03 < C-Keen> klutometis: coops is the new tinyclos
+  #+END_QUOTE
+
+  I toyed with the idea of getting rid of AIMA's OO; but, fuck it:
+  we'll put it in. I'm aiming for a relatively shallow translation
+  here; I don't necessarily want to redesign the thing.
+
+  #+BEGIN_SRC scheme
+    (use
+     coops
+     debug
+     miscmacros
+     )
+    
+    ;;; Environments
+    
+    (define-class <environment>
+      (<standard-class>)
+      ((agents
+        initform: '()
+        accessor: environment-agents)
+       (step
+        initform: 0
+        accessor: environment-step)
+       (max-steps
+        initform: 1000
+        accessor: environment-max-steps)
+       (port
+        initform: #t
+        accessor: environment-port)
+       (initialized?
+        initform: #f
+        accessor: environment-initialized?)
+       (state
+        initform: #f
+        accessor: environment-state)))
+    
+    (define-class <agent>
+      (<standard-class>)
+      ((program
+        initform: void
+        accessor: agent-program)
+       (body
+        initform: (make-agent-body)
+        accessor: agent-body)
+       (score
+        initform: 0
+        accessor: agent-score)
+       (percept
+        initform: #f
+        accessor: agent-percept)
+       (action
+        initform: #f
+        accessor: agent-action)
+       (name
+        initform: #f
+        accessor: agent-name)))
+    
+    (define (run-environment environment)
+      (initialize environment)
+      (display-environment environment)
+      (let iter ((i (environment-max-steps environment)))
+        (if (positive? i)
+            (begin
+              (inc! (environment-step environment))
+              (for-each (lambda (agent)
+                          (set! (agent-percept agent)
+                                (get-percept environment agent))
+                          (set! (agent-action agent)
+                                ((agent-program agent)
+                                 (agent-percept agent))))
+                (environment-agents environment))
+              (update-environment environment)
+              (for-each (lambda (agent)
+                          (set! (agent-score agent)
+                                (performance-measure environment agent)))
+                (environment-agents environment))
+              (display-environment environment)
+              (if (not (termination? environment))
+                  (iter (- i 1)))))) 
+      environment)
+  #+END_SRC
