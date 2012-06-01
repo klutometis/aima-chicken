@@ -1,0 +1,919 @@
+
+aima.lisp,973
+(defparameter *aima-root* 9,198
+(defparameter *aima-binary-type*12,339
+(defconstant *aima-version*24,826
+(defparameter *aima-system-names* 27,911
+(defstruct aima-system30,1010
+(defmacro def-aima-system 35,1138
+(defun aima-load 44,1654
+(defun aima-load-binary 48,1805
+(defun aima-compile 52,1953
+(defun aima-load-if-unloaded 56,2122
+(defun add-aima-system 64,2317
+(defun get-aima-system 70,2548
+(defun operate-on-aima-system 76,2745
+(defun aima-file 105,4121
+(defun compile-load 113,4503
+(defun load-binary 119,4712
+(defun load-something 123,4862
+(defun file-with-type 131,5286
+(defun mklist 139,5501
+(def-aima-system utilities 147,5799
+(def-aima-system agents 151,5988
+(def-aima-system search 158,6233
+(def-aima-system logic 168,6643
+(def-aima-system planning 174,6887
+(def-aima-system uncertainty 178,6980
+(def-aima-system learning 186,7237
+(def-aima-system language 198,7823
+(def-aima-system all 204,8018
+(def-aima-system everything 208,8181
+
+agents/test-agents.lisp,21
+(deftest agents3,48
+
+language/test-language.lisp,23
+(deftest language 2,1
+
+learning/test-learning.lisp,22
+(deftest learning1,0
+
+logic/test-logic.lisp,21
+(deftest logic5,100
+
+search/test-search.lisp,21
+(deftest search5,97
+
+uncertainty/test-uncertainty.lisp,25
+(deftest uncertainty1,0
+
+utilities/binary-tree.lisp,544
+(defstruct search-tree-node9,267
+(defun make-search-tree 21,651
+(defun create-sorted-tree 40,1126
+(defun empty-tree 56,1643
+(defun leftmost 62,1764
+(defun rightmost 71,2024
+(defun pop-least-element 82,2394
+(defun pop-largest-element 107,3482
+(defun least-key 137,4874
+(defun largest-key 142,5006
+(defun insert-element 148,5142
+(defun randomized-insert-element 179,6437
+(defun randomized-push 211,7726
+(defun find-element 222,7991
+(defun delete-element 241,8549
+(defun inorder-successor 341,12709
+(defun list-elements 350,13082
+
+utilities/cltl2.lisp,270
+(defmacro with-simple-restart 14,475
+(defmacro destructuring-bind 19,651
+(defmacro defstructure 54,2196
+(defmethod print-structure 68,2879
+(defmacro defmethod 75,3175
+(defun ensure-generic-function 82,3552
+(defun supertype 92,3924
+(defun call-method-for 98,4064
+
+utilities/index.lisp,1160
+(defmacro do-file 14,634
+(defun map-file 18,831
+(defparameter *user-symbols* 26,1100
+(defvar *cl-symbols* 29,1228
+(defvar *counts* 32,1348
+(defvar *aima-system* 35,1417
+(defstruct def41,1624
+(defun gen-index 47,1878
+(defun gen-overview 56,2212
+(defun gen-files-overview 72,2951
+(defun alphabetize 105,4133
+(defun mapcarhash 110,4300
+(defun hashtable-vals 117,4488
+(defun gen-entries 124,4673
+(defun char-ok? 190,8035
+(defun format-entry-link 197,8325
+(defun format-symbol-link 210,8849
+(defun entry-width 215,9011
+(defun number-width 223,9350
+(defvar *comment-readtable* 231,9499
+(defstructure semi-comment 235,9616
+(defmethod print-structure 239,9738
+(defun read-semi-comment 246,10058
+(defun overview-entries 257,10409
+(defun overview-exp 268,10900
+(defun overview-tag-name 311,12394
+(defun defmethod-arg-type 315,12514
+(defun remove-&aux 320,12667
+(defun record-exp 325,12768
+(defun get-entry 341,13384
+(defun record-entry 347,13638
+(defun first-atom 356,14008
+(defun aima-namestring 358,14075
+(defun file-title 361,14168
+(defun record-symbols-counts 369,14465
+(defun mapply 389,15206
+(defun record-book-pages 393,15359
+
+utilities/queue.lisp,486
+(defstruct q20,999
+(defun make-empty-queue 27,1096
+(defun empty-queue? 29,1134
+(defun queue-front 33,1232
+(defun remove-front 37,1332
+(defun enqueue-at-front 45,1564
+(defun enqueue-at-end 49,1704
+(defun enqueue-by-priority 59,2089
+(defun heap-val 78,2820
+(defun heap-parent 79,2899
+(defun heap-left 80,2962
+(defun heap-right 81,3028
+(defun heapify 83,3096
+(defun heap-extract-min 100,3692
+(defun heap-insert 108,3949
+(defun make-heap 120,4432
+(defun heap-sort 123,4524
+
+utilities/test-utilities.lisp,25
+(deftest utilities5,113
+
+utilities/utilities.lisp,2292
+(defmacro while 16,605
+(defmacro for-each 21,744
+(defmacro for 33,1238
+(defmacro deletef 43,1658
+(defmacro define-if-undefined 54,2116
+(defun length>1 69,2613
+(defun length=1 73,2712
+(defun random-element 77,2819
+(defun mappend 81,2941
+(defun starts-with 85,3101
+(defun last1 89,3239
+(defun left-rotate 93,3322
+(defun right-rotate 97,3444
+(defun transpose 101,3563
+(defun reuse-cons 106,3759
+(defun make-exp 116,4128
+(defun op 117,4176
+(defun args 118,4254
+(defun arg1 119,4334
+(defun arg2 120,4389
+(defsetf args 122,4447
+(defun prefix->infix 125,4513
+(defun insert-between 131,4737
+(defun xy-p 141,5067
+(defun @ 145,5182
+(defun xy-equal 147,5240
+(defun xy-add 149,5276
+(defun xy-distance 153,5384
+(defun x+y-distance 158,5527
+(defun xy-between 163,5672
+(defun rotate 168,5885
+(defun inside 173,5998
+(defconstant infinity 180,6199
+(defconstant minus-infinity 181,6249
+(defun average 183,6306
+(defun running-average 187,6421
+(defun square 191,6557
+(defun sum 193,6585
+(defun between 199,6806
+(defun rms-error 203,6925
+(defun ms-error 207,7074
+(defun boolean-error 212,7293
+(defun dot-product 215,7371
+(defun iota 219,7503
+(defun random-integer 223,7681
+(defun normal 227,7817
+(defun sample-with-replacement 231,7937
+(defun sample-without-replacement 236,8081
+(defun fuzz 246,8453
+(defun round-off 253,8710
+(defun nothing 259,8893
+(defun declare-ignore 264,8994
+(defun true 279,9727
+(defun false 282,9863
+(defun required 284,9942
+(defun stringify 291,10246
+(defun concat-symbol 297,10395
+(defun print-grid 301,10540
+(defun print-centered 330,11575
+(defun print-repeated 337,11873
+(defun print-dashes 342,12009
+(defun copy-array 350,12288
+(defun copy-subarray 356,12454
+(defun array->vector 363,12684
+(defun plot-alist 368,12850
+(defun copy-hash-table 374,13081
+(defun hash-table->list 380,13286
+(defun hprint 384,13404
+(defun compose 389,13561
+(defun the-biggest 393,13680
+(defun the-biggest-random-tie 403,13914
+(defun the-biggest-that 416,14244
+(defun the-smallest 427,14513
+(defun the-smallest-random-tie 430,14577
+(defun the-smallest-that 433,14663
+(defvar *debugging* 438,14762
+(defun dprint 440,14788
+(defmacro deftest 447,14991
+(defun add-test 457,15562
+(defun test 464,15828
+(defun test-example 486,16929
+
+agents/agents/agent.lisp,96
+(defun ask-user 8,233
+(defmethod print-structure 13,357
+(defun initialize-agent-names 18,571
+
+agents/agents/vacuum.lisp,0
+
+agents/agents/wumpus.lisp,0
+
+agents/algorithms/grid.lisp,456
+(defun grid-contents 5,119
+(defsetf grid-contents 10,332
+(defun move-object-to 14,450
+(defun place-object 25,843
+(defun place-in-container 38,1303
+(defun remove-object 52,1870
+(defun find-object-if 61,2202
+(defun find-neighbor-if 65,2361
+(defun find-object-or-neighbor-if 75,2759
+(defun near? 81,2991
+(defun add-locs 88,3247
+(defun subtract-locs 92,3396
+(defun heading->string 96,3516
+(defun absolute-loc 104,3753
+(defun offset-loc 118,4338
+
+agents/environments/basic-env.lisp,562
+(defstructure environment24,1093
+(defstructure agent41,1973
+(defun run-environment 54,2378
+(defun agent-trials 76,3349
+(defmethod get-percept 95,4296
+(defmethod update-fn 100,4421
+(defmethod legal-actions 104,4552
+(defmethod performance-measure 108,4662
+(defmethod initialize 116,4948
+(defmethod termination? 123,5170
+(defmethod display-environment 127,5272
+(defmethod display-environment-snapshot 142,5884
+(defun run-eval-environment 149,6115
+(defun agent-trial 156,6443
+(defun execute-agent-actions 173,7165
+(defmethod print-structure 181,7488
+
+agents/environments/elevator.lisp,61
+(defmethod initialize 13,272
+(defmethod get-percept 18,406
+
+agents/environments/grid-env.lisp,649
+(defstructure object22,1019
+(defmethod update-fn 48,2052
+(defmethod legal-actions 54,2312
+(defmethod initialize 57,2395
+(defmethod termination? 70,3036
+(defmethod display-environment-snapshot 75,3240
+(defmethod print-structure 82,3525
+(defmethod speak 91,3860
+(defmethod turn 96,4014
+(defmethod forward 106,4423
+(defmethod grab 113,4663
+(defun grabable? 122,5120
+(defmethod release 125,5210
+(defun parse-specs 162,7013
+(defun parse-spec 167,7162
+(defun parse-where 174,7390
+(defun parse-whats 195,8417
+(defun parse-what 199,8525
+(defun parse-n 217,9303
+(defun make 223,9440
+(defun random-loc 227,9580
+(defun free-loc? 236,9995
+
+agents/environments/vacuum.lisp,158
+(defmethod performance-measure 15,422
+(defmethod get-percept 25,814
+(defmethod legal-actions 32,1134
+(defmethod suck 37,1284
+(defmethod shut-off 42,1468
+
+agents/environments/wumpus.lisp,297
+(defmethod update-fn 22,790
+(defmethod termination? 33,1178
+(defmethod performance-measure 42,1524
+(defmethod get-percept 50,1875
+(defmethod legal-actions 60,2366
+(defun deadly? 64,2540
+(defmethod climb 71,2694
+(defmethod shoot 77,2866
+(defun propagate-arrow 85,3181
+(defun kill 93,3539
+
+language/algorithms/chart-parse.lisp,666
+(defstructure grammar3,49
+(defvar *grammar* 12,337
+(defun rule-lhs 16,462
+(defun rule-rhs 17,521
+(defstructure chart19,585
+(defun chart-parse 32,1078
+(defun scanner 42,1513
+(defun predictor 50,1875
+(defun completer 58,2205
+(defun add-edge 71,2671
+(defun chart-parses 84,3162
+(defun meanings 89,3431
+(defun spanning-edges 99,3788
+(defun edge->tree 108,4108
+(defun edge 115,4331
+(defun grammar 120,4536
+(defun rewrites-for 135,5263
+(defun categories-for 139,5413
+(defun edge-expects 145,5672
+(defun lhs-op 149,5791
+(defun complete? 153,5904
+(defun edge-equal 157,6021
+(defmethod handle-augmentation 165,6401
+(defmethod print-structure 177,6991
+
+language/domains/grammars.lisp,159
+(defparameter *E0*5,129
+(defparameter *E1*41,1213
+(defparameter *E2*79,2511
+(defparameter *arithmetic-grammar*125,4454
+(defparameter *figure23.4*143,4999
+
+language/domains/wumpus-grammar.lisp,24
+(defparameter *E1*5,83
+
+learning/agents/active-adp-learner.lisp,155
+(defun make-random-adp-learner 7,246
+(defun make-maximizing-adp-learner 9,340
+(defun make-active-adp-learner 12,436
+(defun update-active-model 41,1452
+
+learning/agents/active-qi-learner.lisp,116
+(defun make-random-qi-learner 7,246
+(defun make-maximizing-qi-learner 9,340
+(defun make-active-qi-learner 12,436
+
+learning/agents/exploring-adp-learner.lisp,199
+(defvar *R+* 10,405
+(defvar *Ne* 11,421
+(defun exploration-function 13,438
+(defun make-exploring-adp-learner 16,499
+(defun exploratory-value-iteration 49,1679
+(defun exploration-choice 82,2621
+
+learning/agents/exploring-tdq-learner.lisp,115
+(defun make-exploring-tdq-learner 6,235
+(defun update-exploratory-Q 32,1121
+(defun exploration-q-choice 39,1353
+
+learning/agents/passive-adp-learner.lisp,107
+(defun make-passive-adp-learner 9,330
+(defun update-passive-model 34,1159
+(defun passive-policy 58,2248
+
+learning/agents/passive-lms-learner.lisp,65
+(defun make-passive-lms-learner 7,236
+(defun lms-update 23,670
+
+learning/agents/passive-td-learner.lisp,116
+(defvar *alpha* 7,237
+(defun make-passive-td-learner 9,299
+(defun td-update 25,731
+(defun current-alpha 40,1205
+
+learning/agents/policies.lisp,27
+(defun wacky-policy 6,245
+
+learning/algorithms/dll.lisp,232
+(defun decision-list-learning 8,292
+(defun dll 13,476
+(defun select-test 26,943
+(defun select-k-test 34,1219
+(defun generate-terms 51,1814
+(defun uniform-classification 62,2158
+(defun passes 67,2326
+(defun dlpredict 76,2584
+
+learning/algorithms/dtl.lisp,233
+(defun decision-tree-learning 6,233
+(defun dtl 11,412
+(defun distribution 28,1086
+(defun majority 35,1376
+(defun select-attribute 41,1544
+(defun information-value 45,1684
+(defun bits-required 53,2025
+(defun dtpredict 61,2269
+
+learning/algorithms/inductive-learning.lisp,315
+(defun attribute-name 13,368
+(defun attribute-values 14,421
+(defun attribute-value 16,476
+(defun random-examples 19,583
+(defun classify 27,790
+(defun consistent 37,1072
+(defun code-examples 49,1420
+(defun code-example 52,1540
+(defun code-unclassified-example 56,1720
+(defun print-learning-problem 60,1874
+
+learning/algorithms/learning-curves.lisp,97
+(defun learning-curve 6,211
+(defun incremental-learning-curve 31,1257
+(defun accuracy 64,2485
+
+learning/algorithms/multilayer.lisp,162
+(defun backprop-learning 8,248
+(defun backprop-update 21,722
+(defun backpropagate 33,1168
+(defun backprop-update-layer 50,1776
+(defun compute-deltas 63,2204
+
+learning/algorithms/nn.lisp,370
+(defstruct unit 7,205
+(defun make-connected-nn 19,700
+(defun step-function 38,1322
+(defun sign-function 41,1386
+(defun sigmoid 44,1451
+(defun nn-learning 51,1753
+(defun nn-error 76,2830
+(defun network-output 84,3080
+(defun nn-output 98,3599
+(defun unit-output 108,3911
+(defun get-unit-inputs 120,4334
+(defun random-weights 123,4435
+(defun print-nn 129,4606
+
+learning/algorithms/perceptron.lisp,134
+(defun make-perceptron 7,208
+(defun majority-perceptron 16,470
+(defun perceptron-learning 27,815
+(defun perceptron-update 37,1171
+
+learning/algorithms/q-iteration.lisp,261
+(defun q-entry 5,171
+(defun all-q-entries 7,237
+(defun q-actions 9,295
+(defun q-iteration 15,593
+(defun average-successor-q 48,1565
+(defun q-optimal-policy 62,1910
+(defun q-random-choice 73,2216
+(defun q-dmax-choice 77,2317
+(defun q-max-choice 81,2441
+
+learning/domains/4x3-passive-mdp.lisp,105
+(defvar *4x3-passive-M-data*)4,134
+(defvar *4x3-passive-R-data*)5,164
+(defvar *4x3-passive-mdp*)6,194
+
+learning/domains/and-boolean.lisp,36
+(defvar *and-boolean-problem*)5,74
+
+learning/domains/and.lisp,0
+
+learning/domains/ex-19-4-boolean.lisp,40
+(defvar *ex-19-4-boolean-problem*)5,94
+
+learning/domains/majority-boolean.lisp,73
+(defvar *majority-boolean* 1,0
+(defvar *majority-boolean-problem*)2,53
+
+learning/domains/restaurant-boolean.lisp,81
+(defvar *restaurant-boolean* 6,206
+(defvar *restaurant-boolean-problem*)23,924
+
+learning/domains/restaurant-multivalued.lisp,89
+(defvar *restaurant-multivalued* 6,178
+(defvar *restaurant-multivalued-problem*)38,768
+
+learning/domains/restaurant-real.lisp,123
+(defvar *restaurant-real* 6,198
+(defvar *restaurant-real12-problem*)38,621
+(defvar *restaurant-real100-problem*)91,4114
+
+learning/domains/restaurant.lisp,26
+(defvar *target*)53,2701
+
+learning/domains/xor-boolean.lisp,36
+(defvar *xor-boolean-problem*)5,74
+
+learning/domains/xor.lisp,0
+
+logic/agents/kb-agent.lisp,46
+(defun make-action-value-agent-program 8,178
+
+logic/agents/shopping-agent.lisp,41
+(defun ask-human-shopping-program 9,183
+
+logic/algorithms/fol.lisp,397
+(defstruct fol-kb3,58
+(defmethod tell 15,667
+(defmethod retract 20,845
+(defmethod ask-each 24,995
+(defun possible-resolvers 30,1193
+(defun tell-minimal-cnf-clause 36,1455
+(defun retract-minimal-cnf-clauses 49,1962
+(defun ->minimal-cnf 60,2344
+(defun undo-temp-changes 67,2690
+(defun tautology? 72,2872
+(defun prove-by-refutation 81,3138
+(defun resolve 109,4426
+(defun insert 113,4509
+
+logic/algorithms/horn.lisp,140
+(defstructure horn-kb5,123
+(defmethod tell 10,325
+(defmethod retract 18,722
+(defmethod ask-each 25,1038
+(defun back-chain-each 29,1207
+
+logic/algorithms/infix.lisp,565
+(defparameter *infix-ops* 5,58
+(defun ->prefix 18,387
+(defun reduce-infix 29,877
+(defun op-token 47,1777
+(defun op-name 48,1810
+(defun op-type 49,1859
+(defun op-match 50,1904
+(defun replace-subseq 52,1939
+(defun reduce-matching-op 56,2082
+(defun remove-commas 74,3027
+(defun handle-quantifiers 80,3239
+(defun string->infix 88,3489
+(defun parse-infix-token 95,3766
+(defun parse-span 106,4386
+(defun make-logic-symbol 110,4530
+(defun operator-char? 118,4898
+(defun symbol-char? 120,4947
+(defun function-symbol? 122,5012
+(defun whitespace? 126,5140
+
+logic/algorithms/normal.lisp,636
+(defun ->cnf 11,367
+(defun ->inf 32,1252
+(defun ->horn 36,1392
+(defun logic 44,1680
+(defun cnf1->inf1 51,1850
+(defun eliminate-implications 59,2210
+(defun move-not-inwards 68,2496
+(defun merge-disjuncts 80,2958
+(defun skolemize 95,3497
+(defun skolem-constant 105,3856
+(defun renaming? 109,4021
+(defconstant +logical-connectives+ 128,4678
+(defconstant +logical-quantifiers+ 129,4735
+(defun atomic-clause? 131,4789
+(defun literal-clause? 136,4987
+(defun negative-clause? 141,5191
+(defun horn-clause? 145,5301
+(defun conjuncts 152,5562
+(defun disjuncts 158,5744
+(defun conjunction 164,5926
+(defun disjunction 171,6077
+
+logic/algorithms/prop.lisp,478
+(defstructure prop-kb5,93
+(defstructure truth-table10,284
+(defmethod tell 18,478
+(defmethod ask-each 23,633
+(defmethod retract 29,873
+(defun validity 37,1141
+(defun truth-table 45,1425
+(defun eval-truth 54,1794
+(defun build-truth-table 81,3005
+(defun print-truth-table 93,3525
+(defun compute-truth-entries 113,4196
+(defun all-truth-interpretations 121,4500
+(defun prop-symbols-in 131,4849
+(defun complex-sentences-in 138,5120
+(defun sentence-output-form 145,5360
+
+logic/algorithms/tell-ask.lisp,187
+(defstructure literal-kb8,261
+(defmethod tell 17,678
+(defmethod retract 21,828
+(defmethod ask-each 25,986
+(defun ask 36,1437
+(defun ask-pattern 41,1611
+(defun ask-patterns 47,1895
+
+logic/algorithms/unify.lisp,596
+(defconstant +fail+ 13,502
+(defconstant +no-bindings+ 15,560
+(defun unify 20,678
+(defun rename-variables 32,1163
+(defun unify-var 40,1387
+(defun variable? 50,1783
+(defun get-binding 54,1909
+(defun binding-var 58,2022
+(defun binding-val 62,2116
+(defun make-binding 66,2207
+(defun lookup 68,2254
+(defun extend-bindings 72,2382
+(defun occurs-in? 81,2678
+(defun subst-bindings 90,3022
+(defun unifier 102,3519
+(defun variables-in 106,3636
+(defun unique-find-anywhere-if 110,3755
+(defun find-anywhere-if 123,4202
+(defvar *new-variable-counter* 130,4451
+(defun new-variable 132,4486
+
+logic/environments/shopping.lisp,239
+(defparameter *page250-supermarket*7,155
+(defmethod get-percept 62,2582
+(defun see 66,2767
+(defun feel 75,3178
+(defun hear 79,3275
+(defun see-loc 89,3612
+(defun appearance 95,3778
+(defun object-words 100,4000
+(defun zoom 105,4088
+
+search/agents/ps-agents.lisp,61
+(defun pick-random-move 25,857
+(defun ask-game-user 28,956
+
+search/agents/ttt-agent.lisp,24
+(defun ttt-eval 10,273
+
+search/algorithms/csp.lisp,687
+(defstructure CSP-state18,698
+(defmethod goal-test 30,1113
+(defmethod successors 37,1418
+(defun csp-backtracking-search 67,2423
+(defun csp-forward-checking-search 84,3215
+(defmethod print-structure 106,4299
+(defun CSP-legal-statep 109,4412
+(defun filter-domains 119,4721
+(defun CSP-modifications 133,5078
+(defun modify-assignment 155,5767
+(defun most-constrained-variable 182,6757
+(defun random-conflicted-variable 185,6868
+(defun min-conflicts-value 189,7040
+(defun CSP-empty-domainp 192,7145
+(defun CSP-legal-values 195,7255
+(defun CSP-legal-assignmentp 200,7431
+(defun CSP-explicit-check 206,7639
+(defun CSP-random-completion 209,7784
+(defun CSP-conflicts 220,8164
+
+search/algorithms/ida.lisp,57
+(defun tree-ida*-search 5,57
+(defun DFS-contour 22,818
+
+search/algorithms/iterative.lisp,340
+(defun hill-climbing-search 11,419
+(defun simulated-annealing-search 26,996
+(defun random-restart-search 51,2143
+(defun hill-climbing-until-flat-n-times-search 65,2718
+(defun local-minimum 71,2950
+(defun minimum-or-flat 75,3091
+(defun minimum-or-flat-n-times 79,3239
+(defun CSP-termination 88,3551
+(defun make-exp-schedule 92,3652
+
+search/algorithms/minimax.lisp,295
+(defun minimax-decision 17,719
+(defun minimax-value 26,1133
+(defun minimax-cutoff-decision 37,1466
+(defun minimax-cutoff-value 47,1951
+(defun game-successors 59,2347
+(defun terminal-values 64,2561
+(defun alpha-beta-decision 78,3187
+(defun alpha-value 89,3614
+(defun beta-value 101,4058
+
+search/algorithms/problems.lisp,465
+(defstructure problem5,47
+(defmethod successors 20,865
+(defmethod goal-test 25,1080
+(defmethod h-cost 33,1482
+(defmethod edge-cost 39,1744
+(defstructure node48,2093
+(defun expand 66,3022
+(defun create-start-node 90,4048
+(defun solution-actions 104,4670
+(defun solution-nodes 111,4973
+(defun solve 117,5204
+(defun print-solution 125,5514
+(defun compare-search-algorithms 139,5992
+(defmethod print-structure 168,7121
+(defmethod display-expand 172,7309
+
+search/algorithms/repeated.lisp,377
+(defun eliminate-returns 8,272
+(defun eliminate-cycles 13,466
+(defun eliminate-all-duplicates 17,615
+(defun no-cycles-depth-first-search 34,1338
+(defun no-returns-breadth-first-search 40,1569
+(defun no-duplicates-breadth-first-search 46,1821
+(defun A*-search 54,2127
+(defun make-eliminating-queuing-fn 59,2356
+(defun looping-node? 85,3133
+(defun return-node? 94,3474
+
+search/algorithms/simple.lisp,345
+(defun general-search 9,257
+(defun breadth-first-search 20,744
+(defun depth-first-search 24,893
+(defun iterative-deepening-search 28,1039
+(defun depth-limited-search 34,1311
+(defun best-first-search 45,1817
+(defun greedy-search 50,2026
+(defun tree-a*-search 54,2170
+(defun uniform-cost-search 58,2321
+(defun make-initial-queue 64,2506
+
+search/algorithms/sma.lisp,320
+(defun tree-sma 8,340
+(defun tree-get-next-successor 33,1144
+(defun tree-backup-f-cost 51,1840
+(defun tree-prune-open 77,2983
+(defun tree-unexpand-successor 87,3458
+(defun deepest-least-leaf 101,3907
+(defun shallowest-largest-leaf 105,4036
+(defun find-leaf 112,4186
+(defun leafp 116,4284
+(defun openp 119,4332
+
+search/domains/cannibals.lisp,124
+(defmethod goal-test 12,414
+(defmethod successors 16,579
+(defun take-the-boat 39,1822
+(defun cannibals-can-eat? 54,2399
+
+search/domains/cognac.lisp,63
+(defun make-cognac-game 14,521
+(defmethod legal-moves 23,806
+
+search/domains/nqueens.lisp,145
+(defun make-nqueens-problem 8,194
+(defun nqueens-initial-state 13,360
+(defun nqueens-constraints 28,881
+(defun nqueens-constraint-fn 40,1200
+
+search/domains/path-planning.lisp,538
+(defun make-path-planning-problem 9,291
+(defmethod successors 16,527
+(defmethod edge-cost 27,1020
+(defmethod h-cost 32,1200
+(defstructure vertex38,1454
+(defmethod print-structure 45,1686
+(defstructure line48,1808
+(defstructure polygon51,1839
+(defstructure scene54,1876
+(defun vertices-visible-from 62,2071
+(defun vertices-in-view 68,2334
+(defun visible-p 81,2786
+(defun line-intersects-poly? 87,3026
+(defun intersects 95,3321
+(defun create-scene 122,4115
+(defun create-polygon 130,4468
+(defparameter *scene-4.17*143,4977
+
+search/domains/puzzle8.lisp,657
+(defvar *8-puzzle-goal* 31,1315
+(defmethod successors 39,1549
+(defmethod h-cost 47,1869
+(defun move-blank 57,2212
+(defun blank-square 62,2461
+(defun random-8-puzzle-state 67,2621
+(defun random-move-blank 73,2831
+(defun neighbors 80,3057
+(defun 8-puzzle-legal-moves 88,3267
+(defun 8-puzzle-location 97,3663
+(defun 8-puzzle-state 106,3862
+(defun 8-puzzle-ref 114,4073
+(defun 8-puzzle-print 118,4203
+(defun 8-puzzle-display-fn 125,4426
+(defvar *8-puzzle-goal-locations* 133,4637
+(defun use-8-puzzle-goal 136,4759
+(defun 8-puzzle-goal-location 145,5029
+(defun 9-power 149,5159
+(defun misplaced-tiles 161,5475
+(defun misplaced-tile? 168,5667
+
+search/domains/route-finding.lisp,302
+(defmethod successors 15,595
+(defmethod edge-cost 23,941
+(defmethod h-cost 28,1159
+(defun road-distance 41,1681
+(defun straight-distance 48,1965
+(defun find-city 53,2214
+(defun random-route-map 58,2390
+(defun build-road 92,3716
+(defun number->name 99,4051
+(defparameter *romania-map*107,4297
+
+search/domains/tsp.lisp,348
+(defun make-tsp-problem 25,1183
+(defmethod edge-cost 34,1517
+(defmethod h-cost 39,1704
+(defmethod successors 47,2058
+(defmethod goal-test 70,2966
+(defun nearest-neighbor-distance 84,3463
+(defun path-lower-bound 96,3915
+(defun random-tsp-map 105,4295
+(defun check-tsp-map? 109,4441
+(defun tsp-city-name 116,4726
+(defun tsp-start 121,4912
+
+search/domains/ttt.lisp,197
+(defun make-ttt-game 18,795
+(defmethod legal-moves 26,1078
+(defmethod make-move 38,1457
+(defmethod game-over? 49,1878
+(defun check-k-in-a-row 75,2842
+(defun count-pieces-in-direction 82,3161
+
+search/domains/vacuum.lisp,159
+(defvar *vacuum-home* 13,419
+(defun vacuum-problem 17,512
+(defun vacuum-initial-state 28,922
+(defun vacuum-goalp 37,1223
+(defun vacuum-successors 43,1420
+
+search/environments/games.lisp,720
+(defstructure game 20,802
+(defstructure game-state 32,1306
+(defmethod legal-moves 47,1980
+(defmethod make-move 51,2132
+(defmethod game-over? 55,2318
+(defun game->environment 64,2571
+(defun run-game 69,2758
+(defmethod update-fn 75,2974
+(defmethod performance-measure 87,3422
+(defmethod get-percept 91,3612
+(defmethod initialize 96,3774
+(defmethod termination? 121,4830
+(defun assign-agent-scores 128,5026
+(defun legal-move? 136,5251
+(defun current-player 139,5345
+(defun previous-player 142,5424
+(defun game-players 145,5504
+(defun current-agent 148,5582
+(defun agent-with-name 151,5676
+(defmethod print-structure 154,5784
+(defmethod print-structure 158,5914
+(defmethod display-environment 161,6014
+
+search/environments/prob-solve.lisp,276
+(defmethod get-percept 13,416
+(defmethod update-fn 18,599
+(defmethod performance-measure 26,929
+(defmethod initialize 30,1083
+(defun problem-solving-program 42,1740
+(defmethod termination? 52,2193
+(defun problem->environment 60,2518
+(defmethod print-structure 67,2868
+
+uncertainty/agents/mdp-agent.lisp,28
+(defun make-mdp-agent 3,66
+
+uncertainty/algorithms/dp.lisp,335
+(defun value-iteration-policy 6,205
+(defun value-iteration 14,520
+(defun sink? 42,1478
+(defun policy-iteration 53,1825
+(defun value-determination 78,2779
+(defun optimal-policy 100,3348
+(defun policy-choice 111,3643
+(defun random-choice 118,3829
+(defun max-choice 122,3991
+(defun dmax-choice 128,4188
+(defun q-value 137,4466
+
+uncertainty/algorithms/stats.lisp,155
+(defvar *policy-fn*)6,169
+(defvar *correct-U*)7,235
+(defvar *correct-M*)8,256
+(defvar *correct-R*)9,277
+(defun u-rms-error 13,376
+(defun loss 25,796
+
+uncertainty/domains/4x3-mdp.lisp,102
+(defparameter *4x3-mdp*10,478
+(defparameter *4x3-M-data* 16,596
+(defparameter *4x3-R-data* 63,2523
+
+uncertainty/domains/mdp.lisp,103
+(defstruct mdp11,532
+(defun action-model 28,1128
+(defun transitions 31,1201
+(defun actions 36,1382
+
+uncertainty/environments/mdp.lisp,262
+(defmethod initialize 21,797
+(defmethod get-percept 27,1058
+(defmethod update-fn 39,1514
+(defmethod performance-measure 56,2253
+(defmethod termination? 61,2468
+(defun mdp-next-state 66,2584
+(defun mdp-transitions 71,2775
+(defun random-transition 75,2928
