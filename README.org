@@ -1,0 +1,6 @@
+A little Quixotic, maybe; but we'd like to port the [[http://aima.cs.berkeley.edu/lisp/doc/overview.html][Lisp code for
+AIMA]][fn:1]
+* Footnotes
+
+[fn:1] Stuart Russell and Peter Norvig. 2009. Artificial Intelligence:
+  A Modern Approach (3rd ed.).
