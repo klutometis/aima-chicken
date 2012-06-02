@@ -84,4 +84,37 @@
               (if (not (termination? environment))
                   (iter (- i 1)))))) 
       environment)
+* DONE Do we really need e.g. =<stack>= instead of =stack= in =coops=?
+  CLOSED: [2012-06-02 Sat 01:09]
+  - CLOSING NOTE [2012-06-02 Sat 01:09] \\
+    Yeah, to avoid namespace collisions with function arguments.
+  #+BEGIN_SRC scheme
+    (use coops
+         test
+         debug)
+    
+    (define-class <stack>
+      ()
+      ((data
+        initform: '()
+        accessor: stack-data)))
+    
+    (define-method (push (datum #t) (stack <stack>))
+      (set! (stack-data stack)
+            (cons datum (stack-data stack))))
+    
+    (test
+     '(2 1)
+     (let ((stack (make <stack>)))
+       (push 1 stack)
+       (push 2 stack)
+       (stack-data stack)))
+    
+    (define (fuck-this-stack stack)
+      (let ((new-stack (make <stack>)))
+        (void)))
+    
+    (fuck-this-stack (make <stack>))
+    
+    (debug <stack>)
   #+END_SRC
