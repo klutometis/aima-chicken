@@ -64,26 +64,36 @@
     (define (run-environment environment)
       (initialize environment)
       (display-environment environment)
-      (let iter ((i (environment-max-steps environment)))
-        (if (positive? i)
-            (begin
-              (inc! (environment-step environment))
-              (for-each (lambda (agent)
-                          (set! (agent-percept agent)
-                                (get-percept environment agent))
-                          (set! (agent-action agent)
-                                ((agent-program agent)
-                                 (agent-percept agent))))
-                (environment-agents environment))
-              (update-environment environment)
-              (for-each (lambda (agent)
-                          (set! (agent-score agent)
-                                (performance-measure environment agent)))
-                (environment-agents environment))
-              (display-environment environment)
-              (if (not (termination? environment))
-                  (iter (- i 1)))))) 
+      (call-with-current-continuation
+       (lambda (return)
+         (dotimes (i (environment-max-steps environment))
+           (inc! (environment-step environment))
+           (for-each (lambda (agent)
+                       (set! (agent-percept agent)
+                             (get-percept environment agent))
+                       (set! (agent-action agent)
+                             (apply
+                              (agent-program agent)
+                              (agent-percept agent))))
+             (environment-agents environment))
+           (update-fn environment)
+           (for-each (lambda (agent)
+                       (set! (agent-score agent)
+                             (performance-measure environment agent)))
+             (environment-agents environment))
+           (display-environment environment)
+           (when (termination? environment) (return)))))
       environment)
+    
+    (define (agent-trials environment-fn agent-types #!key (n 10))
+      (let ((env-gen-random-state (make-random-state #t)))
+        (map (lambda (agent-type)
+               (agent-trial environment-fn agent-type
+                            (make-random-state env-gen-random-state) n)
+               agent-types))))
+    
+    ()
+  #+END_SRC
 * DONE Do we really need e.g. =<stack>= instead of =stack= in =coops=?
   CLOSED: [2012-06-02 Sat 01:09]
   - CLOSING NOTE [2012-06-02 Sat 01:09] \\
