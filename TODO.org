@@ -1,7 +1,7 @@
+* TODO Beware, by the way: early bugs will be subtle.
 * TODO Test environments.
   #+BEGIN_SRC scheme :tangle test-environments.scm :shebang #!/usr/bin/env chicken-scheme
     (include "aima.scm")
-    
   #+END_SRC
 * DONE Environments
   CLOSED: [2012-06-03 Sun 03:47]
