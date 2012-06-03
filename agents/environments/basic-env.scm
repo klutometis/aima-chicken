@@ -188,8 +188,8 @@
                 (randomize env-gen-random-state)
                 ;; TODO: `apply' was here.
                 (environment-fn 
-                 :port #f
-                 :aspec (list agent-type)))))
+                 port: #f
+                 aspec: (list agent-type)))))
         (run-environment env)
         (inc! total (agent-score (first (environment-agents env)))))) 
     (set! score (float (/ total n)))
