@@ -72,8 +72,8 @@
                        (set! (agent-percept agent)
                              (get-percept environment agent))
                        (set! (agent-action agent)
-                             (apply
-                              (agent-program agent)
+                             ;; TODO: `funcall' was here.
+                             ((agent-program agent)
                               (agent-percept agent))))
              (environment-agents environment))
            (update-fn environment)
@@ -92,7 +92,101 @@
                             (make-random-state env-gen-random-state) n)
                agent-types))))
     
-    ()
+    (define-method (get-percept (environment <environment>) agent) #f)
+    
+    (define-method (update-fn (env <environment>))
+      "Modify the environment, based on agents actions, etc."
+      (execute-agent-actions env))
+    
+    
+    (define-method (legal-actions (env <environment>))
+      "A list of the action operators that an agent can do."
+      #f)
+    
+    (define-method (performance-measure (env <environment>) agent)
+      "Return a number saying how well this agent is doing."
+      (- (environment-step env)))
+    
+    ;;; Here are the ones that can usually be inherited:
+    
+    (define-method (initialize (env <environment>))
+      "Called once to do whatever is necessary to set up the environment
+      for running the simulation."
+      (initialize-agent-names env)
+      (set! (environment-initialized? env) t)
+      env)
+    
+    (define-method (termination? (env <environment>))
+      "Return true if the simulation should end now."
+      #f)
+    
+    (define-method (display-environment (env <environment>))
+      "Display the current state of the environment."
+      ;; You probably won't need to specialize this, unless you want to do
+      ;; a fancy graphical user interface
+      (let ((port (environment-port env)))
+        (when port 
+          (format port "~&At Time step ~D:~%" (environment-step env))
+          (when (> (environment-step env) 0)
+                (for-each (lambda (port)
+                            (format port 
+                                    "~&Agent ~A perceives ~A~%~6Tand does ~A~%"
+                                    agent (agent-percept agent)
+                                    (agent-action agent)))
+                  (environment-agents env)))
+          (display-environment-snapshot env))))
+    
+    (define-method (display-environment-snapshot (env <environment>))
+      "Display a 'picture' of the current state of the environment."
+      (print env (environment-port env)))
+    
+    ;;;; Auxiliary Functions
+    
+    (define (run-eval-environment env)
+      "Basic environment simulator; the same as run-environment. [p 48]
+      We decided it was silly to run the environment and NOT eval the agents,
+      so in this code, and in future editions of the book, we will only have
+      RUN-ENVIRONMENT, and it will evaluate the agents."
+      (run-environment env))
+    
+    (define (agent-trial environment-fn agent-type env-gen-random-state n)
+      "Run n environments with an identical agent in each, and average the scores."
+      ;; By binding *random-state* to env-gen-random-state, we hope to reproduce
+      ;; the same set of environments each time AGENT-TRIAL is called with the
+      ;; same environment-fn.
+      (let ((total 0) (score 0))
+        (do ((i 0 (+ i 1)))
+            ((= i n))
+          ;; NB: We're using (randomize ...) instead of *random-state*.
+          (let* ((env
+                  (begin
+                    ;; What do you want to bet `env-gen-random-state' is
+                    ;; not an integer?
+                    (randomize env-gen-random-state)
+                    ;; TODO: `apply' was here.
+                    (environment-fn 
+                     :port #f
+                     :aspec (list agent-type)))))
+            (run-environment env)
+            (inc! total (agent-score (first (environment-agents env)))))) 
+        (set! score (float (/ total n)))
+        (format #t "~&~10,2F average for ~A" score agent-type)
+        score))
+    
+    (define (execute-agent-actions env)
+      "Each agent (if the agent is alive and has specified a legal action)
+      takes the action."
+      (for-each (lambda (agent)
+                  (let ((act (agent-action agent)))
+                    (when (member (op act) (legal-actions env))
+                          ;; TODO: `funcall' was here.
+                          ((op act) env (agent-body agent) (args act)))))
+        (environment-agents env)))
+    
+    (define-method (print-object (env <environment>) port)
+      (format port "#<~A; Step: ~D, Agents:~{ ~A~}>"
+          (class-of env) (environment-step env)
+          (environment-agents env)))
   #+END_SRC
 * DONE Do we really need e.g. =<stack>= instead of =stack= in =coops=?
   CLOSED: [2012-06-02 Sat 01:09]
