@@ -1,4 +1,9 @@
 * TODO Environments
+* DONE Environments
+  CLOSED: [2012-06-03 Sun 03:47]
+  - CLOSING NOTE [2012-06-03 Sun 03:47] \\
+    This is reasonable as a proof-of-concept; we're going to imitate even
+    the directory structure for now, though.
   We'll worry about utilities later; or, rather, along the way. It
   looks like [[http://wiki.call-cc.org/eggref/4/coops][coops]] is the way to go, incidentally:
 
@@ -142,51 +147,7 @@
     
     ;;;; Auxiliary Functions
     
-    (define (run-eval-environment env)
-      "Basic environment simulator; the same as run-environment. [p 48]
-      We decided it was silly to run the environment and NOT eval the agents,
-      so in this code, and in future editions of the book, we will only have
-      RUN-ENVIRONMENT, and it will evaluate the agents."
-      (run-environment env))
     
-    (define (agent-trial environment-fn agent-type env-gen-random-state n)
-      "Run n environments with an identical agent in each, and average the scores."
-      ;; By binding *random-state* to env-gen-random-state, we hope to reproduce
-      ;; the same set of environments each time AGENT-TRIAL is called with the
-      ;; same environment-fn.
-      (let ((total 0) (score 0))
-        (do ((i 0 (+ i 1)))
-            ((= i n))
-          ;; NB: We're using (randomize ...) instead of *random-state*.
-          (let* ((env
-                  (begin
-                    ;; What do you want to bet `env-gen-random-state' is
-                    ;; not an integer?
-                    (randomize env-gen-random-state)
-                    ;; TODO: `apply' was here.
-                    (environment-fn 
-                     :port #f
-                     :aspec (list agent-type)))))
-            (run-environment env)
-            (inc! total (agent-score (first (environment-agents env)))))) 
-        (set! score (float (/ total n)))
-        (format #t "~&~10,2F average for ~A" score agent-type)
-        score))
-    
-    (define (execute-agent-actions env)
-      "Each agent (if the agent is alive and has specified a legal action)
-      takes the action."
-      (for-each (lambda (agent)
-                  (let ((act (agent-action agent)))
-                    (when (member (op act) (legal-actions env))
-                          ;; TODO: `funcall' was here.
-                          ((op act) env (agent-body agent) (args act)))))
-        (environment-agents env)))
-    
-    (define-method (print-object (env <environment>) port)
-      (format port "#<~A; Step: ~D, Agents:~{ ~A~}>"
-          (class-of env) (environment-step env)
-          (environment-agents env)))
   #+END_SRC
 * DONE Do we really need e.g. =<stack>= instead of =stack= in =coops=?
   CLOSED: [2012-06-02 Sat 01:09]
