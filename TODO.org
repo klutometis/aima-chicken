@@ -1,3 +1,4 @@
+* TODO Try [[http://srfi.schemers.org/srfi-17/srfi-17.html][srfi-17]] for =defsetf=.
 * TODO Beware, by the way: early bugs will be subtle.
 * TODO Test environments.
   #+BEGIN_SRC scheme :tangle test-environments.scm :shebang #!/usr/bin/env chicken-scheme
