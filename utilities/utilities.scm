@@ -193,7 +193,8 @@ Expressions are used in Logic, and as actions for agents."
 (define (sample-with-replacement n population)
   (let ((result nil))
     (dotimes (i n) (push (random-element population) result))
-    result))
+    result)
+  (do ((i 0 ()))))
 
 (define (sample-without-replacement n population &optional
 				     (m (length population)))
