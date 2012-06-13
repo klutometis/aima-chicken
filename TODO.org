@@ -1,3 +1,8 @@
+* TODO Instead of aping the Lisp code, we should ship off on our own.
+  Norvig did a wonderful thing, though: with this environment model
+  and =run-environment=, he's able to cast e.g. search-problems as
+  environments and run agents therein. A Chicken module might provide
+  similar abstractions.
 * TODO Try [[http://srfi.schemers.org/srfi-17/srfi-17.html][srfi-17]] for =defsetf=.
 * TODO Beware, by the way: early bugs will be subtle.
 * TODO Test environments.
