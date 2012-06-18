@@ -194,7 +194,8 @@ Expressions are used in Logic, and as actions for agents."
   (let ((result nil))
     (dotimes (i n) (push (random-element population) result))
     result)
-  (do ((i 0 ()))))
+  (do ((i n (- i 1)))
+      ((zero? i) )))
 
 (define (sample-without-replacement n population &optional
 				     (m (length population)))
