@@ -1,0 +1,7 @@
+(include "setup-helper")
+
+(verify-extension-name "aima")
+
+(setup-shared-extension-module
+ 'aima
+ (extension-version 0.1))

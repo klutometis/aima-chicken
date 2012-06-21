@@ -1,0 +1,10 @@
+((synopsis "Support for Russell-Norvig's AIMA")
+ (author "Peter Danenberg")
+ (category data)
+ (license "BSD")
+ (depends debug
+          setup-helper
+          vector-lib)
+ (test-depends debug
+               test)
+ (foreign-depends))
