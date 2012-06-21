@@ -1,5 +1,5 @@
 We'd like to create an environment in [[http://www.call-cc.org/][Chicken Scheme]] to do the
-exercises for [[http://aima.cs.berkeley.edu/][AIMA]].
+exercises for [[http://aima.cs.berkeley.edu/][AIMA]]. [1]
 
 * Footnotes
 
