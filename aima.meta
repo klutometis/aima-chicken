@@ -3,8 +3,7 @@
  (category data)
  (license "BSD")
  (depends debug
-          setup-helper
-          vector-lib)
- (test-depends debug
-               test)
+          setup-helper)
+ (test-depends test
+               vector-lib)
  (foreign-depends))
