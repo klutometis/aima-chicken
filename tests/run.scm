@@ -1,6 +1,8 @@
 (use aima
      debug
-     test)
+     srfi-1
+     test
+     vector-lib)
 
 (define (make-vacuum-environment world agent)
   (make-environment
