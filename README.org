@@ -1,5 +1,8 @@
 We'd like to create an environment in [[http://www.call-cc.org/][Chicken Scheme]] to do the
-exercises for [[http://aima.cs.berkeley.edu/][AIMA]]. [1]
+exercises for [[http://aima.cs.berkeley.edu/][AIMA]] [1].
+
+Meet us at the [[http://www.meetup.com/LA-Computer-Science-Reading-Group/][LA Computer Science Reading Group]], if you'd like to
+follow along.
 
 * Footnotes
 
