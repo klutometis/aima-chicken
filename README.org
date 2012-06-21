@@ -1,5 +1,6 @@
-A little Quixotic, maybe; but we'd like to port the [[http://aima.cs.berkeley.edu/lisp/doc/overview.html][Lisp code for
-AIMA]] [1] to [[http://www.call-cc.org/][Chicken Scheme]].
+We'd like to create an environment in [[http://www.call-cc.org/][Chicken Scheme]] to do the
+exercises for [[http://aima.cs.berkeley.edu/][AIMA]].
+
 * Footnotes
 
 [1] Stuart Russell and Peter Norvig. 2009. Artificial Intelligence:
