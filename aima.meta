@@ -3,6 +3,7 @@
  (category data)
  (license "BSD")
  (depends debug
+          foof-loop
           setup-helper)
  (test-depends test
                vector-lib)
