@@ -1,16 +1,17 @@
 (module aima
-  (agent-location
-   agent-location-set!
-   agent-actuate
+  (agent-actuate
    agent-actuate-set!
+   agent-location
+   agent-location-set!
+   agent-score
+   agent-score-set!
    compose-environments
    environment-step
    environment-step-set!
-   environment-score
-   environment-score-set!
    make-agent
    make-environment
    make-step-limited-environment
+   make-performance-measuring-environment
    simulate)
 
   (import chicken
@@ -18,38 +19,34 @@
           scheme
           srfi-1)
 
-  (use debug)
+  (use debug
+       foof-loop)
 
   (define-record environment
-    step
-    score)
+    step)
 
   (define (simulate environment)
-    (let next-step ((continue? ((environment-step environment))))
-      (if continue?
-          (next-step ((environment-step environment)))
-          ((environment-score environment)))))
+    (loop ((while ((environment-step environment))))))
 
   (define (compose-environments . environments)
     (make-environment
       (lambda ()
         (every values (map (lambda (environment)
                              ((environment-step environment)))
-                           environments)))
-      (lambda ()
-        (reduce + 0 (map (lambda (environment)
-                           ((environment-score environment)))
-                         environments)))))
+                           environments)))))
+
+  (define (make-performance-measuring-environment performance-measure)
+    (make-environment
+      performance-measure))
 
   (define (make-step-limited-environment steps)
     (let ((current-step 0))
       (make-environment
         (lambda ()
           (set! current-step (+ current-step 1))
-          (< current-step steps))
-        (lambda ()
-          0))))
+          (< current-step steps)))))
 
   (define-record agent
     location
-    actuate))
+    actuate
+    score))
