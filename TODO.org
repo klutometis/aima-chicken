@@ -1,3 +1,12 @@
+* TODO debug-environment
+  . . . with e.g. =environment-print=; it's just going to be a thunk
+  unless it does something special. Because we're not doing OO, we
+  can't readily have a generic print which dispatches à la e.g.
+  =for-each= on worlds, agents, miscellaneous objects.
+
+  What about =display=, though, with =define-record-printer=? Wow,
+  maybe we should bring records back for environments; despite the
+  fact that they're merely wrappers around a step-function.
 * TODO sample-with-replacement
   #+BEGIN_SRC scheme
     (use
