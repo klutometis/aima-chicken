@@ -139,8 +139,11 @@
 
   (define simulate-vacuum
     (case-lambda
-     ((world agent) (simulate-vacuum world agent 1000))
+     ((world agent)
+      (simulate-vacuum world agent (default-steps)))
      ((world agent steps)
+      (simulate-vacuum world agent steps make-environment))
+     ((world agent steps make-environment)
       (simulate
        (compose-environments
         (make-step-limited-environment steps)
@@ -148,6 +151,13 @@
          (make-performance-measure world)
          (make-score-update! agent))
         (make-debug-environment agent)
-        (make-debug-environment world world-display)
+        (make-debug-environment world display-world)
         (make-environment world agent)))
-      (agent-score agent)))))
+      (agent-score agent))))
+
+  (define simulate-penalizing-vacuum
+    (case-lambda
+     ((world agent)
+      (simulate-penalizing-vacuum world agent (default-steps)))
+     ((world agent steps)
+      (simulate-vacuum world agent steps make-penalizing-environment)))))
