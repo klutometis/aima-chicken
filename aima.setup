@@ -5,3 +5,7 @@
 (setup-shared-extension-module
  'aima
  (extension-version 0.1))
+
+(setup-shared-extension-module
+ 'aima-vacuum
+ (extension-version 0.1))
