@@ -1,21 +1,13 @@
 (module aima
-  (agent-actuate
-   agent-actuate-set!
-   agent-location
-   agent-location-set!
-   agent-score
-   agent-score-set!
-   compose-environments
-   environment-step
-   environment-step-set!
-   make-agent
-   make-environment
+  (compose-environments
+   make-debug-environment
    make-step-limited-environment
    make-performance-measuring-environment
    simulate)
 
   (import chicken
           data-structures
+          extras
           scheme
           srfi-1)
 
@@ -40,4 +32,10 @@
     (let ((current-step 0))
       (lambda ()
         (set! current-step (+ current-step 1))
-        (< current-step steps)))))
+        (< current-step steps))))
+
+  (define make-debug-environment
+    (case-lambda
+     ((object) (make-debug-environment object pp))
+     ((object display)
+      (lambda () (display object))))))
