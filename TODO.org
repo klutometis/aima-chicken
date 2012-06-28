@@ -7,6 +7,11 @@
   What about =display=, though, with =define-record-printer=? Wow,
   maybe we should bring records back for environments; despite the
   fact that they're merely wrappers around a step-function.
+
+  Environment is distinct from world, though; the debug function could
+  have an optional display-function that defaults to =display=. That
+  means, however, that we need a debug function per entity, doesn't
+  it? Maybe that's no big deal.
 * TODO sample-with-replacement
   #+BEGIN_SRC scheme
     (use
