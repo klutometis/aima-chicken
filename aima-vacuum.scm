@@ -28,11 +28,12 @@
           data-structures
           extras
           srfi-13)
+
   (use aima
        srfi-1
        vector-lib)
 
-  (define (world-display world)
+  (define (display-world world)
     (pp
      (vector-append '#(world)
                     (vector-map
