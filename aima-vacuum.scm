@@ -135,6 +135,8 @@
       (agent-score-set! agent (+ (agent-score agent)
                                  score))))
 
+  (define default-steps (make-parameter 1000))
+
   (define simulate-vacuum
     (case-lambda
      ((world agent) (simulate-vacuum world agent 1000))
