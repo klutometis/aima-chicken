@@ -22,31 +22,22 @@
   (use debug
        foof-loop)
 
-  (define-record environment
-    step)
-
   (define (simulate environment)
-    (loop ((while ((environment-step environment))))))
+    (loop ((while (environment)))))
 
   (define (compose-environments . environments)
-    (make-environment
-      (lambda ()
-        (every values (map (lambda (environment)
-                             ((environment-step environment)))
-                           environments)))))
+    (lambda ()
+      (every identity (map (lambda (environment)
+                             (environment))
+                           environments))))
 
-  (define (make-performance-measuring-environment performance-measure)
-    (make-environment
-      performance-measure))
+  (define (make-performance-measuring-environment
+           measure-performance
+           score-update!)
+    (lambda () (score-update! (measure-performance))))
 
   (define (make-step-limited-environment steps)
     (let ((current-step 0))
-      (make-environment
-        (lambda ()
-          (set! current-step (+ current-step 1))
-          (< current-step steps)))))
-
-  (define-record agent
-    location
-    actuate
-    score))
+      (lambda ()
+        (set! current-step (+ current-step 1))
+        (< current-step steps)))))
