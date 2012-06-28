@@ -73,20 +73,41 @@
                   'right)
               (agent-score agent))))
 
-  (define (make-environment world agent)
-    (lambda ()
-      (let* ((location (agent-location agent))
-             (action ((agent-program agent)
-                      location
-                      (world-location world location))))
-        (case action
-          ((left) (agent-location-set! agent left))
-          ((right) (agent-location-set! agent right))
-          ((suck) (world-location-set! world location clean))
-          (else (error (string-join
-                        "make-environment --"
-                        "Unknown action")
-                       action))))))
+  (define (non-penalizing-response world agent location action)
+    (case action
+      ((left) (agent-location-set! agent left))
+      ((right) (agent-location-set! agent right))
+      ((suck) (world-location-set! world location clean))
+      (else (error "non-penalizing-response -- Unknown action"
+                   action))))
+
+  (define (penalizing-response world agent location action)
+    (case action
+      ((left)
+       (agent-score-set! agent (- (agent-score agent) 1))
+       (agent-location-set! agent left))
+      ((right)
+       (agent-score-set! agent (- (agent-score agent) 1))
+       (agent-location-set! agent right))
+      ((suck) (world-location-set! world location clean))
+      (else (error "penalizing-response -- Unknown action"
+                   action))))
+
+  (define make-environment
+    (case-lambda
+     ((world agent) (make-environment world
+                                      agent
+                                      non-penalizing-response))
+     ((world agent response)
+      (lambda ()
+        (let* ((location (agent-location agent))
+               (action ((agent-program agent)
+                        location
+                        (world-location world location))))
+          (response world agent location action))))))
+
+  (define (make-penalizing-environment world agent)
+    (make-environment world agent penalizing-response))
 
   (define (reflex-agent-program location clean?)
     (if clean?
