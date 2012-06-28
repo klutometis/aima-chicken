@@ -1,11 +1,28 @@
 (module aima-vacuum
-  (clean
+  (agent-score
+   agent-score-set!
+   agent-location
+   agent-location-set!
+   agent-program
+   agent-program-set!
+   clean
+   clean?
    dirty
+   dirty?
+   display-world
    left
+   left?
+   make-performance-measure
    make-reflex-agent
+   make-score-update!
    make-world
    right
-   simulate-vacuum)
+   right?
+   simulate-penalizing-vacuum
+   simulate-vacuum
+   world-location
+   world-location-set!)
+
   (import scheme
           chicken
           data-structures
