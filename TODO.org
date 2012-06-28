@@ -1,4 +1,19 @@
-* TODO debug-environment
+* DONE Test vacuum world.
+  CLOSED: [2012-06-28 Thu 11:32]
+  #+BEGIN_SRC scheme :tangle test-vacuum.scm :shebang #!/usr/local/bin/chicken-scheme
+    (include "aima.scm")
+    (include "aima-vacuum.scm")
+    (use aima aima-vacuum)
+    
+    (simulate-vacuum (make-world dirty clean)
+                     (make-reflex-agent
+                      left
+                      (lambda (location clean?)
+                        'right))
+                     10)
+  #+END_SRC
+* DONE debug-environment
+  CLOSED: [2012-06-28 Thu 11:32]
   . . . with e.g. =environment-print=; it's just going to be a thunk
   unless it does something special. Because we're not doing OO, we
   can't readily have a generic print which dispatches à la e.g.
@@ -12,48 +27,12 @@
   have an optional display-function that defaults to =display=. That
   means, however, that we need a debug function per entity, doesn't
   it? Maybe that's no big deal.
-* TODO sample-with-replacement
-  #+BEGIN_SRC scheme
-    (use
-     debug
-     (prefix random-bsd random-bsd:)
-     srfi-1
-     )
-    
-    (define (random-integer from to)
-      "Return an integer chosen at random from the given interval."
-      ;; Appears to be an off-by-one here:
-      ;; (+ from (random-bsd:random-integer (+ 1 (- to from))))
-      (+ from (random-bsd:random-integer (- to from))))
-    
-    (define (random-element list)
-      "Return some element of the list, chosen at random."
-      (list-ref list (random-integer 0 (length list))))
-    
-    (define (sample-with-replacement n population)
-      (unfold (lambda (i)
-                (debug (> i n))
-                (> i n))
-              (lambda (i)
-                (debug (random-element population)
-                       population)
-                (random-element population))
-              add1
-              1))
-    
-    (sample-with-replacement 10 '(1 2 3))
-  #+END_SRC
-* TODO Instead of aping the Lisp code, we should ship off on our own.
+* DONE Instead of aping the Lisp code, we should ship off on our own.
+  CLOSED: [2012-06-28 Thu 11:32]
   Norvig did a wonderful thing, though: with this environment model
   and =run-environment=, he's able to cast e.g. search-problems as
   environments and run agents therein. A Chicken module might provide
   similar abstractions.
-* TODO Try [[http://srfi.schemers.org/srfi-17/srfi-17.html][srfi-17]] for =defsetf=.
-* TODO Beware, by the way: early bugs will be subtle.
-* TODO Test environments.
-  #+BEGIN_SRC scheme :tangle test-environments.scm :shebang #!/usr/bin/env chicken-scheme
-    (include "aima.scm")
-  #+END_SRC
 * DONE Environments
   CLOSED: [2012-06-03 Sun 03:47]
   - CLOSING NOTE [2012-06-03 Sun 03:47] \\
@@ -237,4 +216,45 @@
     (fuck-this-stack (make <stack>))
     
     (debug <stack>)
+  #+END_SRC
+* CANCELED sample-with-replacement
+  CLOSED: [2012-06-28 Thu 11:32]
+  #+BEGIN_SRC scheme
+    (use
+     debug
+     (prefix random-bsd random-bsd:)
+     srfi-1
+     )
+    
+    (define (random-integer from to)
+      "Return an integer chosen at random from the given interval."
+      ;; Appears to be an off-by-one here:
+      ;; (+ from (random-bsd:random-integer (+ 1 (- to from))))
+      (+ from (random-bsd:random-integer (- to from))))
+    
+    (define (random-element list)
+      "Return some element of the list, chosen at random."
+      (list-ref list (random-integer 0 (length list))))
+    
+    (define (sample-with-replacement n population)
+      (unfold (lambda (i)
+                (debug (> i n))
+                (> i n))
+              (lambda (i)
+                (debug (random-element population)
+                       population)
+                (random-element population))
+              add1
+              1))
+    
+    (sample-with-replacement 10 '(1 2 3))
+  #+END_SRC
+* CANCELED Try [[http://srfi.schemers.org/srfi-17/srfi-17.html][srfi-17]] for =defsetf=.
+  CLOSED: [2012-06-28 Thu 11:32]
+* CANCELED Beware, by the way: early bugs will be subtle.
+  CLOSED: [2012-06-28 Thu 11:33]
+* CANCELED Test environments.
+  CLOSED: [2012-06-28 Thu 11:33]
+  #+BEGIN_SRC scheme :tangle test-environments.scm :shebang #!/usr/bin/env chicken-scheme
+    (include "aima.scm")
   #+END_SRC
