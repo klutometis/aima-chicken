@@ -1,5 +1,7 @@
 (module aima
   (compose-environments
+   debug?
+   debug-print
    make-debug-environment
    make-step-limited-environment
    make-performance-measuring-environment
