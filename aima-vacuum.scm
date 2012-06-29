@@ -91,6 +91,7 @@
        (agent-score-set! agent (- (agent-score agent) 1))
        (agent-location-set! agent right))
       ((suck) (world-location-set! world location clean))
+      ((noop))
       (else (error "penalizing-response -- Unknown action"
                    action))))
 
