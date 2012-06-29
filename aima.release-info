@@ -2,3 +2,4 @@
 (uri targz "https://github.com/klutometis/aima-chicken/tarball/{egg-release}")
 (release "0.1")
 (release "0.2")
+(release "0.3")
