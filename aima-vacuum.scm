@@ -42,17 +42,17 @@
                        (if clean? 'clean 'dirty))
                      world))))
 
-  (define clean #t)
-  (define clean? identity)
+  (define-record clean)
+  (define clean (make-clean))
 
-  (define dirty #f)
-  (define dirty? (complement clean?))
+  (define-record dirty)
+  (define dirty (make-dirty))
 
   (define left 0)
   (define left? zero?)
 
   (define right 1)
-  (define right? (complement zero?))
+  (define right? positive?)
 
   (define make-world vector)
 
@@ -104,7 +104,7 @@
         (let* ((location (agent-location agent))
                (action ((agent-program agent)
                         location
-                        (world-location world location))))
+                        (clean? (world-location world location)))))
           (response world agent location action))))))
 
   (define (make-penalizing-environment world agent)
@@ -129,12 +129,12 @@
 
   (define (make-performance-measure world)
     (lambda ()
+      (debug world)
       (vector-count (lambda (i square) (clean? square)) world)))
 
   (define (make-score-update! agent)
     (lambda (score)
-      (agent-score-set! agent (+ (agent-score agent)
-                                 score))))
+      (agent-score-set! agent (+ (agent-score agent) score))))
 
   (define default-steps (make-parameter 1000))
 
