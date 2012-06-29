@@ -4,8 +4,8 @@
 
 (setup-shared-extension-module
  'aima
- (extension-version 0.3))
+ (extension-version 0.4))
 
 (setup-shared-extension-module
  'aima-vacuum
- (extension-version 0.3))
+ (extension-version 0.4))
