@@ -129,7 +129,6 @@
 
   (define (make-performance-measure world)
     (lambda ()
-      (debug world)
       (vector-count (lambda (i square) (clean? square)) world)))
 
   (define (make-score-update! agent)
