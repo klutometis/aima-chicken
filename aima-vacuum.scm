@@ -30,6 +30,7 @@
           srfi-13)
 
   (use aima
+       debug
        srfi-1
        vector-lib)
 
