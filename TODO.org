@@ -1,5 +1,11 @@
 * TODO Optional debugging environments.
-  Can either have no-op environments that we graft in; or some other mechanism.
+  Can either have no-op environments that we graft in; or some other
+  mechanism.
+
+  Or, hell: instead of using the debug environments; why not have the
+  classic debug-parameter that environments may or may not decide to
+  use? That way, we'd have access to the agent's action as opposed to
+  merely its state.
 * TODO Debugging should really show what action the agent took and the state of the world.
   Not merely the e.g. agent location and score.
 * DONE Test vacuum world.
