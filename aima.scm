@@ -18,6 +18,12 @@
 
   (define debug? (make-parameter #t))
 
+  (define debug-print
+    (case-lambda
+     ((key value) (debug-print key value #t))
+     ((key value out)
+      (if (debug?) (format out "~a: ~a~%" key value)))))
+
   (define (simulate environment)
     (loop ((while (environment)))))
 
