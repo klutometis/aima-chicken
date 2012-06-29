@@ -106,6 +106,7 @@
                (action ((agent-program agent)
                         location
                         (clean? (world-location world location)))))
+          (debug-print "agent-action" action)
           (response world agent location action))))))
 
   (define (make-penalizing-environment world agent)
@@ -152,7 +153,7 @@
          (make-performance-measure world)
          (make-score-update! agent))
         (make-debug-environment agent)
-        (make-debug-environment world display-world)
+        (make-debug-environment world)
         (make-environment world agent)))
       (agent-score agent))))
 
