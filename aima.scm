@@ -44,8 +44,9 @@
         (set! current-step (+ current-step 1))
         (< current-step steps))))
 
-  (define make-debug-environment
-    (case-lambda
-     ((object) (make-debug-environment object pp))
-     ((object display)
-      (lambda () (display object))))))
+  (define-syntax make-debug-environment
+    (er-macro-transformer
+     (lambda (expression rename compare)
+       (let ((object (cadr expression))
+             (%debug-print (rename 'debug-print)))
+         `(lambda () (,%debug-print ',object ,object)))))))
