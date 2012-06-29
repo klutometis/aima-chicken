@@ -1,3 +1,5 @@
+* TODO Optional debugging environments.
+  Can either have no-op environments that we graft in; or some other mechanism.
 * TODO Debugging should really show what action the agent took and the state of the world.
   Not merely the e.g. agent location and score.
 * DONE Test vacuum world.
