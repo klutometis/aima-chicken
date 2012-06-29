@@ -16,6 +16,8 @@
   (use debug
        foof-loop)
 
+  (define debug? (make-parameter #t))
+
   (define (simulate environment)
     (loop ((while (environment)))))
 
