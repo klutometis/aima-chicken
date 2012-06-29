@@ -1,3 +1,5 @@
+* TODO Debugging should really show what action the agent took and the state of the world.
+  Not merely the e.g. agent location and score.
 * DONE Test vacuum world.
   CLOSED: [2012-06-28 Thu 11:32]
   #+BEGIN_SRC scheme :tangle test-vacuum.scm :shebang #!/usr/local/bin/chicken-scheme
