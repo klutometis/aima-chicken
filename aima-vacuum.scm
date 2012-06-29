@@ -38,8 +38,8 @@
     (pp
      (vector-append '#(world)
                     (vector-map
-                     (lambda (i clean?)
-                       (if clean? 'clean 'dirty))
+                     (lambda (i location)
+                       (if (clean? location) 'clean 'dirty))
                      world))))
 
   (define-record clean)
