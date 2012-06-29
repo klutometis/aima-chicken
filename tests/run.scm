@@ -1,5 +1,8 @@
-(use aima-vacuum
+(use aima
+     aima-vacuum
      test)
+
+(debug? #f)
 
 (test
  "Non-penalizing vacuum"
