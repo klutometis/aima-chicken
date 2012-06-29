@@ -4,7 +4,8 @@
  (license "BSD")
  (depends debug
           foof-loop
-          setup-helper)
+          setup-helper
+          vector-lib)
  (test-depends test
                vector-lib)
  (foreign-depends))
