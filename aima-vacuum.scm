@@ -14,6 +14,8 @@
    left?
    make-performance-measure
    make-reflex-agent
+   make-simple-reflex-agent
+   make-stateful-reflex-agent
    make-score-update!
    make-world
    right
@@ -112,22 +114,32 @@
   (define (make-penalizing-environment world agent)
     (make-environment world agent penalizing-response))
 
-  (define (reflex-agent-program location clean?)
+  (define (simple-agent-program location clean?)
     (if clean?
         (if (left? location)
             'right
             'left)
         'suck))
 
+
+  (define default-agent-program
+    (make-parameter simple-agent-program))
+
   (define make-reflex-agent
     (case-lambda
      ((location)
-      (make-reflex-agent location reflex-agent-program))
+      (make-reflex-agent location (default-agent-program)))
      ((location program)
       (make-agent
        location
        0
        program))))
+
+  (define (make-simple-reflex-agent location)
+    (make-reflex-agent location simple-agent-program))
+
+  (define (make-stateful-reflex-agent location)
+    (make-reflex-agent location stateful-agent-program))
 
   (define (make-performance-measure world)
     (lambda ()
