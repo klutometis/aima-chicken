@@ -50,6 +50,9 @@
   (define-record dirty)
   (define dirty (make-dirty))
 
+  (define-record unknown)
+  (define unknown (make-unknown))
+
   (define left 0)
   (define left? zero?)
 
@@ -121,6 +124,38 @@
             'left)
         'suck))
 
+  (define (all-clean? world)
+    ;; Vector bleeds a little world.
+    (vector-every (lambda (location) (clean? location)) world))
+
+  (define stateful-agent-program
+    ;; We could also make an initial pessimistic hypothesis of
+    ;; all-dirty.
+    (let ((world (make-world unknown unknown)))
+      (lambda (location clean?)
+        ;; Extra work here every time; otherwise, we'd have an extra
+        ;; `all-clean?' check after we set the state. `vector-set!', I'd
+        ;; wager, is cheaper than `all-clean?'.
+        (if clean?
+            (begin
+              (vector-set! world location clean)
+              (if (all-clean? world)
+                  ;; Symbols appropriate here, or should we have predefined
+                  ;; go-left, go-right, clean, do-nothing? We're message
+                  ;; passing, after all; I suppose a lambda wouldn't make any
+                  ;; sense?
+                  ;;
+                  ;; Can't be lambdas unless we redefine e.g. `go-right'
+                  ;; to penalize in the case of
+                  ;; `make-penalizing-environment'; better to keep as
+                  ;; symbols and dispatch, right? There should be some
+                  ;; sort of data-directed model we could use, though,
+                  ;; instead of the case-based dispatch.
+                  'noop
+                  (if (right? location)
+                      'left
+                      'right)))
+            'suck))))
 
   (define default-agent-program
     (make-parameter simple-agent-program))
