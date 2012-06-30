@@ -128,7 +128,7 @@
     ;; Vector bleeds a little world.
     (vector-every (lambda (location) (clean? location)) world))
 
-  (define stateful-agent-program
+  (define (make-stateful-agent-program)
     ;; We could also make an initial pessimistic hypothesis of
     ;; all-dirty.
     (let ((world (make-world unknown unknown)))
@@ -174,7 +174,7 @@
     (make-reflex-agent location simple-agent-program))
 
   (define (make-stateful-reflex-agent location)
-    (make-reflex-agent location stateful-agent-program))
+    (make-reflex-agent location (make-stateful-agent-program)))
 
   (define (make-performance-measure world)
     (lambda ()
