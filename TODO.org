@@ -1,3 +1,6 @@
+* TODO When agent return =#<undefined>=, there is an infinite loop.
+* TODO Screencast on how to do a simple reflex agent.
+* TODO One final debug output after last action.
 * DONE Optional debugging environments.
   CLOSED: [2012-06-29 Fri 16:40]
   Can either have no-op environments that we graft in; or some other
