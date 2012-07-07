@@ -7,11 +7,13 @@
    agent-program-set!
    clean
    clean?
+   default-steps
    dirty
    dirty?
    display-world
    left
    left?
+   make-agent
    make-performance-measure
    make-reflex-agent
    make-simple-reflex-agent
