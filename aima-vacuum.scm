@@ -75,12 +75,7 @@
 
   (define-record-printer agent
     (lambda (agent output)
-      (format output
-              "#(agent ~a ~a)"
-              (if (left? (agent-location agent))
-                  'left
-                  'right)
-              (agent-score agent))))
+      (pp (record->vector agent) output)))
 
   (define (non-penalizing-response world agent location action)
     (case action
