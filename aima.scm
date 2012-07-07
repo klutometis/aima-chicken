@@ -49,6 +49,9 @@
   (define-syntax make-debug-environment
     (er-macro-transformer
      (lambda (expression rename compare)
-       (let ((object (cadr expression))
-             (%debug-print (rename 'debug-print)))
-         `(lambda () (,%debug-print ',object ,object)))))))
+       (let ((%print (rename 'debug-print)))
+         (match expression
+           ((_ object)
+            `(lambda () (,%print ',object ,object)))
+           ((_ object make-printable-object)
+            `(lambda () (,%print ',object (,make-printable-object ,object))))))))))
