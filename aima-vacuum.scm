@@ -35,6 +35,7 @@
 
   (use aima
        debug
+       lolevel
        srfi-1
        vector-lib)
 
