@@ -13,6 +13,8 @@
           scheme
           srfi-1)
 
+  (import-for-syntax matchable)
+
   (use debug
        foof-loop)
 
