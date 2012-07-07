@@ -20,6 +20,8 @@
 
   (define debug? (make-parameter #t))
 
+  ;; Another case with merely a value? We're going to have to
+  ;; macrologize this thing, then.
   (define debug-print
     (case-lambda
      ((key value) (debug-print key value #t))
