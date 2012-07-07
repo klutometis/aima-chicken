@@ -75,7 +75,7 @@
 
   (define-record-printer agent
     (lambda (agent output)
-      (pp (record->vector agent) output)))
+      (display (record->vector agent) output)))
 
   (define (non-penalizing-response world agent location action)
     (case action
