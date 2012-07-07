@@ -197,7 +197,15 @@
         (make-performance-measuring-environment
          (make-performance-measure world)
          (make-score-update! agent))
-        (make-debug-environment agent)
+        (make-debug-environment
+         agent
+         (lambda (agent)
+           (vector
+            (let ((location (agent-location agent)))
+              (if (left? location)
+                  'left
+                  'right))
+            (agent-score agent))))
         (make-debug-environment world)
         (make-environment world agent)))
       (agent-score agent))))
