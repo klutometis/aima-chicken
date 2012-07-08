@@ -48,6 +48,8 @@
         (set! current-step (+ current-step 1))
         (< current-step steps))))
 
+  ;; Damn, we destroyed a nice abstraction that could have served for
+  ;; e.g. animations by changing `print' to `make-printable-object'.
   (define-syntax make-debug-environment
     (er-macro-transformer
      (lambda (expression rename compare)
