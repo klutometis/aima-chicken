@@ -61,7 +61,7 @@
   (define left? zero?)
 
   (define right 1)
-  (define right? positive?)
+  (define right? (cute = <> 1))
 
   (define make-world vector)
 
