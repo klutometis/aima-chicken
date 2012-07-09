@@ -43,12 +43,16 @@
            score-update!)
     (lambda () (score-update! (measure-performance))))
 
-  (define (make-step-limited-environment steps)
-    (let ((current-step 0))
-      (lambda ()
-        (set! current-step (+ current-step 1))
-        (< current-step steps))))
   (define default-steps (make-parameter 1000))
+
+  (define make-step-limited-environment
+    (case-lambda
+     (() (make-step-limited-environment (default-steps)))
+     ((steps)
+      (let ((current-step 0))
+        (lambda ()
+          (set! current-step (+ current-step 1))
+          (< current-step steps))))))
 
   ;; Damn, we destroyed a nice abstraction that could have served for
   ;; e.g. animations by changing `print' to `make-printable-object'.
