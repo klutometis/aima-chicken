@@ -2,6 +2,7 @@
   (compose-environments
    debug?
    debug-print
+   default-steps
    make-debug-environment
    make-step-limited-environment
    make-performance-measuring-environment
@@ -47,6 +48,7 @@
       (lambda ()
         (set! current-step (+ current-step 1))
         (< current-step steps))))
+  (define default-steps (make-parameter 1000))
 
   ;; Damn, we destroyed a nice abstraction that could have served for
   ;; e.g. animations by changing `print' to `make-printable-object'.

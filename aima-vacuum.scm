@@ -7,7 +7,6 @@
    agent-program-set!
    clean
    clean?
-   default-steps
    dirty
    dirty?
    display-world
@@ -182,8 +181,6 @@
   (define (make-score-update! agent)
     (lambda (score)
       (agent-score-set! agent (+ (agent-score agent) score))))
-
-  (define default-steps (make-parameter 1000))
 
   (define simulate-vacuum
     (case-lambda
