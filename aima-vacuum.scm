@@ -24,6 +24,7 @@
    simulate-penalizing-vacuum
    simulate-vacuum
    unknown
+   unknown?
    world-location
    world-location-set!)
 
