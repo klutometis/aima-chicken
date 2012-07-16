@@ -6,6 +6,8 @@
    make-debug-environment
    make-step-limited-environment
    make-performance-measuring-environment
+   random-seed
+   randomize!
    simulate)
 
   (import chicken
@@ -29,8 +31,22 @@
      ((key value out)
       (if (debug?) (format out "~a: ~a~%" key value)))))
 
-  (define (simulate environment)
-    (loop ((while (environment)))))
+  (define random-seed (make-parameter #f))
+
+  (define randomize! (make-parameter randomize))
+
+  ;; Should we have first-class support for seeding the random-number
+  ;; generator; or simply a generic initialization? Problem is that we
+  ;; don't know which random-number library their using: we'd have to
+  ;; pass in a thunk or at least a seed and a randomizer; in the
+  ;; former case, however, we've gone to generic initialization.
+  (define simulate
+    (case-lambda
+     ((environment)
+      (simulate environment (randomize!) (random-seed)))
+     ((environment randomize! random-seed)
+      (if random-seed (randomize! random-seed))
+      (loop ((while (environment)))))))
 
   (define (compose-environments . environments)
     (lambda ()
