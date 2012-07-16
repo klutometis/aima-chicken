@@ -5,7 +5,9 @@
  (depends debug
           foof-loop
           matchable
+          random-bsd
           setup-helper
+          stack
           vector-lib)
  (test-depends test
                vector-lib)
