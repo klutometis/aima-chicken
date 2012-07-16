@@ -1,3 +1,7 @@
+* TODO Allow specifying agent programs for graph agents.
+* TODO Disguise hash-table operations in graph-world.
+* TODO Need to distinguish betwee world and graph-world in vacuum.
+* TODO =aima-vacuum= as a module that exposes =vacuum-two-square= and =vacuum-graph=
 * TODO When agent return =#<undefined>=, there is an infinite loop.
 * TODO Screencast on how to do a simple reflex agent.
 * TODO One final debug output after last action.
