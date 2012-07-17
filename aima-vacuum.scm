@@ -124,6 +124,7 @@
       ((left) (agent-location-set! agent left))
       ((right) (agent-location-set! agent right))
       ((suck) (world-location-set! world location clean))
+      ((noop))
       (else (error "non-penalizing-response -- Unknown action"
                    action))))
 
