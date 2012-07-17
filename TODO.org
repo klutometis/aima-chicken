@@ -1,3 +1,6 @@
+* TODO Documentation!
+  How should we do this: roll our own with org/html/latex, or use the
+  chicken wiki? Some eggs are merely pointers to the "real" docs.
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
