@@ -127,18 +127,15 @@
       (else (error "non-penalizing-response -- Unknown action"
                    action))))
 
+  ;; Delegate to non-penalizing-response.
   (define (penalizing-response world agent location action)
     (case action
       ((left)
-       (agent-score-set! agent (- (agent-score agent) 1))
-       (agent-location-set! agent left))
+       (agent-score-set! agent (- (agent-score agent) 1)))
       ((right)
-       (agent-score-set! agent (- (agent-score agent) 1))
-       (agent-location-set! agent right))
-      ((suck) (world-location-set! world location clean))
-      ((noop))
-      (else (error "penalizing-response -- Unknown action"
-                   action))))
+       (agent-score-set! agent (- (agent-score agent) 1))))
+    ;; Delegates to non-penalizing-response; thanks, Darius!
+    (non-penalizing-response world agent location action))
 
   (define make-environment
     (case-lambda
