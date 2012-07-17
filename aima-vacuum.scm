@@ -166,6 +166,8 @@
     ;; Vector bleeds a little world.
     (vector-every (lambda (location) (clean? location)) world))
 
+  ;; TODO: Consider changing the variable-name `world' to something
+  ;; more appropriate for a model of the world.
   (define (make-stateful-agent-program)
     ;; We could also make an initial pessimistic hypothesis of
     ;; all-dirty.
