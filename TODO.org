@@ -155,6 +155,9 @@
   On the other hand, Pygments is pretty garish; also, how are we going
   to link in without line-numbers or other? Hmm: =minted= provides
   =listing=; provided that we don't want to list the entire fall.
+
+  If we take Moritz Heidkamp's suggestion, incidentally, and use a
+  =doc= macro instead of the =@= reader-macro . . . lost my thought.
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
