@@ -246,35 +246,45 @@
 
   On the other hand, Pygments is pretty garish; also, how are we going
   to link in without line-numbers or other? Hmm: =minted= provides
-  =listing=; provided that we don't want to list the entire fall.
+  =listing=; provided that we don't want to list the entire file.
 
   If we take Moritz Heidkamp's suggestion, incidentally, and use a
   =doc= macro instead of the =@= reader-macro . . . lost my thought.
 
   #+BEGIN_SRC tex :tangle doc.tex
     \documentclass{article}
+    \usepackage{fullpage}
     \usepackage{fontspec}
     \usepackage{minted}
     %% borland, vs, tango
     \usemintedstyle{borland}
+    \usepackage[xetex,
+      pdfborder=0 0 0,
+      colorlinks,
+      linkcolor=blue,
+      citecolor=blue,
+      urlcolor=blue]{hyperref}
+    \usepackage{caption}
+    \DeclareCaptionType{source}[Listing][List of listings]
+    \renewenvironment{source}{}{}
+    \usepackage{capt-of}
+    \title{Foo a bar in fixnum days.}
+    \author{Harro Freunds
+      \texttt{<}\href{mailto:harro@freunds.com}
+           {\nolinkurl{harro@freunds.com}}\texttt{>}}
     \begin{document}
+    \maketitle
     \tableofcontents
-    \section[foo---Foo a bar.]{foo}
+    \listofsources
+    \section[\texttt{foo}---Foo a bar.]{\texttt{foo}}
     \begin{description}
-      \item[foo bar $\to$ baz] harro
-      \item[baz quux]
-        \begin{minted}[label=oenthoeuthn,labelposition=all]{scheme}
-    (with-input-from-file "doc.scm"
-      (lambda ()
-        (do ((expression (read) (read)))
-            ((eof-object? expression))
-          (if (current-docexpr)
-              (docexpr-expression-set! (stack-peek (docexprs)) expression))
-          (current-docexpr #f))))
-        \end{minted}
+      \item[Procedure] \texttt{foo bar $\to$ baz}
+      \item[Source] See listing \ref{foo}.
     \end{description}
-    %% These can't go beyond the end of the page; no multi-page floats.
-    \begin{listing}[H]
+    \section{Listings}
+    \subsection{\texttt{foo}}
+    \begin{source}
+      %% \inputminted[label=foo,frame=leftline]{scheme}{doc.scm}
       \begin{minted}{scheme}
     (with-input-from-file "doc.scm"
       (lambda ()
@@ -284,8 +294,21 @@
               (docexpr-expression-set! (stack-peek (docexprs)) expression))
           (current-docexpr #f))))
       \end{minted}
-      \caption{Fürwahr?}
-    \end{listing}
+      \captionof{source}{\texttt{foo}\label{foo}}
+    \end{source}
+    %% These can't go beyond the end of the page; no multi-page floats.
+    %% \begin{listing}[H]
+    %%   \begin{minted}{scheme}
+    %% (with-input-from-file "doc.scm"
+    %%   (lambda ()
+    %%     (do ((expression (read) (read)))
+    %%         ((eof-object? expression))
+    %%       (if (current-docexpr)
+    %%           (docexpr-expression-set! (stack-peek (docexprs)) expression))
+    %%       (current-docexpr #f))))
+    %%   \end{minted}
+    %%   \caption{Fürwahr?}
+    %% \end{listing}
     \end{document}
     
   #+END_SRC
