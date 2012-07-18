@@ -171,8 +171,9 @@
     \tableofcontents
     \section[foo---Foo a bar.]{foo}
     \begin{description}
-      \item[foo bar $\to$ baz]
-        \begin{minted}{scheme}
+      \item[foo bar $\to$ baz] harro
+      \item[baz quux]
+        \begin{minted}[label=oenthoeuthn,labelposition=all]{scheme}
     (with-input-from-file "doc.scm"
       (lambda ()
         (do ((expression (read) (read)))
