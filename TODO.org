@@ -366,6 +366,16 @@
   #+END_SRC
 
   Special support for abstracts? See [[http://tex.stackexchange.com/questions/55922/name-a-section-in-latex-toc-add-subtitle-to-contentsline][subtitles in TOC]].
+
+  Eventually, we want to pull all of the metadata out of =<egg>.meta=,
+  or even populate the meta-file on the basis of e.g.
+  =use=-statements. For now, though, we'll specify them with top-level
+  forms.
+
+  Damn: if we use the =listing= environment; we can have a
+  =listoflistings=. Multipage listings are awkward, though: see [[http://tex.stackexchange.com/questions/12428/code-spanning-over-two-pages-with-minted-inside-listing-with-caption][this]],
+  where they recommend using the =caption= package. Also [[http://tex.stackexchange.com/questions/7210/label-and-caption-without-float][this]], which
+  is a more generic solution.
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
