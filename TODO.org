@@ -1,6 +1,159 @@
 * TODO Documentation!
   How should we do this: roll our own with org/html/latex, or use the
   chicken wiki? Some eggs are merely pointers to the "real" docs.
+
+  Would be nice to have something R-like: autodocs for the
+  public-facing functions (some S-expression-based intermediate that
+  goes to latex/html?); a hand-crafted vignette for HOWTO.
+
+  If we use docstrings, we can coöpt the reader; do we have to deal
+  specially with things like =case-lambda=, parameters, scalars and
+  procedures (both of the =define= and naked lambda flavors)?
+
+  Should we check out what [[http://docs.racket-lang.org/scribble/][scribble]] has to say? Is it time to
+  resurrect [[http://www.cs.tufts.edu/~nr/noweb/][noweb]]?
+
+  What about the language in the docstrings: latex, html, groff,
+  markdown, docbook, restructured-text; any, all? Isn't it also
+  uncomfortable to edit those sorts of things in strings without any
+  editor support?
+
+  Would it make sense, therefore, to have a documentation macro?
+
+  Can the documentation itself be a Scheme structure along the lines
+  of:
+
+  #+BEGIN_SRC scheme :tangle doc.scm
+    (use debug
+         lolevel
+         srfi-1
+         srfi-69)
+    
+    (set-read-syntax! #\@ (lambda (in) (read in) (values)))
+    
+    (define (foo bar)
+      @("Foo a bar."
+        "An optional and more thorough explanation involving fooing bars;
+    what this really entails; pre- or post-conditions; &c."
+        (bar "The bar to be foo'd")
+        ;; Can't have a parameter named `return', though; should use
+        ;; `@return'; or `@<keyword>' in general for keywords?
+        ;; `<keywords>:' such as: `return:', `rest:'. `markup: {latex,
+        ;; html, groff, markdown, docbook}' is interesting.
+        "A foo'd bar")
+      bar)
+    
+    (debug (foo 2))
+    
+    (define current-docexpr
+      @("Enables communication with the parsing @-reader")
+      (make-parameter #f))
+    
+    (define (with-new-doctable thunk)
+      (parameterize ((current-doctable (make-hash-table)))
+        (thunk)))
+    
+    (set-read-syntax! #\@
+      (lambda (in)
+        (current-docexpr (read in))
+        (values)))
+    
+    (define-record docexpr
+      doc
+      expression)
+    
+    (define-record-printer docexpr
+      (lambda (docexpr out)
+        (write (record->vector docexpr) out)))
+    
+    (with-input-from-file "doc.scm"
+      (lambda ()
+        (let parse-next ((docexprs '()))
+          (parameterize ((current-docexpr #f))
+            (let ((expression (read)))
+              (if (eof-object? expression)
+                  (debug docexprs)
+                  (if (current-docexpr)
+                      (parse-next
+                       (cons (make-docexpr
+                              (current-docexpr)
+                              expression)
+                             docexprs))
+                      (parse-next docexprs))))))))
+    
+  #+END_SRC
+
+  It would be nice to parse the signature from the definition; we're
+  going to have to understand e.g. keywords, rest and optional
+  parameters, then.
+
+  Would be nice to have a link to the purged source, too (i.e. sans
+  docs).
+
+  If you load the module doc,
+
+  See [[http://www.metapaper.net/lisovsky/ad/mole/][mole]] and [[http://wiki.call-cc.org/eggref/4/contracts][contracts]], by the way. The reader-macro should no-op on
+  the docs when the code is compiled; there will be a separate reading
+  step, I take it, when we generate the docs.
+
+  Start with support for latex; generalize this later? Would be nice
+  to generate wiki, too. I think we can even pre-post-order the
+  doc-expr, can't we? Meh; let's just iterate over it: populating an
+  e.g. hash-table.
+
+  How is that reader going to work: iterates over top-level forms;
+  recursively descending into it for an instance of a doc-expr? In
+  which case: I wonder if we can have two packages, doc with a @-noop
+  and doc-parser with a @-parser. The latter is called from the
+  binary; the former is included in code.
+
+  I wonder if each code block could operate on some hash-table
+  parameter (e.g. =current-doc-table=), referenced by
+  =set-read-syntax!=.
+
+  That way, we don't have to identify @-exprs: we simply descend
+  readingly and the read-syntax takes care of the rest. Say we wanted
+  to use a doc-form (i.e. =(doc "Description" (foo "Bar") ...)=)
+  instead; could we simply define a relevant doc-macro? We'd have to
+  eval the contents, though, which I'd like to avoid.
+
+  So we descend readingly, populate the doc-table for that expression;
+  now what? Can we identify whether we're dealing with a scalar,
+  parameter, procedure or case-lambda? In cases where this is obscured
+  by e.g. a surrounding =let=, can we give a hint via =procedure:=,
+  =scalar:=, =parameter:= hints? Also, do we special-case modules for
+  the cats that don't separate module-definitions from
+  implementations? Is there a way to figure out which forms are
+  exported from a module and only include those, unless we have an
+  =export:= hint?
+
+  We'd have to have first-class support for modules, probably; would
+  this also entail descending into =includes=? What about module-less
+  code?
+
+  That whole first-sentence as overview, second as detailed
+  description thing is current; should we go with it?
+
+  If we iterate through the doc-expr, why not a data-directed dispatch
+  an e.g. string, symbol and pair; and thence a data-directed dispatch
+  on =(car pair)=?
+
+  Is there a latex package, by the way, for typesetting docs? Looks
+  like we might be [[http://stackoverflow.com/questions/501241/can-latex-be-used-for-producing-any-documentation-that-accompanies-software][on our own]].
+
+  For listings, try [[http://www.ctan.org/tex-archive/macros/latex/contrib/minted/][minted]]; maybe there can be a source section at the
+  end of the document? Will this make sense without the unexported
+  functions? Can we list the whole fucking thing and selectively
+  hyper-ref in there? Let's try.
+
+  Let's document top-level forms for now; becoming module-aware later.
+  This decision has the side-effect that module-definitions will have
+  to be separated from implementations. Maybe that's not a bad thing
+  (cf. etags).
+
+  On the other hand, Pygments is pretty garish; also, how are we going
+  to link in without line-numbers or other? Hmm: =minted= provides
+  =listing=; provided that we don't want to list the entire fall.
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
