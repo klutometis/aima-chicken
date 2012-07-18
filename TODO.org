@@ -31,6 +31,8 @@
     
     (set-read-syntax! #\@ (lambda (in) (read in) (values)))
     
+    @("top-level-docs")
+    
     (define (foo bar)
       @("Foo a bar."
         "An optional and more thorough explanation involving fooing bars;
@@ -71,6 +73,7 @@
         (let parse-next ((docexprs '()))
           (parameterize ((current-docexpr #f))
             (let ((expression (read)))
+              (debug expression)
               (if (eof-object? expression)
                   (debug docexprs)
                   (if (current-docexpr)
