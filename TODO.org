@@ -27,7 +27,8 @@
     (use debug
          lolevel
          srfi-1
-         srfi-69)
+         srfi-69
+         stack)
     
     (set-read-syntax! #\@ (lambda (in) (read in) (values)))
     
@@ -55,9 +56,12 @@
       (parameterize ((current-doctable (make-hash-table)))
         (thunk)))
     
+    (define docexprs (make-parameter (make-stack)))
+    
     (set-read-syntax! #\@
       (lambda (in)
         (current-docexpr (read in))
+        (stack-push! (docexprs) (make-docexpr (current-docexpr) #f))
         (values)))
     
     (define-record docexpr
@@ -70,19 +74,13 @@
     
     (with-input-from-file "doc.scm"
       (lambda ()
-        (let parse-next ((docexprs '()))
-          (parameterize ((current-docexpr #f))
-            (let ((expression (read)))
-              (debug expression)
-              (if (eof-object? expression)
-                  (debug docexprs)
-                  (if (current-docexpr)
-                      (parse-next
-                       (cons (make-docexpr
-                              (current-docexpr)
-                              expression)
-                             docexprs))
-                      (parse-next docexprs))))))))
+        (do ((expression (read) (read)))
+            ((eof-object? expression))
+          (if (current-docexpr)
+              (docexpr-expression-set! (stack-peek (docexprs)) expression))
+          (current-docexpr #f))))
+    
+    (debug (stack->list (docexprs)))
     
   #+END_SRC
 
