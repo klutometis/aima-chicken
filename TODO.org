@@ -30,9 +30,11 @@
          srfi-69
          stack)
     
+    ;;; If we encounter a symbol, by the way, should give it back
+    ;;; verbatim.
     (set-read-syntax! #\@ (lambda (in) (read in) (values)))
     
-    @("top-level-docs")
+    @(heading "The baz of quux")
     
     (define (foo bar)
       @("Foo a bar."
@@ -158,6 +160,98 @@
 
   If we take Moritz Heidkamp's suggestion, incidentally, and use a
   =doc= macro instead of the =@= reader-macro . . . lost my thought.
+
+  #+BEGIN_SRC tex :tangle doc.tex
+    \documentclass{article}
+    \usepackage{fontspec}
+    \usepackage{minted}
+    %% borland, vs, tango
+    \usemintedstyle{borland}
+    \begin{document}
+    \tableofcontents
+    \section[foo---Foo a bar.]{foo}
+    \begin{description}
+      \item[foo bar $\to$ baz]
+        \begin{minted}{scheme}
+    (with-input-from-file "doc.scm"
+      (lambda ()
+        (do ((expression (read) (read)))
+            ((eof-object? expression))
+          (if (current-docexpr)
+              (docexpr-expression-set! (stack-peek (docexprs)) expression))
+          (current-docexpr #f))))
+        \end{minted}
+    \end{description}
+    %% These can't go beyond the end of the page; no multi-page floats.
+    \begin{listing}[H]
+      \begin{minted}{scheme}
+    (with-input-from-file "doc.scm"
+      (lambda ()
+        (do ((expression (read) (read)))
+            ((eof-object? expression))
+          (if (current-docexpr)
+              (docexpr-expression-set! (stack-peek (docexprs)) expression))
+          (current-docexpr #f))))
+      \end{minted}
+      \caption{Fürwahr?}
+    \end{listing}
+    \end{document}
+    
+  #+END_SRC
+
+  Let's model the latex style after SRFIs; take [[http://srfi.schemers.org/srfi-1/srfi-1.html][SRFI-1]], for example:
+  it has an abstract, rationale, &c. Can we just provide e.g. sections
+  and arbitrary blocks of latex-formatted string? Sure. Or, how about
+  =@(text ...)= blocks? How do we document such things in the
+  self-same system? We can't!
+
+  Do be able to do something like =cons* elt_1 elt_2 ...= or
+  =make-list n [fill]= we're going to have to parse the parameter
+  list; can we fake it, somehow? Also, there's a mapping to the type:
+  =cons* elt_1 elt_2 ... -> object=.
+
+  Should we formalize examples á la the following?
+
+  #+BEGIN_EXAMPLE
+    (cons 'a '())        => (a)
+    (cons '(a) '(b c d)) => ((a) b c d)
+    (cons "a" '(b c))    => ("a" b c)
+    (cons 'a 3)          => (a . 3)
+    (cons '(a b) 'c)     => ((a b) . c)
+  #+END_EXAMPLE
+
+  According to [[http://srfi.schemers.org/srfi-69/srfi-69.html][srfi-69]], =undefined= is the result of void; srfi-69
+  also uses legitimate arrows. It also prefixes things with
+  ``Procedure:''; can we do the same for parameters, macros, scalars?
+
+  This is an interesting artifact:
+
+  #+BEGIN_QUOTE
+  Procedure: alist->hash-table alist [ equal? [ hash [ args … ]]] → hash-table
+  #+END_QUOTE
+
+  Procedure name is in roman; args are in italics; witness the nested
+  brackets. Examples done over a math-array would be cool: aligned
+  over the assignment operator.
+
+  Others, like [[http://srfi.schemers.org/srfi-11/srfi-11.html][srfi-11]], specify procedures with angle-bracket-wrapped
+  parameters:
+
+  #+BEGIN_EXAMPLE
+    (LET-VALUES ((<formals> <expression>) ...) <body>)
+  #+END_EXAMPLE
+
+  See [[http://srfi.schemers.org/srfi-13/srfi-13.html][srfi-13]]: yeah, let's go Olin Shivers style. Formal semantics,
+  syntax, &c.? Not for now.
+
+  #+BEGIN_SRC scheme
+    (define (harro freunds)
+      @("Say `harro' to freunds."
+        (example (harro 'wirklich) "yes")
+        (example (harro 'freunds) "jein")))
+  #+END_SRC
+
+  Special support for abstracts? See [[http://tex.stackexchange.com/questions/55922/name-a-section-in-latex-toc-add-subtitle-to-contentsline][subtitles in TOC]].
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
