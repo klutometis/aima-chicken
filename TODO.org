@@ -26,6 +26,7 @@
   #+BEGIN_SRC scheme :tangle doc.scm
     (use debug
          lolevel
+         matchable
          srfi-1
          srfi-69
          stack)
@@ -34,13 +35,18 @@
     ;;; verbatim.
     (set-read-syntax! #\@ (lambda (in) (read in) (values)))
     
+    @(title "Foo a bar in fixnum days.")
+    @(author "Harro Freunds")
+    @(email "harro@freunds.com")
     @(heading "The baz of quux")
     
-    (define (foo bar)
+    (define (foo bar #!optional baz #!rest quux)
       @("Foo a bar."
         "An optional and more thorough explanation involving fooing bars;
     what this really entails; pre- or post-conditions; &c."
         (bar "The bar to be foo'd")
+        (baz "Some optional baz")
+        (quux "The rest")
         ;; Can't have a parameter named `return', though; should use
         ;; `@return'; or `@<keyword>' in general for keywords?
         ;; `<keywords>:' such as: `return:', `rest:'. `markup: {latex,
@@ -50,6 +56,14 @@
     
     (debug (foo 2))
     
+    (define all-your-base
+      @("Your base belong thither; don't fight it.")
+      'belong-thither)
+    
+    (define (nullary-procedure)
+      @("Nullary procedures take no parameters.")
+      2 2 3 3)
+    
     (define current-docexpr
       @("Enables communication with the parsing @-reader")
       (make-parameter #f))
@@ -58,12 +72,23 @@
       (parameterize ((current-doctable (make-hash-table)))
         (thunk)))
     
+    (define test-case-lambda
+      @("Just testing case-lambda")
+      (case-lambda
+       (() 2)
+       ((a) 3)
+       ((a b) 4)
+       ((a b . c) 5)))
+    
     (define docexprs (make-parameter (make-stack)))
+    
+    (define-record null-expression)
+    (define null-expression (make-null-expression))
     
     (set-read-syntax! #\@
       (lambda (in)
         (current-docexpr (read in))
-        (stack-push! (docexprs) (make-docexpr (current-docexpr) #f))
+        (stack-push! (docexprs) (make-docexpr (current-docexpr) null-expression))
         (values)))
     
     (define-record docexpr
@@ -82,7 +107,72 @@
               (docexpr-expression-set! (stack-peek (docexprs)) expression))
           (current-docexpr #f))))
     
-    (debug (stack->list (docexprs)))
+    ;;; TODO: parameter, syntax, case-lambda?
+    (define-record directive
+      name
+      parameters)
+    
+    (define-record-printer directive
+      (lambda (record out)
+        (write (record->vector record) out)))
+    
+    (define-record procedure
+      name
+      formals)
+    
+    (define-record-printer procedure
+      (lambda (record out)
+        (write (record->vector record) out)))
+    
+    (define-record scalar
+      name)
+    
+    (define-record-printer scalar
+      (lambda (record out)
+        (write (record->vector record) out)))
+    
+    (define-record parameter
+      name)
+    
+    (define-record-printer parameter
+      (lambda (record out)
+        (write (record->vector record) out)))
+    
+    (define (parse-directive doc)
+      (make-directive (car doc) (cdr doc)))
+    
+    (define (parse-procedure name formals doc)
+      (make-procedure name formals))
+    
+    (define (parse-scalar name)
+      (make-scalar name))
+    
+    (define (parse-parameter name)
+      (make-parameter name))
+    
+    (define (parse-case-lambda name)
+      (make-procedure name #f))
+    
+    (define (parse-docexpr docexpr)
+      (match (docexpr-expression docexpr)
+        ((? null-expression?)
+         (parse-directive (docexpr-doc docexpr)))
+        (('define (procedure . formals) . body)
+         (parse-procedure procedure formals (docexpr-doc docexpr)))
+        (('define parameter ('make-parameter init . converter))
+         (parse-parameter parameter))
+        (('define procedure ('case-lambda ((_) _) ...))
+         (parse-case-lambda procedure))
+        (('define scalar . body)
+         (parse-scalar scalar))
+        (_ 'unknown)))
+    
+    (debug
+     (stack->list
+      (do ((parsed-docexprs (make-stack))
+           (docexpr (stack-pop! (docexprs)) (stack-pop! (docexprs))))
+          ((stack-empty? (docexprs)) parsed-docexprs)
+        (stack-push! parsed-docexprs (parse-docexpr docexpr)))))
     
   #+END_SRC
 
