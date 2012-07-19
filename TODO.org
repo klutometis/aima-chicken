@@ -447,6 +447,7 @@
 ** TODO Forms that are unrecognizable.
    Macros, let-over-lambda; let's add some mechanism to override the
    parser.
+** TODO =parse-docexprs= should be extensible.
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
