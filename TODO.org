@@ -138,6 +138,14 @@
       (lambda (record out)
         (write (record->vector record) out)))
     
+    (define-record case-lambda
+      name
+      formals+)
+    
+    (define-record-printer case-lambda
+      (lambda (record out)
+        (write (record->vector record) out)))
+    
     (define (parse-directive doc)
       (make-directive (car doc) (cdr doc)))
     
@@ -150,8 +158,8 @@
     (define (parse-parameter name)
       (make-parameter name))
     
-    (define (parse-case-lambda name)
-      (make-procedure name #f))
+    (define (parse-case-lambda name formals+)
+      (make-case-lambda name formals+))
     
     (define (parse-docexpr docexpr)
       (match (docexpr-expression docexpr)
@@ -161,8 +169,8 @@
          (parse-procedure procedure formals (docexpr-doc docexpr)))
         (('define parameter ('make-parameter init . converter))
          (parse-parameter parameter))
-        (('define procedure ('case-lambda . _))
-         (parse-case-lambda procedure))
+        (('define procedure ('case-lambda (formals . body) ...))
+         (parse-case-lambda procedure formals))
         (('define scalar . body)
          (parse-scalar scalar))
         (_ 'unknown)))
