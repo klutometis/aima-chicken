@@ -392,6 +392,9 @@
 
    Or can we simply have unified parameter-docs with optional
    defaults?
+** TODO Syntax
+   Expand the syntax, then parse it; along the way, figure out what
+   the fuck it is when expanded.
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
