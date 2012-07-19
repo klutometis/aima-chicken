@@ -159,6 +159,13 @@
       (lambda (record out)
         (write (record->vector record) out)))
     
+    (define-record syntax
+      name)
+    
+    (define-record-printer syntax
+      (lambda (record out)
+        (write (record->vector record) out)))
+    
     (define (parse-directive doc)
       (make-directive (car doc) (cdr doc)))
     
@@ -173,6 +180,9 @@
     
     (define (parse-case-lambda name formals+)
       (make-case-lambda name formals+))
+    
+    (define (parse-syntax keyword)
+      (make-syntax keyword))
     
     (define (parse-docexpr docexpr)
       (match (docexpr-expression docexpr)
@@ -189,7 +199,7 @@
         (('define scalar . body)
          (parse-scalar scalar))
         (('define-syntax keyword . _)
-         'syntax)
+         (parse-syntax keyword))
         (_ 'unknown)))
     
     ;; (debug (stack->list (docexprs)))
