@@ -378,6 +378,9 @@
   =listoflistings=. Multipage listings are awkward, though: see [[http://tex.stackexchange.com/questions/12428/code-spanning-over-two-pages-with-minted-inside-listing-with-caption][this]],
   where they recommend using the =caption= package. Also [[http://tex.stackexchange.com/questions/7210/label-and-caption-without-float][this]], which
   is a more generic solution.
+** TODO =case-lambda=
+   We might have to have separate =docexprs= for every arm of the
+   case-lambda: ouch.
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
