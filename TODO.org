@@ -64,6 +64,10 @@
       @("Nullary procedures take no parameters.")
       2 2 3 3)
     
+    (define nullary-lambda
+      @("Nullary procedures take no parameters.")
+      (lambda () 2 2 3 3))
+    
     (define current-docexpr
       @("Enables communication with the parsing @-reader")
       (make-parameter #f))
