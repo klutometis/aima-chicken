@@ -389,6 +389,9 @@
 ** TODO =case-lambda=
    We might have to have separate =docexprs= for every arm of the
    case-lambda: ouch.
+
+   Or can we simply have unified parameter-docs with optional
+   defaults?
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
