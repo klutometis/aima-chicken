@@ -162,7 +162,7 @@
     (define (parse-directive doc)
       (make-directive (car doc) (cdr doc)))
     
-    (define (parse-procedure name formals doc)
+    (define (parse-procedure name formals)
       (make-procedure name formals))
     
     (define (parse-scalar name)
