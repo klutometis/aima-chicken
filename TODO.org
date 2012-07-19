@@ -84,6 +84,15 @@
        ((a b) 4)
        ((a b . c) 5)))
     
+     (define-syntax debug
+       @("Testing the syntax")
+       (syntax-rules ()
+         ((_ x ...)
+          (with-output-to-port
+              (current-error-port)
+            (lambda ()
+              (pp `((x ,x) ...)))))))
+    
     (define docexprs (make-parameter (make-stack)))
     
     (define-record null-expression)
