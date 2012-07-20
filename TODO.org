@@ -292,6 +292,7 @@
     \documentclass{article}
     %% \usepackage{fullpage}
     \usepackage{fontspec}
+    \usepackage{amsmath}
     \usepackage{minted}
     %% borland, vs, tango
     \usemintedstyle{borland}
