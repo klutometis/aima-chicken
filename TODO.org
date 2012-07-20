@@ -347,7 +347,7 @@
     \section{\texttt{test-case-lambda}}
     \begin{description}
     \item[Procedure] 
-      \begin{tabular}{lcl}
+      \begin{tabular}[t]{lcl}
           \texttt{(test-case-lambda)} & $\to$ & \texttt{baz} \\
           \texttt{(test-case-lambda \emph{a})} & $\to$ & \texttt{baz} \\
           \texttt{(test-case-lambda \emph{a b})} & $\to$ & \texttt{baz} \\
