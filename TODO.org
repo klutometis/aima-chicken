@@ -481,6 +481,9 @@
 ** TODO Order them differently than they appear in the source code?
    Alphabetically, like R; or: according to conceptual groups
    (preferable)?
+** TODO There's a disparity between what characters TeX and Scheme allow.
+   This may bite us in things like labels; certainly, some escaping
+   will have to take place.
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
