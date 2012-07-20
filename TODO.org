@@ -478,6 +478,9 @@
    parser.
 ** TODO =parse-docexprs= should be extensible.
 ** TODO Refer to other expressions in the same document with e.g. =\ref{foo}=.
+** TODO Order them differently than they appear in the source code?
+   Alphabetically, like R; or: according to conceptual groups
+   (preferable)?
 * TODO Allow specifying agent programs for graph agents.
 * TODO Disguise hash-table operations in graph-world.
 * TODO Need to distinguish betwee world and graph-world in vacuum.
