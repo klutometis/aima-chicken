@@ -303,7 +303,7 @@
       citecolor=blue,
       urlcolor=blue]{hyperref}
     \usepackage{caption}
-    \DeclareCaptionType{source}[Listing][List of listings]
+    \DeclareCaptionType{source}[Source][List of sources]
     \renewenvironment{source}{}{}
     \usepackage{capt-of}
     \title{Foo a bar in fixnum days.}
