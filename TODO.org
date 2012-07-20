@@ -316,8 +316,14 @@
     %% \listofsources
     \section[\texttt{foo}---Foo a bar.]{\texttt{foo}}
     \begin{description}
-      \item[Procedure] \texttt{foo bar $\to$ baz}
-      \item[Source] See listing \ref{foo}.
+      \item[Procedure] \texttt{(foo \emph{bar}) $\to$ baz}
+      \item[Description] An optional and more thorough explanation
+        involving fooing bars; what this really entails; pre- or
+        post-conditions; \&c.
+    
+        An optional and more thorough explanation
+        involving fooing bars; what this really entails; pre- or
+        post-conditions; \&c. \ref{foo}
     \end{description}
     \section{Listings}
     \subsection{\texttt{foo}}
