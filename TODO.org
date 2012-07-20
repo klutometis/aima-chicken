@@ -324,14 +324,11 @@
     \tableofcontents
     \section{\texttt{foo}}
     \begin{description}
-      \item[Description] An optional and more thorough explanation
-        involving fooing bars; what this really entails; pre- or
-        post-conditions; \&c.
-    
-        An optional and more thorough explanation
-        involving fooing bars; what this really entails; pre- or
-        post-conditions; \&c. \ref{foo}
       \item[Procedure] \texttt{(foo \emph{bar \#!optional baz \#!rest quux}) $\to$ A foo'd bar}
+      \item[Description] Foo a bar.
+    
+        An optional and more thorough explanation involving fooing bars;
+        what this really entails; pre- or post-conditions; \&c.
     \end{description}
     \begin{source}
       \begin{minted}[frame=leftline]{scheme}
@@ -354,7 +351,10 @@
           \texttt{(test-case-lambda \emph{a b})} & $\to$ & \texttt{baz} \\
           \texttt{(test-case-lambda \emph{a b . c})} & $\to$ & \texttt{baz}
       \end{tabular}
+    \item[Description] Test case-lambda.
     
+      We're mapping arbitrary arguments to arbitrary integers: we have
+      medadic, monadic, dyadic and polyadic formals.
     \end{description}
     \end{document}
     
