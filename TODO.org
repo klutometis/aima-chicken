@@ -329,6 +329,12 @@
     
         An optional and more thorough explanation involving fooing bars;
         what this really entails; pre- or post-conditions; \&c.
+      \item[Parameters]
+        \begin{tabularx}{\textwidth}[t]{lX}
+          \texttt{bar} & The bar to be foo'd \\
+          \texttt{baz} & Some optional baz \\
+          \texttt{quux} & The rest
+        \end{tabularx}
     \end{description}
     \begin{source}
       \begin{minted}[frame=leftline]{scheme}
@@ -355,6 +361,12 @@
     
       We're mapping arbitrary arguments to arbitrary integers: we have
       medadic, monadic, dyadic and polyadic formals.
+    \item[Parameters]
+      \begin{tabularx}{\linewidth}[t]{lX}
+        a & An argument \\
+        b & Some other argument \\
+        c & The rest arguments
+      \end{tabularx}
     \end{description}
     \end{document}
     
