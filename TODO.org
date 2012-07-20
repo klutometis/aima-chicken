@@ -337,14 +337,10 @@
         \end{tabularx}
     \end{description}
     \begin{source}
-      \begin{minted}[frame=leftline]{scheme}
-    (with-input-from-file "doc.scm"
-      (lambda ()
-        (do ((expression (read) (read)))
-            ((eof-object? expression))
-          (if (current-docexpr)
-              (docexpr-expression-set! (stack-peek (docexprs)) expression))
-          (current-docexpr #f))))
+      \begin{minted}[linenos]{scheme}
+    (define (foo bar #!optional baz #!rest quux)
+      (if baz (baz quux))
+      bar)
       \end{minted}
       \label{foo}
     \end{source}
@@ -368,6 +364,17 @@
         c & The rest arguments
       \end{tabularx}
     \end{description}
+    \begin{source}
+    \begin{minted}[linenos]{scheme}
+    (define test-case-lambda
+      (case-lambda
+       (() 2)
+       ((a) 3)
+       ((a b) 4)
+       ((a b . c) 5)))
+    \end{minted}
+    \label{test-case-lambda}
+    \end{source}
     \end{document}
     
   #+END_SRC
