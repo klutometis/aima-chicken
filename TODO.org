@@ -339,6 +339,33 @@
       \end{minted}
       \label{foo}
     \end{source}
+    \section[\texttt{test-case-lambda}---Just testing case-lambda]{\texttt{test-case-lambda}}
+    \begin{description}
+    \item[Procedure] 
+      \[\left.\begin{tabular}{l}
+          \texttt{(test-case-lambda)} \\
+          \texttt{(test-case-lambda \emph{a})}
+      \end{tabular}\right\}\to baz\]
+    \item[Procedure] 
+      \begin{tabular}{lcl}
+          \texttt{(test-case-lambda)} & $\to$ & \texttt{baz} \\
+          \texttt{(test-case-lambda \emph{a})} & $\to$ & \texttt{baz} \\
+          \texttt{(test-case-lambda \emph{a b})} & $\to$ & \texttt{baz} \\
+          \texttt{(test-case-lambda \emph{a b . c})} & $\to$ & \texttt{baz}
+      \end{tabular}
+    \item[Procedure] 
+      \begin{tabular}{l}
+          \texttt{(test-case-lambda)} \\
+          \texttt{(test-case-lambda \emph{a})} \\
+          \texttt{(test-case-lambda \emph{a b})} \\
+          \texttt{(test-case-lambda \emph{a b . c})}
+      \end{tabular} $\to$ \texttt{baz}
+    \item[Procedure] \texttt{(test-case-lambda)} $\to$ \texttt{baz}
+    \item[Procedure] \texttt{(test-case-lambda \emph{a})} $\to$ \texttt{baz}
+    \item[Procedure] \texttt{(test-case-lambda \emph{a b})} $\to$ \texttt{baz}
+    \item[Procedure] \texttt{(test-case-lambda \emph{a b . c})} $\to$ \texttt{baz}
+    
+    \end{description}
     %% \section{Listings}
     %% \subsection{\texttt{foo}}
     %% These can't go beyond the end of the page; no multi-page floats.
