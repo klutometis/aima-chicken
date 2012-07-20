@@ -322,7 +322,7 @@
     \begin{document}
     \maketitle
     \tableofcontents
-    \section[\texttt{foo}---Foo a bar.]{\texttt{foo}}
+    \section{\texttt{foo}}
     \begin{description}
       \item[Procedure] \texttt{(foo \emph{bar}) $\to$ baz}
       \item[Description] An optional and more thorough explanation
@@ -345,7 +345,7 @@
       \end{minted}
       \label{foo}
     \end{source}
-    \section[\texttt{test-case-lambda}---Just testing case-lambda]{\texttt{test-case-lambda}}
+    \section{\texttt{test-case-lambda}}
     \begin{description}
     \item[Procedure] 
       \begin{tabular}{lcl}
