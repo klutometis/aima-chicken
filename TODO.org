@@ -325,11 +325,10 @@
         involving fooing bars; what this really entails; pre- or
         post-conditions; \&c. \ref{foo}
     \end{description}
-    \section{Listings}
-    \subsection{\texttt{foo}}
     \begin{source}
       %% \inputminted[label=foo,frame=leftline]{scheme}{doc.scm}
-      \begin{minted}{scheme}
+      %% \captionof{source}{\texttt{foo}\label{foo}}
+      \begin{minted}[frame=leftline]{scheme}
     (with-input-from-file "doc.scm"
       (lambda ()
         (do ((expression (read) (read)))
@@ -338,8 +337,10 @@
               (docexpr-expression-set! (stack-peek (docexprs)) expression))
           (current-docexpr #f))))
       \end{minted}
-      \captionof{source}{\texttt{foo}\label{foo}}
+      \label{foo}
     \end{source}
+    %% \section{Listings}
+    %% \subsection{\texttt{foo}}
     %% These can't go beyond the end of the page; no multi-page floats.
     %% \begin{listing}[H]
     %%   \begin{minted}{scheme}
