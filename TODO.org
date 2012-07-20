@@ -290,7 +290,7 @@
 
   #+BEGIN_SRC tex :tangle doc.tex
     \documentclass{article}
-    \usepackage{fullpage}
+    %% \usepackage{fullpage}
     \usepackage{fontspec}
     \usepackage{minted}
     %% borland, vs, tango
