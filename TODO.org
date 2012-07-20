@@ -300,11 +300,9 @@
 
   #+BEGIN_SRC tex :tangle doc.tex
     \documentclass{article}
-    %% \usepackage{fullpage}
     \usepackage{fontspec}
     \usepackage{amsmath}
     \usepackage{minted}
-    %% borland, vs, tango
     \usemintedstyle{borland}
     \usepackage[xetex,
       pdfborder=0 0 0,
@@ -323,7 +321,6 @@
     \begin{document}
     \maketitle
     \tableofcontents
-    %% \listofsources
     \section[\texttt{foo}---Foo a bar.]{\texttt{foo}}
     \begin{description}
       \item[Procedure] \texttt{(foo \emph{bar}) $\to$ baz}
@@ -336,8 +333,6 @@
         post-conditions; \&c. \ref{foo}
     \end{description}
     \begin{source}
-      %% \inputminted[label=foo,frame=leftline]{scheme}{doc.scm}
-      %% \captionof{source}{\texttt{foo}\label{foo}}
       \begin{minted}[frame=leftline]{scheme}
     (with-input-from-file "doc.scm"
       (lambda ()
@@ -360,21 +355,6 @@
       \end{tabular}
     
     \end{description}
-    %% \section{Listings}
-    %% \subsection{\texttt{foo}}
-    %% These can't go beyond the end of the page; no multi-page floats.
-    %% \begin{listing}[H]
-    %%   \begin{minted}{scheme}
-    %% (with-input-from-file "doc.scm"
-    %%   (lambda ()
-    %%     (do ((expression (read) (read)))
-    %%         ((eof-object? expression))
-    %%       (if (current-docexpr)
-    %%           (docexpr-expression-set! (stack-peek (docexprs)) expression))
-    %%       (current-docexpr #f))))
-    %%   \end{minted}
-    %%   \caption{Fürwahr?}
-    %% \end{listing}
     \end{document}
     
   #+END_SRC
