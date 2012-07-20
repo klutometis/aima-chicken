@@ -76,8 +76,18 @@
       (parameterize ((current-doctable (make-hash-table)))
         (thunk)))
     
+    ;;; Without an explicit return or description keyword (or other),
+    ;;; can't distinguish the last description from the return value
+    ;;; (which is optional, by the way).
+    ;;;
+    ;;; Some other structure for short and long descriptions: a list?
     (define test-case-lambda
-      @("Just testing case-lambda")
+      @("Just testing case-lambda"
+        "We're mapping arbitrary arguments to arbitrary integers."
+        (a "An argument")
+        (b "Some other argument")
+        (c "The rest arguments")
+        "An integer")
       (case-lambda
        (() 2)
        ((a) 3)
