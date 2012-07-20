@@ -302,6 +302,7 @@
     \documentclass{article}
     \usepackage{fontspec}
     \usepackage{amsmath}
+    \usepackage{tabularx}
     \usepackage{minted}
     \usemintedstyle{borland}
     \usepackage[xetex,
