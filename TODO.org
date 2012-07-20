@@ -313,7 +313,7 @@
     \begin{document}
     \maketitle
     \tableofcontents
-    \listofsources
+    %% \listofsources
     \section[\texttt{foo}---Foo a bar.]{\texttt{foo}}
     \begin{description}
       \item[Procedure] \texttt{foo bar $\to$ baz}
