@@ -565,6 +565,10 @@
 
    Or can we simply have unified parameter-docs with optional
    defaults?
+
+   Some support for default parameters; also, we're going to want to
+   reference each form in the description, aren't we? Or does some
+   notion of default parameter apply?
 ** TODO Syntax
    Expand the syntax, then parse it; along the way, figure out what
    the fuck it is when expanded.
