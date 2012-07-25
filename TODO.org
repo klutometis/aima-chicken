@@ -317,6 +317,10 @@
     ;;; If I go with the dispatch-on-type, though, I have to come up with
     ;;; types for e.g. headings and subheading; which is a pain in the
     ;;; ass. Oh, for pure lambdas!
+    (define-record-and-printer document
+      data
+      docexprs)
+    
     
   #+END_SRC
 
