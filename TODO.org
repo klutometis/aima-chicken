@@ -201,12 +201,6 @@
     
     ;; (debug (stack->list (docexprs)))
     
-    (debug
-     (stack->list
-      (do ((parsed-docexprs (make-stack))
-           (docexpr (stack-pop! (docexprs)) (stack-pop! (docexprs))))
-          ((stack-empty? (docexprs)) parsed-docexprs)
-        (stack-push! parsed-docexprs (parse-docexpr docexpr)))))
     (define tex-preamble
       "\\documentclass{article}
     \\usepackage{fontspec}
