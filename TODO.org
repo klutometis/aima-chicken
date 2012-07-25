@@ -276,6 +276,47 @@
                     (->string value))))
          substitutions))))
     
+    ;;; Somehow, we have to process these preamble-directives before we
+    ;;; spit the document out; could it be that we have to keep the thing
+    ;;; in memory before we spit it out?
+    ;;;
+    ;;; The document has some header fields and a list of docexprs: thus,
+    ;;; we can process the docexprs in order, pushing to the section
+    ;;; stack; &c.
+    ;;;
+    ;;; Should we say, more formally, that directives are things which
+    ;;; work on the document; and have first-class support for things like
+    ;;; sections?
+    ;;;
+    ;;; Sections, &c. could work, I suppose, by pushing something unto the
+    ;;; docexprs stack.
+    ;;;
+    ;;; It's a shame, though, that the document-fields are fixed; and that
+    ;;; directives don't have the ability to put arbitrary data in there.
+    ;;; Why not add a hash-table called data?
+    ;;;
+    ;;; The idea is that the renderers check for some kind of field in the
+    ;;; hash-table, supplying a reasonable default.
+    ;;;
+    ;;; It's a shame, though, that we have to special case so-called
+    ;;; directives; can every parsed docexpr work on the document?
+    ;;;
+    ;;; Non-directive docexprs would have to push themselves on the
+    ;;; docexpr-stack, though.
+    ;;;
+    ;;; Why not push every docexpr on the stack and convert the directives
+    ;;; into no-ops? Bingo.
+    ;;;
+    ;;; docexprs are lambdas: at construction time, they take a document they
+    ;;; can modify. At invocation time, they write something.
+    ;;;
+    ;;; If we were to support more than latex, though, how would they know
+    ;;; to dispatch? Do we need an e.g. write-docexpr-as-{html,latex},
+    ;;; such that we need to maintain the types?
+    ;;;
+    ;;; If I go with the dispatch-on-type, though, I have to come up with
+    ;;; types for e.g. headings and subheading; which is a pain in the
+    ;;; ass. Oh, for pure lambdas!
     
   #+END_SRC
 
