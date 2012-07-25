@@ -207,6 +207,70 @@
            (docexpr (stack-pop! (docexprs)) (stack-pop! (docexprs))))
           ((stack-empty? (docexprs)) parsed-docexprs)
         (stack-push! parsed-docexprs (parse-docexpr docexpr)))))
+    (define tex-preamble
+      "\\documentclass{article}
+    \\usepackage{fontspec}
+    \\usepackage{amsmath}
+    \\usepackage{tabularx}
+    \\usepackage{minted}
+    \\usemintedstyle{borland}
+    \\usepackage[xetex,
+      pdfborder=0 0 0,
+      colorlinks,
+      linkcolor=blue,
+      citecolor=blue,
+      urlcolor=blue]{hyperref}
+    \\usepackage{caption}
+    \\DeclareCaptionType{source}[Source][List of sources]
+    \\renewenvironment{source}{}{}
+    \\usepackage{capt-of}
+    \\title{@TITLE@}
+    \\author{@AUTHOR@
+      \\texttt{<}\\href{mailto:@EMAIL@}
+           {\\nolinkurl{@EMAIL@}}\\texttt{>}}
+    \\begin{document}
+    \\maketitle
+    \\tableofcontents")
+    
+    (define tex-description
+      "\\item[Description] @DESCRIPTION@")
+    
+    (define tex-arguments
+      "\\emph{@ARGUMENTS@}")
+    
+    (define tex-procedure
+      "\\item[Procedure] \\texttt{(@PROCEDURE@@ARGUMENTS@) $\\to$ @RETURN@}")
+    
+    (define tex-parameter
+      "\\texttt{@PARAMETER@} & @DEFINITION@")
+    
+    (define tex-parameters
+      "\\item[Parameters]
+        \\begin{tabularx}{\\textwidth}[t]{lX}
+          @PARAMETERS@
+        \\end{tabularx}")
+    
+    (define tex-footer
+      "\\end{document}")
+    
+    (define tex-source
+      "\\begin{source}
+      \\begin{minted}[linenos]{scheme}
+    @SOURCE@
+      \\end{minted}
+      \\label{foo}
+    \\end{source}
+    ")
+    
+    (define tex-case-lambda-procedure
+      "\\texttt{(@PROCEDURE@@ARGUMENTS@)} & $\\to$ & \\texttt{baz}")
+    
+    (define tex-case-lambda
+      "\\item[Procedure] 
+      \\begin{tabular}[t]{lcl}
+    @PROCEDURES@
+      \\end{tabular}")
+    
     
   #+END_SRC
 
