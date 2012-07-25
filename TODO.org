@@ -25,11 +25,16 @@
 
   #+BEGIN_SRC scheme :tangle doc.scm
     (use debug
+         define-record-and-printer
          lolevel
          matchable
+         regex
          srfi-1
+         srfi-13
          srfi-69
          stack)
+    
+    (import-for-syntax matchable)
     
     ;;; If we encounter a symbol, by the way, should give it back
     ;;; verbatim.
@@ -105,7 +110,7 @@
     
     (define docexprs (make-parameter (make-stack)))
     
-    (define-record null-expression)
+    (define-record-and-printer null-expression)
     (define null-expression (make-null-expression))
     
     (set-read-syntax! #\@
@@ -114,13 +119,9 @@
         (stack-push! (docexprs) (make-docexpr (current-docexpr) null-expression))
         (values)))
     
-    (define-record docexpr
+    (define-record-and-printer docexpr
       doc
       expression)
-    
-    (define-record-printer docexpr
-      (lambda (docexpr out)
-        (write (record->vector docexpr) out)))
     
     (with-input-from-file "doc.scm"
       (lambda ()
@@ -131,50 +132,26 @@
           (current-docexpr #f))))
     
     ;;; TODO: parameter, syntax, case-lambda?
-    (define-record directive
+    (define-record-and-printer directive
       name
       parameters)
     
-    (define-record-printer directive
-      (lambda (record out)
-        (write (record->vector record) out)))
-    
-    (define-record procedure
+    (define-record-and-printer procedure
       name
       formals)
     
-    (define-record-printer procedure
-      (lambda (record out)
-        (write (record->vector record) out)))
-    
-    (define-record scalar
+    (define-record-and-printer scalar
       name)
     
-    (define-record-printer scalar
-      (lambda (record out)
-        (write (record->vector record) out)))
-    
-    (define-record parameter
+    (define-record-and-printer parameter
       name)
     
-    (define-record-printer parameter
-      (lambda (record out)
-        (write (record->vector record) out)))
-    
-    (define-record case-lambda
+    (define-record-and-printer case-lambda
       name
       formals+)
     
-    (define-record-printer case-lambda
-      (lambda (record out)
-        (write (record->vector record) out)))
-    
-    (define-record syntax
+    (define-record-and-printer syntax
       name)
-    
-    (define-record-printer syntax
-      (lambda (record out)
-        (write (record->vector record) out)))
     
     (define (parse-directive doc)
       (make-directive (car doc) (cdr doc)))
