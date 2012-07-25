@@ -57,10 +57,8 @@
         ;; `@return'; or `@<keyword>' in general for keywords?
         ;; `<keywords>:' such as: `return:', `rest:'. `markup: {latex,
         ;; html, groff, markdown, docbook}' is interesting.
-        "A foo'd bar")
+        (@to "A foo'd bar"))
       bar)
-    
-    (debug (foo 2))
     
     (define all-your-base
       @("Your base belong thither; don't fight it.")
@@ -93,7 +91,7 @@
         (a "An argument")
         (b "Some other argument")
         (c "The rest arguments")
-        "An integer")
+        (@to "An integer"))
       (case-lambda
        (() 2)
        ((a) 3)
