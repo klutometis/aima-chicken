@@ -24,7 +24,8 @@
   of:
 
   #+BEGIN_SRC scheme :tangle doc.scm
-    (use debug
+    (use alist-lib
+         debug
          define-record-and-printer
          lolevel
          matchable
@@ -115,166 +116,31 @@
     
     (set-read-syntax! #\@
       (lambda (in)
-        (current-docexpr (read in))
-        (stack-push! (docexprs) (make-docexpr (current-docexpr) null-expression))
-        (values)))
+        (let ((expression (read in)))
+          (if (symbol? expression)
+              expression
+              (begin
+                (current-docexpr expression)
+                (stack-push! (docexprs)
+                             (make-docexpr (current-docexpr)
+                                           null-expression))
+                (values))))))
     
     (define-record-and-printer docexpr
       doc
       expression)
     
-    (with-input-from-file "doc.scm"
-      (lambda ()
-        (do ((expression (read) (read)))
-            ((eof-object? expression))
-          (if (current-docexpr)
-              (docexpr-expression-set! (stack-peek (docexprs)) expression))
-          (current-docexpr #f))))
+    (define parse-directive (make-parameter void))
     
-    ;;; TODO: parameter, syntax, case-lambda?
-    (define-record-and-printer directive
-      name
-      parameters)
+    (define parse-procedure (make-parameter void))
     
-    (define-record-and-printer procedure
-      name
-      formals)
+    (define parse-scalar (make-parameter void))
     
-    (define-record-and-printer scalar
-      name)
+    (define parse-parameter (make-parameter void))
     
-    (define-record-and-printer parameter
-      name)
+    (define parse-case-lambda (make-parameter void))
     
-    (define-record-and-printer case-lambda
-      name
-      formals+)
-    
-    (define-record-and-printer syntax
-      name)
-    
-    (define (parse-directive document docexpr)
-      (let ((directive (car docexpr))
-            (arguments (cdr docexpr))
-            (data (document-data document)))
-        (case directive
-          ((email)
-           (hash-table-set! data 'email (car arguments)))
-          ((author)
-           (hash-table-set! data 'author (car arguments)))
-          ((title)
-           (hash-table-set! data 'title (car arguments)))))
-      (make-directive (car docexpr) (cdr docexpr)))
-    
-    (define (parse-procedure name formals)
-      (make-procedure name formals))
-    
-    (define (parse-scalar name)
-      (make-scalar name))
-    
-    (define (parse-parameter name)
-      (make-parameter name))
-    
-    (define (parse-case-lambda name formals+)
-      (make-case-lambda name formals+))
-    
-    (define (parse-syntax keyword)
-      (make-syntax keyword))
-    
-    (define (parse-docexpr document docexpr)
-      (match (docexpr-expression docexpr)
-        ((? null-expression?)
-         (parse-directive (docexpr-doc docexpr)))
-        (('define (procedure . formals) . body)
-         (parse-procedure procedure formals))
-        (('define procedure ('lambda formals . body))
-         (parse-procedure procedure formals))
-        (('define procedure ('case-lambda (formals . body) ...))
-         (parse-case-lambda procedure formals))
-        (('define parameter ('make-parameter init . converter))
-         (parse-parameter parameter))
-        (('define scalar . body)
-         (parse-scalar scalar))
-        (('define-syntax keyword . _)
-         (parse-syntax keyword))
-        (_ 'unknown)))
-    
-    ;; (debug (stack->list (docexprs)))
-    
-    (define tex-preamble
-      "\\documentclass{article}
-    \\usepackage{fontspec}
-    \\usepackage{amsmath}
-    \\usepackage{tabularx}
-    \\usepackage{minted}
-    \\usemintedstyle{borland}
-    \\usepackage[xetex,
-      pdfborder=0 0 0,
-      colorlinks,
-      linkcolor=blue,
-      citecolor=blue,
-      urlcolor=blue]{hyperref}
-    \\usepackage{caption}
-    \\DeclareCaptionType{source}[Source][List of sources]
-    \\renewenvironment{source}{}{}
-    \\usepackage{capt-of}
-    \\title{@TITLE@}
-    \\author{@AUTHOR@
-      \\texttt{<}\\href{mailto:@EMAIL@}
-           {\\nolinkurl{@EMAIL@}}\\texttt{>}}
-    \\begin{document}
-    \\maketitle
-    \\tableofcontents")
-    
-    (define tex-description
-      "\\item[Description] @DESCRIPTION@")
-    
-    (define tex-arguments
-      "\\emph{@ARGUMENTS@}")
-    
-    (define tex-procedure
-      "\\item[Procedure] \\texttt{(@PROCEDURE@@ARGUMENTS@) $\\to$ @RETURN@}")
-    
-    (define tex-parameter
-      "\\texttt{@PARAMETER@} & @DEFINITION@")
-    
-    (define tex-parameters
-      "\\item[Parameters]
-        \\begin{tabularx}{\\textwidth}[t]{lX}
-          @PARAMETERS@
-        \\end{tabularx}")
-    
-    (define tex-footer
-      "\\end{document}")
-    
-    (define tex-source
-      "\\begin{source}
-      \\begin{minted}[linenos]{scheme}
-    @SOURCE@
-      \\end{minted}
-      \\label{foo}
-    \\end{source}
-    ")
-    
-    (define tex-case-lambda-procedure
-      "\\texttt{(@PROCEDURE@@ARGUMENTS@)} & $\\to$ & \\texttt{baz}")
-    
-    (define tex-case-lambda
-      "\\item[Procedure] 
-      \\begin{tabular}[t]{lcl}
-    @PROCEDURES@
-      \\end{tabular}")
-    
-    (define (write-template template substitutions)
-      (display
-       (string-substitute*
-        template
-        (map
-         (match-lambda ((key . value)
-                   (cons
-                    (format "@~a@" (string-upcase (symbol->string key)))
-                    (->string value))))
-         substitutions))))
+    (define parse-syntax (make-parameter void))
     
     ;;; Somehow, we have to process these preamble-directives before we
     ;;; spit the document out; could it be that we have to keep the thing
@@ -321,20 +187,227 @@
       data
       docexprs)
     
-    (define (parse-docexprs docexprs)
-      (let ((document (make-document #f #f #f (make-stack))))
+    (define (parse-docexpr document docexpr)
+      (let ((doc (docexpr-doc docexpr)))
+        (match (docexpr-expression docexpr)
+          ((? null-expression?)
+           ((parse-directive) doc document))
+          (('define (procedure . formals) . body)
+           ((parse-procedure) doc procedure formals))
+          (('define procedure ('lambda formals . body))
+           ((parse-procedure) doc procedure formals))
+          (('define procedure ('case-lambda (formals . body) ...))
+           ((parse-case-lambda) doc procedure formals))
+          (('define parameter ('make-parameter init . converter))
+           ((parse-parameter) doc parameter))
+          (('define scalar . body)
+           ((parse-scalar) doc scalar))
+          (('define-syntax keyword . _)
+           ((parse-syntax) doc keyword))
+          (_ 'unknown))))
+    
+    (define substitute-template
+      (case-lambda
+       ((template key substitution)
+        (substitute-template template `((,key . ,substitution))))
+       ((template substitutions)
+        (string-substitute*
+         template
+         (map
+          (match-lambda ((key . value)
+                    (cons
+                     (format "@~a@" (string-upcase (symbol->string key)))
+                     (->string value))))
+          substitutions))))) 
+    
+    (define (write-template . keys-or-substitutions)
+      (display (apply substitute-template keys-or-substitutions)))
+    
+    (define tex-preamble
+      "\\documentclass{article}
+    \\usepackage{fontspec}
+    \\usepackage{amsmath}
+    \\usepackage{tabularx}
+    \\usepackage{minted}
+    \\usemintedstyle{borland}
+    \\usepackage[xetex,
+      pdfborder=0 0 0,
+      colorlinks,
+      linkcolor=blue,
+      citecolor=blue,
+      urlcolor=blue]{hyperref}
+    \\usepackage{caption}
+    \\DeclareCaptionType{source}[Source][List of sources]
+    \\renewenvironment{source}{}{}
+    \\usepackage{capt-of}
+    \\title{@TITLE@}
+    \\author{@AUTHOR@
+      \\texttt{<}\\href{mailto:@EMAIL@}
+           {\\nolinkurl{@EMAIL@}}\\texttt{>}}
+    \\begin{document}
+    \\maketitle
+    \\tableofcontents")
+    
+    (define tex-description
+      "\\begin{description}
+    @ITEMS@
+    \\end{description}")
+    
+    (define tex-item-description
+      "\\item[Description] @DESCRIPTION@")
+    
+    (define tex-arguments
+      "\\emph{@ARGUMENTS@}")
+    
+    (define tex-procedure
+      "\\item[Procedure] \\texttt{(@PROCEDURE@@ARGUMENTS@) $\\to$ @RETURN@}")
+    
+    (define tex-parameter
+      "\\texttt{@PARAMETER@} & @DEFINITION@")
+    
+    (define tex-parameters
+      "\\item[Parameters]
+        \\begin{tabularx}{\\textwidth}[t]{lX}
+          @PARAMETERS@
+        \\end{tabularx}")
+    
+    (define tex-footer
+      "\\end{document}")
+    
+    (define tex-source
+      "\\begin{source}
+      \\begin{minted}[linenos]{scheme}
+    @SOURCE@
+      \\end{minted}
+      \\label{foo}
+    \\end{source}
+    ")
+    
+    (define tex-case-lambda-procedure
+      "\\texttt{(@PROCEDURE@@FORMALS@)} & $\\to$ & \\texttt{@RETURN@}")
+    
+    (define tex-case-lambda
+      "\\item[Procedure] 
+      \\begin{tabular}[t]{lcl}
+    @PROCEDURES@
+      \\end{tabular}")
+    
+    (define tex-heading
+      "\\section{@TITLE@}")
+    
+    (define tex-subheading
+      "\\section{@TITLE@}")
+    
+    (define (tex-parse-directive doc document)
+      (let ((directive (car doc))
+            (arguments (cdr doc))
+            (data (document-data document)))
+        (case directive
+          ((email)
+           (hash-table-set! data 'email (car arguments))
+           void)
+          ((author)
+           (hash-table-set! data 'author (car arguments))
+           void)
+          ((title)
+           (hash-table-set! data 'title (car arguments))
+           void)
+          ((heading)
+           (lambda ()
+             (hash-table-set! data 'heading-level 1)
+             (write-template
+              tex-heading
+              `((title . ,(car arguments))))))
+          ((subheading)
+           (lambda ()
+             (hash-table-set! data 'heading-level 2)
+             (write-template
+              tex-subheading
+              `((title . ,(car arguments)))))))))
+    
+    (define (tex-parse-procedure doc procedure formals)
+      (let ((descriptions (filter string? doc))
+            (parameters (filter pair? doc)))
+        (let ((return (alist-ref/default parameters
+                                         '@return
+                                         "\\emph{unspecified}")))
+          (lambda ()
+            (let ((procedure
+                   (substitute-template
+                    tex-procedure
+                    `((procedure . ,procedure)
+                      (arguments . ,(string-join (map ->string formals)))
+                      (return . ,return))))
+                  (description
+                   (substitute-template
+                    tex-item-description
+                    'description
+                    (string-join descriptions "\n\n")))
+                  (parameters
+                   (map
+                    (match-lambda
+                        ((parameter definition)
+                         ;; Can we do a check here for stop-parameters
+                         ;; like @return? Cleaner if we do it earlier.
+                         (substitute-template
+                          tex-parameter
+                          `((parameter . ,parameter)
+                            (definition . ,definition)))))
+                    parameters)))
+              (let ((parameters (substitute-template
+                                 tex-parameters
+                                 'parameters
+                                 (string-join parameters "\\\\"))))
+                (write-template
+                 tex-heading
+                 'title
+                 procedure)
+                (write-template
+                 tex-description
+                 'items
+                 (string-join (list procedure description parameters)))))))))
+    
+    (define (tex-parse-scalar doc name)
+      void)
+    
+    (define (tex-parse-parameter doc name)
+      void)
+    
+    (define (tex-parse-case-lambda doc name formals+)
+      void)
+    
+    (define (tex-parse-syntax doc keyword)
+      void)
+    
+    (define (tex-parse-docexpr document docexpr)
+      (parameterize ((parse-directive tex-parse-directive)
+                     (parse-procedure tex-parse-procedure)
+                     (parse-case-lambda tex-parse-case-lambda)
+                     (parse-parameter tex-parse-parameter)
+                     (parse-scalar tex-parse-scalar)
+                     (parse-syntax tex-parse-syntax))
+        (parse-docexpr document docexpr)))
+    
+    (with-input-from-file "doc.scm"
+      (lambda ()
+        (do ((expression (read) (read)))
+            ((eof-object? expression))
+          (if (current-docexpr)
+              (docexpr-expression-set! (stack-peek (docexprs)) expression))
+          (current-docexpr #f))))
+    
+    (define (tex-parse-docexprs docexprs)
+      (let ((document (make-document (make-hash-table) (make-stack))))
         (do ((parsed-docexprs (make-stack))
              (docexpr (stack-pop! docexprs) (stack-pop! docexprs)))
             ((stack-empty? docexprs) parsed-docexprs)
-          (stack-push! parsed-docexprs (parse-docexpr docexpr)))))
+          (stack-push! parsed-docexprs (tex-parse-docexpr document docexpr)))))
     
-    (let ((parsed-docexprs (parse-docexprs (docexprs))))
+    (let ((parsed-docexprs (tex-parse-docexprs (docexprs))))
       (debug (stack->list parsed-docexprs))
       (do ((docexpr (stack-pop! parsed-docexprs) (stack-pop! parsed-docexprs)))
           ((stack-empty? parsed-docexprs))
-        (write-template "Oh my @WOSH@, @WHIGS@."
-                        `((whigs . 2)
-                          (wosh . for-wirklich)))))
+        (docexpr)))
     
   #+END_SRC
 
