@@ -153,8 +153,18 @@
     (define-record-and-printer syntax
       name)
     
-    (define (parse-directive doc)
-      (make-directive (car doc) (cdr doc)))
+    (define (parse-directive document docexpr)
+      (let ((directive (car docexpr))
+            (arguments (cdr docexpr))
+            (data (document-data document)))
+        (case directive
+          ((email)
+           (hash-table-set! data 'email (car arguments)))
+          ((author)
+           (hash-table-set! data 'author (car arguments)))
+          ((title)
+           (hash-table-set! data 'title (car arguments)))))
+      (make-directive (car docexpr) (cdr docexpr)))
     
     (define (parse-procedure name formals)
       (make-procedure name formals))
@@ -171,7 +181,7 @@
     (define (parse-syntax keyword)
       (make-syntax keyword))
     
-    (define (parse-docexpr docexpr)
+    (define (parse-docexpr document docexpr)
       (match (docexpr-expression docexpr)
         ((? null-expression?)
          (parse-directive (docexpr-doc docexpr)))
