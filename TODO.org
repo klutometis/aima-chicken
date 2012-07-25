@@ -126,7 +126,7 @@
     
     (define-record-and-printer docexpr
       doc
-      expression)
+      expr)
     
     (define parse-directive (make-parameter void))
     
@@ -186,22 +186,24 @@
       docexprs)
     
     (define (parse-docexpr document docexpr)
-      (let ((doc (docexpr-doc docexpr)))
-        (match (docexpr-expression docexpr)
+      (let ((doc (docexpr-doc docexpr))
+            (expr (docexpr-expr docexpr))
+            (data (document-data document)))
+        (match expr
           ((? null-expression?)
-           ((parse-directive) doc document))
+           ((parse-directive) doc expr data document))
           (('define (procedure . formals) . body)
-           ((parse-procedure) doc procedure formals))
+           ((parse-procedure) doc expr data procedure formals))
           (('define procedure ('lambda formals . body))
-           ((parse-procedure) doc procedure formals))
+           ((parse-procedure) doc expr data procedure formals))
           (('define procedure ('case-lambda (formals . body) ...))
-           ((parse-case-lambda) doc procedure formals))
+           ((parse-case-lambda) doc expr data procedure formals))
           (('define parameter ('make-parameter init . converter))
-           ((parse-parameter) doc parameter))
+           ((parse-parameter) doc expr data parameter))
           (('define scalar . body)
-           ((parse-scalar) doc scalar))
+           ((parse-scalar) doc expr data scalar))
           (('define-syntax keyword . _)
-           ((parse-syntax) doc keyword))
+           ((parse-syntax) doc expr data keyword))
           (_ 'unknown))))
     
     (define substitute-template
@@ -216,7 +218,8 @@
                     (cons
                      (format "@~a@" (string-upcase (symbol->string key)))
                      (->string value))))
-          substitutions))))) 
+          substitutions)
+         #f)))) 
     
     (define (write-template . keys-or-substitutions)
       (display (apply substitute-template keys-or-substitutions)))
@@ -244,12 +247,16 @@
            {\\nolinkurl{@EMAIL@}}\\texttt{>}}
     \\begin{document}
     \\maketitle
-    \\tableofcontents")
+    \\tableofcontents
+    ")
+    
+    (define tex-footer
+      "\\end{document}")
     
     (define tex-description
       "\\begin{description}
     @ITEMS@
-    \\end{description}")
+    \\end{description}\n")
     
     (define tex-item-description
       "\\item[Description] @DESCRIPTION@")
@@ -258,45 +265,83 @@
       "\\emph{@ARGUMENTS@}")
     
     (define tex-procedure
-      "\\item[Procedure] \\texttt{(@PROCEDURE@@ARGUMENTS@) $\\to$ @RETURN@}")
+      "\\item[Procedure] \\texttt{(@PROCEDURE@@ARGUMENTS@) $\\to$ @TO@}")
     
     (define tex-parameter
       "\\texttt{@PARAMETER@} & @DEFINITION@")
     
     (define tex-parameters
       "\\item[Parameters]
-        \\begin{tabularx}{\\textwidth}[t]{lX}
-          @PARAMETERS@
-        \\end{tabularx}")
-    
-    (define tex-footer
-      "\\end{document}")
+    \\begin{tabularx}{\\textwidth}[t]{lX}
+    @PARAMETERS@
+    \\end{tabularx}")
     
     (define tex-source
       "\\begin{source}
-      \\begin{minted}[linenos]{scheme}
+    \\begin{minted}[linenos]{scheme}
     @SOURCE@
-      \\end{minted}
-      \\label{foo}
+    \\end{minted}
+    \\label{foo}
     \\end{source}
     ")
     
     (define tex-case-lambda-procedure
-      "\\texttt{(@PROCEDURE@@FORMALS@)} & $\\to$ & \\texttt{@RETURN@}")
+      "\\texttt{(@PROCEDURE@@FORMALS@)} & $\\to$ & \\texttt{@TO@}")
     
     (define tex-case-lambda
       "\\item[Procedure] 
-      \\begin{tabular}[t]{lcl}
+    \\begin{tabular}[t]{lcl}
     @PROCEDURES@
-      \\end{tabular}")
+    \\end{tabular}")
     
     (define tex-heading
-      "\\section{@TITLE@}")
+      "\\section{@TITLE@}\n")
+    
+    (define tex-heading*
+      "\\section*{@TITLE@}
+    \\addcontentsline{toc}{section}{@TITLE@}\n")
     
     (define tex-subheading
-      "\\section{@TITLE@}")
+      "\\subsection{@TITLE@}\n")
     
-    (define (tex-parse-directive doc document)
+    (define tex-subheading*
+      "\\subsection*{@TITLE@}
+    \\addcontentsline{toc}{subsection}{@TITLE@}\n")
+    
+    (define tex-subsubheading
+      "\\subsubsection{@TITLE@}\n")
+    
+    (define tex-subsubheading*
+      "\\subsubsection*{@TITLE@}
+    \\addcontentsline{toc}{subsubsection}{@TITLE@}\n")
+    
+    (define tex-substitutions
+      '(
+        ;; reverts to roman in texttt, etc.; see
+        ;; <http://stackoverflow.com/questions/256457/how-does-one-insert-a-backslash-or-a-tilde-into-latex/257624#257624>
+        ;; ("\\\\" . "\\textbackslash ")
+        ("\\\\" . "\\char`\\\\ ")
+        ("\\%" . "\\%")
+        ("\\$" . "\\$")
+        ("\\{" . "\\{")
+        ("\\}" . "\\}")
+        ("\\[" . "{[}")
+        ("\\]" . "{]}")
+        ("\\_" . "\\_")
+        ("\\#" . "\\#")
+        ("\\^" . "\\^")
+        ;; ("\\_" . "{\\textunderscore}")
+        ;; ("\n" . " ")
+        ("\\~" . "\\~{}")
+        ("\\&" . "\\&")
+        ;; haven't tried this; is the analog to backslash above
+        ;; ("\\~" . "\\char`\\~")
+        ))
+    
+    (define (texify object)
+      (string-substitute* (->string object) tex-substitutions #f))
+    
+    (define (tex-parse-directive doc expr data document)
       (let ((directive (car doc))
             (arguments (cdr doc))
             (data (document-data document)))
@@ -323,24 +368,41 @@
               tex-subheading
               `((title . ,(car arguments)))))))))
     
-    (define (tex-parse-procedure doc procedure formals)
+    (define special-parameters '(@to))
+    
+    (define (special-parameter? parameter)
+      (memq parameter special-parameters))
+    
+    (define normal-parameter? (complement special-parameter?))
+    
+    (define (descriptions-and-normal-and-special-parameters doc)
       (let ((descriptions (filter string? doc))
             (parameters (filter pair? doc)))
-        (let ((return (alist-ref/default parameters
-                                         '@return
-                                         "\\emph{unspecified}")))
+        (let ((normal-parameters
+               (filter (compose normal-parameter? car) parameters))
+              (special-parameters
+               (filter (compose special-parameter? car) parameters)))
+          (values descriptions normal-parameters special-parameters))))
+    
+    (define (tex-parse-procedure doc expr data name formals)
+      (receive (descriptions normal-parameters special-parameters)
+        (descriptions-and-normal-and-special-parameters doc)
+        (let ((to (alist-ref/default
+                   special-parameters
+                   '@to
+                   '("unspecified"))))
           (lambda ()
             (let ((procedure
                    (substitute-template
                     tex-procedure
-                    `((procedure . ,procedure)
-                      (arguments . ,(string-join (map ->string formals)))
-                      (return . ,return))))
+                    `((procedure . ,(texify name))
+                      (arguments . ,(string-join (map texify formals)))
+                      (to . ,(string-join (map texify to) ", ")))))
                   (description
                    (substitute-template
                     tex-item-description
                     'description
-                    (string-join descriptions "\n\n")))
+                    (string-join (map texify descriptions) "\n\n")))
                   (parameters
                    (map
                     (match-lambda
@@ -349,32 +411,49 @@
                          ;; like @return? Cleaner if we do it earlier.
                          (substitute-template
                           tex-parameter
-                          `((parameter . ,parameter)
-                            (definition . ,definition)))))
-                    parameters)))
-              (let ((parameters (substitute-template
-                                 tex-parameters
-                                 'parameters
-                                 (string-join parameters "\\\\"))))
+                          `((parameter . ,(texify parameter))
+                            (definition . ,(texify definition))))))
+                    normal-parameters)))
+              (let ((parameters
+                     (if (null? parameters)
+                         ""
+                         (substitute-template
+                          tex-parameters
+                          'parameters
+                          ;; Already texified above.
+                          (string-join parameters "\\\\\n")))))
                 (write-template
-                 tex-heading
+                 (match (hash-table-ref/default
+                         data
+                         'heading-level
+                         0)
+                   (0 tex-heading*)
+                   (1 tex-subheading*)
+                   (2 tex-subsubheading*))
                  'title
-                 procedure)
+                 ;; (format "\\texttt{\\underline{~a}}" (texify name))
+                 (format "\\texttt{~a}" (texify name)))
                 (write-template
                  tex-description
                  'items
-                 (string-join (list procedure description parameters)))))))))
+                 (string-join
+                  (list procedure description parameters)
+                  "\n"))
+                (write-template
+                 tex-source
+                 'source
+                 expr)))))))
     
-    (define (tex-parse-scalar doc name)
+    (define (tex-parse-scalar doc expr data name)
       void)
     
-    (define (tex-parse-parameter doc name)
+    (define (tex-parse-parameter doc expr data name)
       void)
     
-    (define (tex-parse-case-lambda doc name formals+)
+    (define (tex-parse-case-lambda doc expr data name formals+)
       void)
     
-    (define (tex-parse-syntax doc keyword)
+    (define (tex-parse-syntax doc expr data keyword)
       void)
     
     (define (tex-parse-docexpr document docexpr)
@@ -391,7 +470,7 @@
         (do ((expression (read) (read)))
             ((eof-object? expression))
           (if (current-docexpr)
-              (docexpr-expression-set! (stack-peek (docexprs)) expression))
+              (docexpr-expr-set! (stack-peek (docexprs)) expression))
           (current-docexpr #f))))
     
     (define (tex-parse-docexprs docexprs)
@@ -402,10 +481,11 @@
           (stack-push! parsed-docexprs (tex-parse-docexpr document docexpr)))))
     
     (let ((parsed-docexprs (tex-parse-docexprs (docexprs))))
-      (debug (stack->list parsed-docexprs))
+      (display tex-preamble)
       (do ((docexpr (stack-pop! parsed-docexprs) (stack-pop! parsed-docexprs)))
           ((stack-empty? parsed-docexprs))
-        (docexpr)))
+        (docexpr))
+      (display tex-footer))
     
   #+END_SRC
 
