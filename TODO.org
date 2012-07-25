@@ -321,6 +321,20 @@
       data
       docexprs)
     
+    (define (parse-docexprs docexprs)
+      (let ((document (make-document #f #f #f (make-stack))))
+        (do ((parsed-docexprs (make-stack))
+             (docexpr (stack-pop! docexprs) (stack-pop! docexprs)))
+            ((stack-empty? docexprs) parsed-docexprs)
+          (stack-push! parsed-docexprs (parse-docexpr docexpr)))))
+    
+    (let ((parsed-docexprs (parse-docexprs (docexprs))))
+      (debug (stack->list parsed-docexprs))
+      (do ((docexpr (stack-pop! parsed-docexprs) (stack-pop! parsed-docexprs)))
+          ((stack-empty? parsed-docexprs))
+        (write-template "Oh my @WOSH@, @WHIGS@."
+                        `((whigs . 2)
+                          (wosh . for-wirklich)))))
     
   #+END_SRC
 
