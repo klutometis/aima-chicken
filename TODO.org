@@ -265,6 +265,17 @@
     @PROCEDURES@
       \\end{tabular}")
     
+    (define (write-template template substitutions)
+      (display
+       (string-substitute*
+        template
+        (map
+         (match-lambda ((key . value)
+                   (cons
+                    (format "@~a@" (string-upcase (symbol->string key)))
+                    (->string value))))
+         substitutions))))
+    
     
   #+END_SRC
 
