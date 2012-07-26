@@ -510,7 +510,6 @@
     (with-input-from-file "doc.scm"
       (lambda ()
         (let read-next ((expression (read)))
-          (debug expression)
           (if (not (eof-object? expression))
               (begin
                 (if (current-docexpr)
