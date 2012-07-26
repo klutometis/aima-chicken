@@ -433,6 +433,11 @@
                procedure
                parameters))))))
     
+    (define (tex-make-heading heading-level)
+      (match heading-level
+        (0 tex-heading)
+        (1 tex-subheading)
+        (2 tex-subsubheading)))
     (define (tex-parse-scalar doc expr data name)
       void)
     
