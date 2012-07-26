@@ -444,6 +444,36 @@
        tex-item-description
        'description
        (string-join (map texify descriptions) "\n\n")))
+    
+    (define (write-tex-block doc
+                             expr
+                             data
+                             name
+                             item
+                             . rest-items)
+      (let ((tex-heading
+             (tex-make-heading
+              (hash-table-ref/default
+               data
+               'heading-level
+               0)))
+            (description
+             (tex-make-description (doc-descriptions doc))))
+        (write-template
+         tex-heading
+         'title
+         ;; (format "\\texttt{\\underline{~a}}" (texify name))
+         (format "\\texttt{~a}" (texify name)))
+        (write-template
+         tex-description
+         'items
+         (string-join
+          (cons item (cons description rest-items))
+          "\n"))
+        (write-template
+         tex-source
+         'source
+         expr)))
     (define (tex-parse-scalar doc expr data name)
       void)
     
