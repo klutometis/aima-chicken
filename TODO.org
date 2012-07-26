@@ -771,6 +771,9 @@
   =listoflistings=. Multipage listings are awkward, though: see [[http://tex.stackexchange.com/questions/12428/code-spanning-over-two-pages-with-minted-inside-listing-with-caption][this]],
   where they recommend using the =caption= package. Also [[http://tex.stackexchange.com/questions/7210/label-and-caption-without-float][this]], which
   is a more generic solution.
+** TODO Should we try to evaluate the scalar?
+   If it's self-evaluating, that's fine; otherwise, we have to load
+   the module or file.
 ** TODO First-class bibliography support.
    bibtex, &c.
 ** DONE Multiple values in =@to=
