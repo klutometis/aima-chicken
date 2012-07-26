@@ -726,6 +726,8 @@
   =listoflistings=. Multipage listings are awkward, though: see [[http://tex.stackexchange.com/questions/12428/code-spanning-over-two-pages-with-minted-inside-listing-with-caption][this]],
   where they recommend using the =caption= package. Also [[http://tex.stackexchange.com/questions/7210/label-and-caption-without-float][this]], which
   is a more generic solution.
+** TODO First-class bibliography support.
+   bibtex, &c.
 ** DONE Multiple values in =@to=
    CLOSED: [2012-07-25 Wed 15:04]
    Separate them by commas, or something?
