@@ -474,8 +474,20 @@
          tex-source
          'source
          expr)))
+    
     (define (tex-parse-scalar doc expr data name)
-      void)
+      (let ((scalar
+             (substitute-template
+              tex-scalar
+              'scalar
+              (last expr))))
+        (lambda ()
+          (write-tex-block
+           doc
+           expr
+           data
+           name
+           scalar))))
     
     (define (tex-parse-parameter doc expr data name)
       void)
