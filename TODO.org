@@ -477,7 +477,6 @@
     (let* ((document (make-document (make-hash-table) (make-stack)))
            (parsed-docexprs (tex-parse-docexprs document (docexprs))))
       (let ((data (document-data document)))
-        (debug (hash-table->alist data))
         (write-template
          tex-preamble
          `((author . ,(hash-table-ref/default data
