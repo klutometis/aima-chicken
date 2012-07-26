@@ -378,16 +378,16 @@
     
     (define normal-parameter? (complement special-parameter?))
     
-    (define (descriptions-and-normal-and-special-parameters doc)
-      (let ((descriptions (filter string? doc))
-            (parameters (filter pair? doc)))
     (define (doc-descriptions doc)
       (filter string? doc))
+    
+    (define (doc-normal-and-special-parameters doc)
+      (let ((parameters (filter pair? doc)))
         (let ((normal-parameters
                (filter (compose normal-parameter? car) parameters))
               (special-parameters
                (filter (compose special-parameter? car) parameters)))
-          (values descriptions normal-parameters special-parameters))))
+          (values normal-parameters special-parameters))))
     
     (define (tex-parse-procedure doc expr data name formals)
       (receive (descriptions normal-parameters special-parameters)
