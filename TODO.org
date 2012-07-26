@@ -389,6 +389,11 @@
                (filter (compose special-parameter? car) parameters)))
           (values normal-parameters special-parameters))))
     
+    (define (make-tex-procedure name formals to)
+      (substitute-template
+       tex-procedure
+       `((name-and-formals . ,(string-join (map texify (cons name formals))))
+         (to . ,(string-join (map texify to) ", ")))))
     (define (tex-parse-procedure doc expr data name formals)
       (receive (descriptions normal-parameters special-parameters)
         (descriptions-and-normal-and-special-parameters doc)
