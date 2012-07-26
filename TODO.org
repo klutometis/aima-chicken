@@ -414,65 +414,24 @@
              'parameters
              ;; Already texified above.
              (string-join parameters "\\\\\n")))))
+    
     (define (tex-parse-procedure doc expr data name formals)
-      (receive (descriptions normal-parameters special-parameters)
-        (descriptions-and-normal-and-special-parameters doc)
+      (receive (normal-parameters special-parameters)
+        (doc-normal-and-special-parameters doc)
         (let ((to (alist-ref/default
                    special-parameters
                    '@to
                    '("unspecified"))))
-          (lambda ()
-            (let ((procedure
-                   (substitute-template
-                    tex-procedure
-                    `((procedure . ,(texify name))
-                      (arguments . ,(string-join (map texify formals)))
-                      (to . ,(string-join (map texify to) ", ")))))
-                  (description
-                   (substitute-template
-                    tex-item-description
-                    'description
-                    (string-join (map texify descriptions) "\n\n")))
-                  (parameters
-                   (map
-                    (match-lambda
-                        ((parameter definition)
-                         ;; Can we do a check here for stop-parameters
-                         ;; like @return? Cleaner if we do it earlier.
-                         (substitute-template
-                          tex-parameter
-                          `((parameter . ,(texify parameter))
-                            (definition . ,(texify definition))))))
-                    normal-parameters)))
-              (let ((parameters
-                     (if (null? parameters)
-                         ""
-                         (substitute-template
-                          tex-parameters
-                          'parameters
-                          ;; Already texified above.
-                          (string-join parameters "\\\\\n")))))
-                (write-template
-                 (match (hash-table-ref/default
-                         data
-                         'heading-level
-                         0)
-                   (0 tex-heading)
-                   (1 tex-subheading)
-                   (2 tex-subsubheading))
-                 'title
-                 ;; (format "\\texttt{\\underline{~a}}" (texify name))
-                 (format "\\texttt{~a}" (texify name)))
-                (write-template
-                 tex-description
-                 'items
-                 (string-join
-                  (list procedure description parameters)
-                  "\n"))
-                (write-template
-                 tex-source
-                 'source
-                 expr)))))))
+          (let ((procedure (make-tex-procedure name formals to))
+                (parameters (make-tex-parameters normal-parameters)))
+            (lambda ()
+              (write-tex-block
+               doc
+               expr
+               data
+               name
+               procedure
+               parameters))))))
     
     (define (tex-parse-scalar doc expr data name)
       void)
