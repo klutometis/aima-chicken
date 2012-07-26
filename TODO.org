@@ -267,6 +267,9 @@
     (define tex-procedure
       "\\item[Procedure] \\texttt{(@NAME-AND-FORMALS@) $\\to$ @TO@}")
     
+    (define tex-scalar
+      "\\item[Scalar] \\texttt{@SCALAR@}")
+    
     (define tex-parameter
       "\\texttt{@PARAMETER@} & @DEFINITION@")
     
