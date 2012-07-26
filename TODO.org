@@ -774,6 +774,8 @@
 ** TODO Should we try to evaluate the scalar?
    If it's self-evaluating, that's fine; otherwise, we have to load
    the module or file.
+** TODO Support for version numbers in git repos.
+   Take a look at the tags and descriptions.
 ** TODO First-class bibliography support.
    bibtex, &c.
 ** DONE Multiple values in =@to=
