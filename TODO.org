@@ -427,9 +427,9 @@
                          data
                          'heading-level
                          0)
-                   (0 tex-heading*)
-                   (1 tex-subheading*)
-                   (2 tex-subsubheading*))
+                   (0 tex-heading)
+                   (1 tex-subheading)
+                   (2 tex-subsubheading))
                  'title
                  ;; (format "\\texttt{\\underline{~a}}" (texify name))
                  (format "\\texttt{~a}" (texify name)))
