@@ -265,7 +265,7 @@
       "\\emph{@ARGUMENTS@}")
     
     (define tex-procedure
-      "\\item[Procedure] \\texttt{(@PROCEDURE@@ARGUMENTS@) $\\to$ @TO@}")
+      "\\item[Procedure] \\texttt{(@NAME-AND-FORMALS@) $\\to$ @TO@}")
     
     (define tex-parameter
       "\\texttt{@PARAMETER@} & @DEFINITION@")
