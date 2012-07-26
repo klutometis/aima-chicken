@@ -467,21 +467,24 @@
     
     (with-input-from-file "doc.scm"
       (lambda ()
-        (do ((expression (read) (read)))
-            ((eof-object? expression))
-          (if (current-docexpr)
-              (docexpr-expr-set! (stack-peek (docexprs)) expression))
-          (current-docexpr #f))))
+        (let read-next ((expression (read)))
+          (debug expression)
+          (if (not (eof-object? expression))
+              (begin
+                (if (current-docexpr)
+                    (docexpr-expr-set! (stack-peek (docexprs)) expression))
+                (current-docexpr #f)
+                (read-next (read)))))))
     
-    (define (tex-parse-docexprs docexprs)
-      (let ((document (make-document (make-hash-table) (make-stack))))
-        (do ((parsed-docexprs (make-stack))
-             (docexpr (stack-pop! docexprs) (stack-pop! docexprs)))
-            ((stack-empty? docexprs) parsed-docexprs)
-          (stack-push! parsed-docexprs (tex-parse-docexpr document docexpr)))))
+    (define (tex-parse-docexprs document docexprs)
+      (let ((parsed-docexprs (make-stack)))
+        (stack-for-each
+         docexprs
+         (lambda (docexpr)
+           (stack-push! parsed-docexprs
+                        (tex-parse-docexpr document docexpr))))
+        parsed-docexprs))
     
-    (let ((parsed-docexprs (tex-parse-docexprs (docexprs))))
-      (display tex-preamble)
       (do ((docexpr (stack-pop! parsed-docexprs) (stack-pop! parsed-docexprs)))
           ((stack-empty? parsed-docexprs))
         (docexpr))
