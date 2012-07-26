@@ -381,6 +381,8 @@
     (define (descriptions-and-normal-and-special-parameters doc)
       (let ((descriptions (filter string? doc))
             (parameters (filter pair? doc)))
+    (define (doc-descriptions doc)
+      (filter string? doc))
         (let ((normal-parameters
                (filter (compose normal-parameter? car) parameters))
               (special-parameters
