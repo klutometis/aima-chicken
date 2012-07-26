@@ -646,6 +646,11 @@
     \begin{document}
     \maketitle
     \tableofcontents
+    \section{\texttt{bar}}
+    \begin{description}
+      \item[Scalar] \texttt{2}
+      \item[Description] The number of Higgs bosons detected
+    \end{description}
     \section{\texttt{foo}}
     \begin{description}
       \item[Procedure] \texttt{(foo \emph{bar \#!optional baz \#!rest quux}) $\to$ A foo'd bar}
