@@ -813,6 +813,7 @@
 ** TODO Line-numbers
    Is [[http://wiki.call-cc.org/man/4/Unit%2520expand#get-line-number][get-line-number]] useful? Only for compiled code, though.
 ** TODO Examples
+   Should we do it R-style, where we actually execute the blocks?
 ** TODO SRFI vs. R5RS style
    Let's go with R5RS; cool stuff, like syntax vs. semantics. Oh, wow:
    in the case of [[http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%25_sec_4.2.6][quasiquotation]], they simply repeated the =syntax:=
