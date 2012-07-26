@@ -485,6 +485,21 @@
                         (tex-parse-docexpr document docexpr))))
         parsed-docexprs))
     
+    (let* ((document (make-document (make-hash-table) (make-stack)))
+           (parsed-docexprs (tex-parse-docexprs document (docexprs))))
+      (let ((data (document-data document)))
+        (debug (hash-table->alist data))
+        (write-template
+         tex-preamble
+         `((author . ,(hash-table-ref/default data
+                                              'author
+                                              "Anonymous"))
+           (email . ,(hash-table-ref/default data
+                                             'email
+                                             "anonymous@example.org"))
+           (title . ,(hash-table-ref/default data
+                                             'title
+                                             "Documentation")))))
       (do ((docexpr (stack-pop! parsed-docexprs) (stack-pop! parsed-docexprs)))
           ((stack-empty? parsed-docexprs))
         (docexpr))
