@@ -394,6 +394,26 @@
        tex-procedure
        `((name-and-formals . ,(string-join (map texify (cons name formals))))
          (to . ,(string-join (map texify to) ", ")))))
+    
+    (define (make-tex-parameters parameters)
+      (let ((parameters
+             (map
+              (match-lambda
+                  ((parameter definition)
+                   ;; Can we do a check here for stop-parameters
+                   ;; like @return? Cleaner if we do it earlier.
+                   (substitute-template
+                    tex-parameter
+                    `((parameter . ,(texify parameter))
+                      (definition . ,(texify definition))))))
+              parameters)))
+        (if (null? parameters)
+            ""
+            (substitute-template
+             tex-parameters
+             'parameters
+             ;; Already texified above.
+             (string-join parameters "\\\\\n")))))
     (define (tex-parse-procedure doc expr data name formals)
       (receive (descriptions normal-parameters special-parameters)
         (descriptions-and-normal-and-special-parameters doc)
