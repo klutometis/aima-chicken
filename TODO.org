@@ -425,6 +425,9 @@
              ;; Already texified above.
              (string-join parameters "\\\\\n")))))
     
+    (define (tex-procedure-to special-parameters)
+      (alist-ref/default special-parameters '@to '("unspecified")))
+    
     (define (tex-parse-procedure doc expr data name formals)
       (receive (normal-parameters special-parameters)
         (doc-normal-and-special-parameters doc)
