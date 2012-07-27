@@ -518,7 +518,13 @@
       void)
     
     (define (tex-parse-syntax doc expr data keyword)
-      void)
+      (lambda ()
+        (write-tex-block
+         doc
+         expr
+         data
+         keyword
+         tex-syntax)))
     
     (define (tex-parse-docexpr document docexpr)
       (parameterize ((parse-directive tex-parse-directive)
