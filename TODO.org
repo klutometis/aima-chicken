@@ -293,8 +293,7 @@
     (define tex-source
       "\\begin{source}
     \\begin{minted}[linenos]{scheme}
-    @SOURCE@
-    \\end{minted}
+    @SOURCE@\\end{minted}
     \\label{foo}
     \\end{source}
     ")
