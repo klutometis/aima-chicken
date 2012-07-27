@@ -281,6 +281,9 @@
     (define tex-parameter-object
       "\\item[Parameter] \\texttt{@PARAMETER@}")
     
+    (define tex-syntax
+      "\\item[Syntax]")
+    
     (define tex-parameters
       "\\item[Parameters]
     \\begin{tabularx}{\\textwidth}[t]{lX}
