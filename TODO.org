@@ -431,11 +431,7 @@
     (define (tex-parse-procedure doc expr data name formals)
       (receive (normal-parameters special-parameters)
         (doc-normal-and-special-parameters doc)
-        (let ((to (alist-ref/default
-                   special-parameters
-                   '@to
-                   '("unspecified"))))
-          (let ((procedure (make-tex-procedure name formals to))
+        (let ((to (tex-procedure-to special-parameters)))
           (let ((procedure
                  (make-tex-procedure tex-procedure name formals to))
                 (parameters (make-tex-parameters normal-parameters)))
