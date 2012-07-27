@@ -484,7 +484,9 @@
         (write-template
          tex-source
          'source
-         expr)))
+         (with-output-to-string
+           (lambda ()
+             (pp expr))))))
     
     (define (tex-parse-scalar doc expr data name)
       (let ((scalar
