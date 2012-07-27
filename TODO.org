@@ -400,7 +400,7 @@
                (filter (compose special-parameter? car) parameters)))
           (values normal-parameters special-parameters))))
     
-    (define (make-tex-procedure name formals to)
+    (define (make-tex-procedure template name formals to)
       (substitute-template
        template
        `((name-and-formals . ,(texify (cons name formals)))
@@ -434,6 +434,8 @@
                    '@to
                    '("unspecified"))))
           (let ((procedure (make-tex-procedure name formals to))
+          (let ((procedure
+                 (make-tex-procedure tex-procedure name formals to))
                 (parameters (make-tex-parameters normal-parameters)))
             (lambda ()
               (write-tex-block
@@ -515,7 +517,33 @@
            parameter-object))))
     
     (define (tex-parse-case-lambda doc expr data name formals+)
-      void)
+      (receive (normal-parameters special-parameters)
+        (doc-normal-and-special-parameters doc)
+        (let ((to (tex-procedure-to special-parameters)))
+          (let* ((procedures
+                  (string-join
+                   (map (lambda (formals)
+                          (make-tex-procedure
+                           tex-case-lambda-procedure
+                           name
+                           formals
+                           to))
+                        formals+)
+                   "\\\\\n"))
+                 (case-lambda
+                  (substitute-template
+                   tex-case-lambda
+                   'procedures
+                   procedures)))
+            (let ((parameters (make-tex-parameters normal-parameters)))
+              (lambda ()
+                (write-tex-block
+                 doc
+                 expr
+                 data
+                 name
+                 case-lambda
+                 parameters)))))))
     
     (define (tex-parse-syntax doc expr data keyword)
       (lambda ()
