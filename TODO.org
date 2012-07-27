@@ -199,7 +199,7 @@
           (('define procedure ('case-lambda (formals . body) ...))
            ((parse-case-lambda) doc expr data procedure formals))
           (('define parameter ('make-parameter init . converter))
-           ((parse-parameter) doc expr data parameter))
+           ((parse-parameter) doc expr data parameter init))
           (('define scalar . body)
            ((parse-scalar) doc expr data scalar))
           (('define-syntax keyword . _)
