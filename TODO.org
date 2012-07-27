@@ -270,7 +270,7 @@
       "\\emph{@ARGUMENTS@}")
     
     (define tex-procedure
-      "\\item[Procedure] \\texttt{(@NAME-AND-FORMALS@) $\\to$ @TO@}")
+      "\\item[Procedure] \\texttt{@NAME-AND-FORMALS@ $\\to$ @TO@}")
     
     (define tex-scalar
       "\\item[Scalar] \\texttt{@SCALAR@}")
@@ -300,7 +300,7 @@
     ")
     
     (define tex-case-lambda-procedure
-      "\\texttt{(@PROCEDURE@@FORMALS@)} & $\\to$ & \\texttt{@TO@}")
+      "\\texttt{@NAME-AND-FORMALS@} & $\\to$ & \\texttt{@TO@}")
     
     (define tex-case-lambda
       "\\item[Procedure] 
@@ -402,8 +402,8 @@
     
     (define (make-tex-procedure name formals to)
       (substitute-template
-       tex-procedure
-       `((name-and-formals . ,(string-join (map texify (cons name formals))))
+       template
+       `((name-and-formals . ,(texify (cons name formals)))
          (to . ,(string-join (map texify to) ", ")))))
     
     (define (make-tex-parameters parameters)
