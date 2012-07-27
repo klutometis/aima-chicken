@@ -492,8 +492,19 @@
            name
            scalar))))
     
-    (define (tex-parse-parameter doc expr data name)
-      void)
+    (define (tex-parse-parameter doc expr data name init)
+      (let ((parameter-object
+             (substitute-template
+              tex-parameter-object
+              'parameter
+              (texify init))))
+        (lambda ()
+          (write-tex-block
+           doc
+           expr
+           data
+           name
+           parameter-object))))
     
     (define (tex-parse-case-lambda doc expr data name formals+)
       void)
