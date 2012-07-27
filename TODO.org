@@ -76,6 +76,11 @@
       @("Enables communication with the parsing @-reader")
       (make-parameter #f))
     
+    (define-syntax syntax-test
+      @("This is for reals.")
+      (lambda (e r c)
+        2))
+    
     (define (with-new-doctable thunk)
       (parameterize ((current-doctable (make-hash-table)))
         (thunk)))
