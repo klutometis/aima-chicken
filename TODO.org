@@ -402,6 +402,38 @@
               tex-subheading
               `((title . ,(car arguments)))))))))
     
+    (define (write-tex-block doc
+                             expr
+                             data
+                             name
+                             item
+                             . rest-items)
+      (let ((tex-heading
+             (tex-make-heading
+              (hash-table-ref/default
+               data
+               'heading-level
+               0)))
+            (description
+             (tex-make-description (doc-descriptions doc))))
+        (write-template
+         tex-heading
+         'title
+         ;; (format "\\texttt{\\underline{~a}}" (texify name))
+         (format "\\texttt{~a}" (texify name)))
+        (write-template
+         tex-description
+         'items
+         (string-join
+          (cons item (cons description rest-items))
+          "\n"))
+        (write-template
+         tex-source
+         `((source .
+            ,(with-output-to-string
+               (lambda ()
+                 (pp expr))))
+           (name . ,name)))))
     
     (define (make-tex-procedure template name formals to)
       (substitute-template
@@ -459,39 +491,6 @@
        tex-item-description
        'description
        (string-join (map texify descriptions) "\n\n")))
-    
-    (define (write-tex-block doc
-                             expr
-                             data
-                             name
-                             item
-                             . rest-items)
-      (let ((tex-heading
-             (tex-make-heading
-              (hash-table-ref/default
-               data
-               'heading-level
-               0)))
-            (description
-             (tex-make-description (doc-descriptions doc))))
-        (write-template
-         tex-heading
-         'title
-         ;; (format "\\texttt{\\underline{~a}}" (texify name))
-         (format "\\texttt{~a}" (texify name)))
-        (write-template
-         tex-description
-         'items
-         (string-join
-          (cons item (cons description rest-items))
-          "\n"))
-        (write-template
-         tex-source
-         `((source .
-            ,(with-output-to-string
-               (lambda ()
-                 (pp expr))))
-           (name . ,name)))))
     
     (define (tex-parse-scalar doc expr data name)
       (let ((scalar
