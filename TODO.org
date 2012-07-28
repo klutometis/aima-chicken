@@ -294,7 +294,7 @@
       "\\begin{source}
     \\begin{minted}[linenos]{scheme}
     @SOURCE@\\end{minted}
-    \\label{foo}
+    \\label{@NAME@}
     \\end{source}
     ")
     
