@@ -483,10 +483,11 @@
           "\n"))
         (write-template
          tex-source
-         'source
-         (with-output-to-string
-           (lambda ()
-             (pp expr))))))
+         `((source .
+            ,(with-output-to-string
+               (lambda ()
+                 (pp expr))))
+           (name . ,name)))))
     
     (define (tex-parse-scalar doc expr data name)
       (let ((scalar
