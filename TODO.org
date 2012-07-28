@@ -210,8 +210,8 @@
            ((parse-parameter) doc expr data parameter init))
           (('define scalar . body)
            ((parse-scalar) doc expr data scalar))
-          (('define-syntax keyword . _)
-           ((parse-syntax) doc expr data keyword))
+          (('define-syntax name . _)
+           ((parse-syntax) doc expr data name))
           (_ 'unknown))))
     
     (define substitute-template
