@@ -303,7 +303,7 @@
       "\\item[Parameter] \\texttt{@PARAMETER@}")
     
     (define tex-syntax
-      "\\item[Syntax]")
+      "\\item[Syntax] \\texttt{@NAME-AND-FORMALS@ $\\to$ @TO@}")
     
     (define tex-parameters
       "\\item[Parameters]
@@ -550,14 +550,28 @@
                  case-lambda
                  parameters)))))))
     
-    (define (tex-parse-syntax doc expr data keyword)
-      (lambda ()
-        (write-tex-block
-         doc
-         expr
-         data
-         keyword
-         tex-syntax)))
+    (define (formals parameters) (map car parameters))
+    
+    (define (tex-parse-syntax doc expr data name)
+      (receive (normal-parameters special-parameters)
+        (doc-normal-and-special-parameters doc)
+        (let ((to (tex-procedure-to special-parameters)))
+          (let ((syntax
+                 (make-tex-procedure
+                  tex-syntax
+                  name
+                  (formals normal-parameters)
+                  to))
+                (parameters
+                 (make-tex-parameters normal-parameters)))
+            (lambda ()
+              (write-tex-block
+               doc
+               expr
+               data
+               name
+               syntax
+               parameters))))))
     
     (define (tex-parse-docexpr document docexpr)
       (parameterize ((parse-directive tex-parse-directive)
