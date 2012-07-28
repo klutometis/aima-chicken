@@ -845,6 +845,10 @@
   =listoflistings=. Multipage listings are awkward, though: see [[http://tex.stackexchange.com/questions/12428/code-spanning-over-two-pages-with-minted-inside-listing-with-caption][this]],
   where they recommend using the =caption= package. Also [[http://tex.stackexchange.com/questions/7210/label-and-caption-without-float][this]], which
   is a more generic solution.
+** TODO A record is similar to a procedure.
+   Instead of parameters, however, it has fields; do we need to
+   enumerate getters and setters? No, let them gather it from the
+   source.
 ** DONE Syntax probably needs a signature in addition to parameters.
    CLOSED: [2012-07-28 Sat 13:51]
    Or can we infer the signature from the parameters? Or both?
