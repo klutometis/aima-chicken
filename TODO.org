@@ -77,7 +77,10 @@
       (make-parameter #f))
     
     (define-syntax syntax-test
-      @("This is for reals.")
+      @("This is for reals."
+        (some "parameter")
+        (another "one")
+        (@to "result"))
       (lambda (e r c)
         2))
     
