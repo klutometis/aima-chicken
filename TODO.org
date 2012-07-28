@@ -232,6 +232,24 @@
     (define (write-template . keys-or-substitutions)
       (display (apply substitute-template keys-or-substitutions)))
     
+    (define special-parameters '(@to))
+    
+    (define (special-parameter? parameter)
+      (memq parameter special-parameters))
+    
+    (define normal-parameter? (complement special-parameter?))
+    
+    (define (doc-descriptions doc)
+      (filter string? doc))
+    
+    (define (doc-normal-and-special-parameters doc)
+      (let ((parameters (filter pair? doc)))
+        (let ((normal-parameters
+               (filter (compose normal-parameter? car) parameters))
+              (special-parameters
+               (filter (compose special-parameter? car) parameters)))
+          (values normal-parameters special-parameters))))
+    
     (define tex-preamble
       "\\documentclass{article}
     \\usepackage{fontspec}
@@ -384,23 +402,6 @@
               tex-subheading
               `((title . ,(car arguments)))))))))
     
-    (define special-parameters '(@to))
-    
-    (define (special-parameter? parameter)
-      (memq parameter special-parameters))
-    
-    (define normal-parameter? (complement special-parameter?))
-    
-    (define (doc-descriptions doc)
-      (filter string? doc))
-    
-    (define (doc-normal-and-special-parameters doc)
-      (let ((parameters (filter pair? doc)))
-        (let ((normal-parameters
-               (filter (compose normal-parameter? car) parameters))
-              (special-parameters
-               (filter (compose special-parameter? car) parameters)))
-          (values normal-parameters special-parameters))))
     
     (define (make-tex-procedure template name formals to)
       (substitute-template
