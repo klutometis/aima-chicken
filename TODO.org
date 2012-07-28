@@ -446,9 +446,9 @@
     
     (define (tex-make-heading heading-level)
       (match heading-level
-        (0 tex-heading*)
-        (1 tex-subheading*)
-        (2 tex-subsubheading*)))
+        (0 tex-heading)
+        (1 tex-subheading)
+        (2 tex-subsubheading)))
     
     (define (tex-make-description descriptions)
       (substitute-template
