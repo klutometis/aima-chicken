@@ -852,6 +852,23 @@
 ** DONE Syntax probably needs a signature in addition to parameters.
    CLOSED: [2012-07-28 Sat 13:51]
    Or can we infer the signature from the parameters? Or both?
+** TODO Types from the Chicken wiki
+   See [[https://wiki.call-cc.org/edit-help][here]]:
+   
+   - read
+   - parameter
+   - record
+   - string
+   - class
+   - method
+   - constant
+   - setter
+   - syntax
+   - type
+
+   Records are a really good idea; have to know: =defstruct=,
+   =define-record=, =define-record-type=, &c. Which brings up
+   something else: shouldn't we allow the user to override this?
 ** TODO Should we try to evaluate the scalar?
    If it's self-evaluating, that's fine; otherwise, we have to load
    the module or file.
