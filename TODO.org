@@ -1,4 +1,7 @@
-* TODO Documentation!
+* DONE Documentation!
+  CLOSED: [2012-07-29 Sun 11:58]
+  - CLOSING NOTE [2012-07-29 Sun 11:58] \\
+    See [[http://wiki.call-cc.org/eggref/4/autocompile][cock]].
   How should we do this: roll our own with org/html/latex, or use the
   chicken wiki? Some eggs are merely pointers to the "real" docs.
 
