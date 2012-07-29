@@ -869,6 +869,11 @@
    Records are a really good idea; have to know: =defstruct=,
    =define-record=, =define-record-type=, &c. Which brings up
    something else: shouldn't we allow the user to override this?
+
+   Some examples for [[http://wiki.call-cc.org/eggref/4/feature-test#acting-on-feature-support][read]], by the way; [[http://wiki.call-cc.org/eggref/4/lazy-ffi#read-syntax][more examples]]. Has to be
+   invoked with [[http://wiki.call-cc.org/eggref/4/lazy-ffi#documentation][-X or -extension]] for compiled code.
+
+   Christ, this complicates usage.
 ** TODO Should we try to evaluate the scalar?
    If it's self-evaluating, that's fine; otherwise, we have to load
    the module or file.
