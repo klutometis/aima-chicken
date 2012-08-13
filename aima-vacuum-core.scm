@@ -118,7 +118,7 @@ depends on the environments contract with its agents."))
 its percept."
     (location "The location of the agent")
     (clean? "Whether or not this square is clean")
-    (@to "the movement symbols `left', `right', `suck', `noop'"))
+    (@to "one of 'left, 'right, 'suck, 'noop"))
   (if clean?
       (if (left? location)
           'right
