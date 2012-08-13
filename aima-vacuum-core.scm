@@ -1,3 +1,5 @@
+@(subheading "Two-square vacuum-world")
+
 ;;;; Two-square vacuum world
 (define (display-world world)
   @("Display the two-square vacuum world as a vector."
@@ -132,6 +134,9 @@ its percept."
 ;;; TODO: Consider changing the variable-name `world' to something
 ;;; more appropriate for a model of the world.
 (define (make-stateful-agent-program)
+  @("Make an agent program that models the two-square vacuum-world,
+and stops cleaning."
+    (@to "stateful agent program"))
   ;; We could also make an initial pessimistic hypothesis of
   ;; all-dirty.
   (let ((world (make-world unknown unknown)))
@@ -180,20 +185,39 @@ takes a location and whether that location is clean. See
      program))))
 
 (define (make-simple-reflex-agent location)
+  @("Make a simple reflex agent and place it in the given location."
+    (location "Where to place the agent: `left' or `right'")
+    (@to "a simple reflex agent"))
   (make-reflex-agent location simple-agent-program))
 
 (define (make-stateful-reflex-agent location)
+  @("Make a stateful reflex agent and place it in the given location."
+    (location "Where to place the agent: `left' or `right'")
+    (@to "a stateful reflex agent"))
   (make-reflex-agent location (make-stateful-agent-program)))
 
 (define (make-performance-measure world)
+  @("Make a performance measure that awards one point for every clean
+square."
+    (@to "environment"))
   (lambda ()
     (vector-count (lambda (i square) (clean? square)) world)))
 
 (define (make-score-update! agent)
+  @("Make a score-updater that adds score to the score of an agent."
+    (agent "The agent whose score to add to")
+    (@to "a monadic procedure that takes the score to add"))
   (lambda (score)
     (agent-score-set! agent (+ (agent-score agent) score))))
 
 (define simulate-vacuum
+  @("Simulate the two-square vacuum-world."
+    (world "The two-square vacuum world (see `make-world')")
+    (agent "The agent to inhabit the world")
+    (steps "The number of steps to simulate (default: 1000)")
+    (make-environment "The environment constructor (default:
+`make-environment')")
+    (@to "the agent-score"))
   (case-lambda
    ((world agent)
     (simulate-vacuum world agent (default-steps)))
@@ -220,27 +244,52 @@ takes a location and whether that location is clean. See
     (agent-score agent))))
 
 (define simulate-penalizing-vacuum
+  @("Like `simulate-vacuum', but penalizes agents for every movement."
+    (world "The two-square vacuum world (see `make-world')")
+    (agent "The agent to inhabit the world")
+    (steps "The number of steps to simulate (default: 1000)") 
+    (@to "the agent-score"))
   (case-lambda
    ((world agent)
     (simulate-penalizing-vacuum world agent (default-steps)))
    ((world agent steps)
     (simulate-vacuum world agent steps make-penalizing-environment))))
 
+@(subheading "Graph-based vacuum-world")
+
 ;;;; Graph world
 
-(define make-graph make-hash-table)
+(define make-graph
+  @("Make a hash-table-based adjacency list."
+    (@to "graph"))
+  make-hash-table)
 
 (define-record no-passage)
 (define no-passage (make-no-passage))
 (define passage? (complement no-passage?))
 
-(define up 2)
-(define up? (cute = <> 2))
+(define up
+  @("Index of the up square")
+  2)
+(define up?
+  @("Is this the up square?"
+    (@to "true if it is the up square"))
+  (cute = <> 2))
 
-(define down 3)
-(define down? (cute = <> 3))
+(define down
+  @("Index of the down square")
+  3)
+(define down?
+  @("Is this the down square?"
+    (@to "true if this is the down square"))
+  (cute = <> 3))
 
 (define-record location
+
+  @("Location-records describing the status (e.g. clean, dirty) of the
+square and its neighbors at `left', `right', `down', `up'.
+
+`neighbors' is a ternary vector indexed by relative directions.")
   status
   neighbors)
 
@@ -253,6 +302,9 @@ takes a location and whether that location is clean. See
                  (vector-copy (location-neighbors location))))
 
 (define (copy-world world)
+  @("Make a deep copy of a graph-world."
+    (world "The world to copy")
+    (@to "graph-world"))
   (let ((world (hash-table-copy world)))
     (hash-table-walk
      world
@@ -263,7 +315,10 @@ takes a location and whether that location is clean. See
         copy-location)))
     world))
 
-(define make-node gensym)
+(define make-node
+  @("Make a unique symbol suitable for a node-name."
+    (@to "symbol"))
+  gensym)
 
 (define (random-direction) (bsd-random 4))
 
@@ -281,6 +336,11 @@ takes a location and whether that location is clean. See
                          no-passage)))
 
 (define (connect! world connectend connector direction)
+  @("Bi-connect two locations over a direction and its inverse."
+    (world "The graph-world within which to connect")
+    (connectend "The node to be connected")
+    (connector "The connecting node")
+    (direction "The relative direction to connect over"))
   (hash-table-update!/default
    world
    connectend
@@ -306,10 +366,17 @@ takes a location and whether that location is clean. See
     world))
 
 (define (random-start world)
+  @("Find a random starting node in the given world."
+    (world "The world to search")
+    (@to "symbol"))
   (let ((nodes (hash-table-keys world)))
     (list-ref nodes (bsd-random-integer (length nodes)))))
 
 (define (make-randomized-graph-agent start)
+  @("Make a simply reflex agent that randomly searches the graph and
+cleans dirty squares."
+    (start "Starting square (see `random-start')")
+    (@to "agent"))
   (make-reflex-agent
    start
    (lambda (location clean?)
@@ -339,9 +406,15 @@ takes a location and whether that location is clean. See
    0
    (location-neighbors location)))
 
-(define default-n-nodes (make-parameter 20))
+(define default-n-nodes
+  @("Default number of nodes for a graph")
+  (make-parameter 20))
 
 (define make-linear-world
+  @("Make a world that consists of a line of nodes (for testing
+pathological cases."
+    (n-nodes "Number of nodes in the graph (default: (default-n-nodes))")
+    (@to "graph"))
   (case-lambda
    (() (make-linear-world (default-n-nodes)))
    ((n-nodes)
@@ -356,6 +429,12 @@ takes a location and whether that location is clean. See
 
 ;;; This, of course, won't produce any cycles.
 (define make-preferential-depth-first-world
+  @("Create a random-graph using depth-first search that nevertheless
+shows preference for connected nodes (á la Barabási-Albert).
+
+The graph has no cycles."
+    (n-nodes "The number of nodes in the graph (default: (default-n-nodes))")
+    (@to "graph"))
   (case-lambda
    (() (make-preferential-depth-first-world (default-n-nodes)))
    ((n-nodes)
@@ -417,7 +496,11 @@ takes a location and whether that location is clean. See
                                       (bsd-random (length neighbors)))))
                       (iter neighbor n-nodes n-degrees)))))))))))
 
-(define make-graph-world make-preferential-depth-first-world)
+(define make-graph-world
+  @("Make a random graph."
+    (n-nodes "The number of nodes in the graph (default: (default-n-nodes))")
+    (@to "graph"))
+  make-preferential-depth-first-world)
 
 (define default-width (make-parameter 1600))
 
@@ -489,6 +572,14 @@ takes a location and whether that location is clean. See
 (define (write-dot-postscript) (display "}\n"))
 
 (define write-world-as-dot
+  @("Output the graph-world as in dot-notation (i.e. Graphviz)."
+    (world "The graph-world to output")
+    (agent "The agent inhabiting the graph-world")
+    (step "The current step or false")
+    (width "Width of the output")
+    (height "Height of the output")
+    (font-size "Font-size of the output")
+    (title "Title of the output"))
   (case-lambda
    ((world agent) (write-world-as-dot world agent #f))
    ((world agent step)
@@ -506,6 +597,10 @@ takes a location and whether that location is clean. See
     (write-dot-postscript))))
 
 (define (write-world-as-pdf world agent pdf)
+  @("Output the graph-world as a pdf via graphviz."
+    (world "The world to output")
+    (agent "The agent that inhabits the world")
+    (pdf "The file to write to"))
   (receive (input output id)
     (process "neato" `("-Tpdf" "-o" ,pdf))
     (with-output-to-port output
@@ -519,6 +614,15 @@ takes a location and whether that location is clean. See
   (system* "evince -s ~a" pdf))
 
 (define write-world-as-gif
+  @("Output the graph-world as gif via Graphviz (useful for e.g. animations)."
+    (world "The graph-world to output")
+    (agent "The agent inhabiting the graph-world")
+    (frame "The frame-number")
+    (gif "The base-name of the gif to write to")
+    (width "Width of the output")
+    (height "Height of the output")
+    (font-size "Font-size of the output")
+    (title "Title of the output"))
   (case-lambda
    ((world agent frame gif)
     (write-world-as-gif world
@@ -636,6 +740,9 @@ takes a location and whether that location is clean. See
     (make-animation-finalizer composite-directory file)))
 
 (define (make-unknown-location clean?)
+  @("Make a graph-location whose neighbors are all unknown."
+    (clean? "Is the graph-location clean?")
+    (@to "location"))
   (make-location (if clean? clean dirty)
                  (vector unknown unknown unknown unknown)))
 
@@ -649,6 +756,9 @@ takes a location and whether that location is clean. See
    (location-neighbors location)))
 
 (define (reverse-move move)
+  @("Reverse the relative direction."
+    (move "The relative direction to reverse")
+    (@to "direction"))
   (case move
     ((left) 'right)
     ((right) 'left)
@@ -656,9 +766,16 @@ takes a location and whether that location is clean. See
     ((down) 'up)))
 
 (define (direction->move direction)
+  @("Convert a neighbor-index into a relative direction."
+    (direction "The index to convert")
+    (@to "relative direction"))
   (list-ref '(left right up down) direction))
 
+;;; Couldn't we index by symbol and call it a day? Damn.
 (define (move->direction move)
+  @("Convert a relative direction into a neighbor index."
+    (move "The relative direction to convert")
+    (@to "index"))
   (case move
     ((left) left)
     ((right) right)
@@ -671,11 +788,12 @@ takes a location and whether that location is clean. See
 ;;; Dealing with all this move-location punning makes things complex;
 ;;; we can clean this up a little bit by writing some germane
 ;;; abstractions on the world.
-;;;
-;;; We're not dealing with cycles yet, by the way; does this entail
-;;; determining whether or not a new node is accounted for in the
-;;; world? I believe so.
 (define (make-stateful-graph-agent start)
+  @("Make a graph-traversal agent that models the graph and searches it thoroughly, stopping when the world is clean.
+
+The agent can detect cycles."
+    (start "Starting position of the agent (see `random-start')")
+    (@to "agent"))
   (make-reflex-agent
    start
    (let ((world (make-hash-table))
@@ -777,6 +895,10 @@ takes a location and whether that location is clean. See
 (define default-file (make-parameter "graph"))
 
 (define simulate-graph
+  @("Simulate the graph world."
+    (world "The world to simulate")
+    (agent "The agent to inhabit the world")
+    (steps "The steps to simulate (default: (default-steps))"))
   (case-lambda
    ((world agent)
     (simulate-graph world agent (default-steps)))
@@ -791,6 +913,18 @@ takes a location and whether that location is clean. See
         (make-graph-performance-measure world agent)))))))
 
 (define simulate-graph/animation
+  @("Simulate the graph world, creating an animation along the way;
+see, for instance, <http://youtu.be/EvZvyxAoNdo>.
+
+Requires Graphviz."
+    (world "The world to simulate")
+    (agent "The agent that inhabits the world")
+    (file "The base-name of the animation file")
+    (steps "The steps to simulation (default: `(default-steps)'")
+    (width "Width of the animation in pixels")
+    (hight "Height of the animation in pixels")
+    (font-size "Font-size of the animation in points")
+    (title "Title of the animation"))
   (case-lambda
    ((world agent file)
     (simulate-graph/animation world agent file (default-steps)))
@@ -846,51 +980,62 @@ takes a location and whether that location is clean. See
         (make-debug-environment agent)
         (make-graph-environment world agent)
         (make-graph-performance-measure world agent))))
-    directory)
+    directory))
 
-  ;; We should generalize this.
-  (define compare-graphs
-    (case-lambda
-     ((world agent-one title-one agent-two title-two composite-file)
-      (compare-graphs world
-                      agent-one
-                      title-one
-                      agent-two
-                      title-two
-                      composite-file
-                      (default-steps)
-                      (/ (default-width) 2)
-                      (default-height)
-                      (/ (default-font-size) 2)))
-     ((world
-       agent-one
-       title-one
-       agent-two
-       title-two
-       composite-file
-       steps
-       width
-       height
-       font-size)
-      (let ((directory-one
-             (simulate-comparatively (copy-world world)
-                                     agent-one
-                                     steps
-                                     width
-                                     height
-                                     font-size
-                                     title-one))
-            (directory-two
-             (simulate-comparatively world
-                                     agent-two
-                                     steps
-                                     width
-                                     height
-                                     font-size
-                                     title-two)))
-        (let ((composite-directory (create-temporary-directory)))
-          (system* "cd ~a && for i in *; do echo $i; convert +append $i ~a/$i ~a/$i; done"
-                   directory-one
-                   directory-two
-                   composite-directory)
-          ((make-animation-finalizer composite-directory composite-file))))))))
+
+;;; We should generalize this.
+(define compare-graphs
+  @("Simulate two agents in a given world and animate their progress
+side-by-side; see, for instance, <http://youtu.be/B28ay_zSnoY>.
+
+Requires Graphviz."
+    (world "The world to simulate")
+    (agent-one "The first inhabiting agent")
+    (title-one "Title of the first agent")
+    (agent-two "The second inhabiting agent")
+    (title-two "Title of the second agent")
+    (composite-file "Base-name of the composite animation"))
+  (case-lambda
+   ((world agent-one title-one agent-two title-two composite-file)
+    (compare-graphs world
+                    agent-one
+                    title-one
+                    agent-two
+                    title-two
+                    composite-file
+                    (default-steps)
+                    (/ (default-width) 2)
+                    (default-height)
+                    (/ (default-font-size) 2)))
+   ((world
+     agent-one
+     title-one
+     agent-two
+     title-two
+     composite-file
+     steps
+     width
+     height
+     font-size)
+    (let ((directory-one
+           (simulate-comparatively (copy-world world)
+                                   agent-one
+                                   steps
+                                   width
+                                   height
+                                   font-size
+                                   title-one))
+          (directory-two
+           (simulate-comparatively world
+                                   agent-two
+                                   steps
+                                   width
+                                   height
+                                   font-size
+                                   title-two)))
+      (let ((composite-directory (create-temporary-directory)))
+        (system* "cd ~a && for i in *; do echo $i; convert +append $i ~a/$i ~a/$i; done"
+                 directory-one
+                 directory-two
+                 composite-directory)
+        ((make-animation-finalizer composite-directory composite-file)))))))
