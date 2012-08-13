@@ -1,4 +1,8 @@
+@(heading "AIMA-Vacuum")
+
 (module aima-vacuum
+  @("`aima-vacuum' has agents and environments for chapter 2:
+Intelligent Agents.")
   (agent-score
    agent-score-set!
    agent-location
