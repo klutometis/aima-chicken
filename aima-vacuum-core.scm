@@ -53,7 +53,7 @@
   @("Get a square-status (dirty, clean, unknown, &c.) from the
 two-square vacuum-world."
     (square "The square's index (`left' or `right')")
-    (@to "The square-status"))
+    (@to "the square-status"))
   vector-ref)
 
 (define world-location-set!
@@ -114,6 +114,11 @@ depends on the environments contract with its agents."))
   (make-environment world agent penalizing-response))
 
 (define (simple-agent-program location clean?)
+  @("Example of a simple two-square vacuum-agent that merely responds to 
+its percept."
+    (location "The location of the agent")
+    (clean? "Whether or not this square is clean")
+    (@to "the movement symbols `left', `right', `suck', `noop'"))
   (if clean?
       (if (left? location)
           'right
@@ -159,6 +164,12 @@ depends on the environments contract with its agents."))
   (make-parameter simple-agent-program))
 
 (define make-reflex-agent
+  @("Make a stateless agent that merely responds to its current
+percept."
+    (location "Where does the agent start? `left' or `right'")
+    (program "The agent's program; should be a binary procedure that
+takes a location and whether that location is clean. See
+`simple-agent-program'."))
   (case-lambda
    ((location)
     (make-reflex-agent location (default-agent-program)))
