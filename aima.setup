@@ -5,7 +5,9 @@
 (setup-shared-extension-module
  'aima
  (extension-version "0.5.1")
+ compile-options: '(-X cock))
 
 (setup-shared-extension-module
  'aima-vacuum
  (extension-version "0.5.1")
+ compile-options: '(-X cock))
