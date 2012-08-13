@@ -11,6 +11,7 @@ Intelligent Agents.")
    agent-program-set!
    clean
    clean?
+   compare-graphs
    copy-world
    cycle
    cycle?
