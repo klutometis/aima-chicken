@@ -1,5 +1,7 @@
 ;;;; Two-square vacuum world
 (define (display-world world)
+  @("Display the two-square vacuum world as a vector."
+    (world "The two-square vacuum world to be displayed"))
   (pp
    (vector-append '#(world)
                   (vector-map
@@ -8,27 +10,65 @@
                    world))))
 
 (define-record clean)
-(define clean (make-clean))
+(define clean
+  @("A clean square")
+  (make-clean))
 
 (define-record dirty)
-(define dirty (make-dirty))
+(define dirty
+  @("A dirty square")
+  (make-dirty))
 
 (define-record unknown)
-(define unknown (make-unknown))
+(define unknown
+  @("An unknown square (either clean or dirty)")
+  (make-unknown))
 
-(define left 0)
-(define left? zero?)
+(define left
+  @("Index of the left square")
+  0)
+(define left?
+  @("Is this the left square?"
+    (square "The square to be lefted")
+    (@to "true if it is the left square"))
+  zero?)
 
-(define right 1)
-(define right? (cute = <> 1))
+(define right
+  @("Index of the right square")
+  1)
+(define right?
+  @("Is this the right square?"
+    (square "The square to be righted")
+    (@to "true if it is the right square"))
+  (cute = <> 1))
 
-(define make-world vector)
+(define make-world
+  @("Make a two-square vacuum-world."
+    (left "State of the left square (clean or dirty)")
+    (right "State of the left square (clean or dirty)")
+    (@to "a two-square vacuum world"))
+  vector)
 
-(define world-location vector-ref)
+(define world-location
+  @("Get a square-status (dirty, clean, unknown, &c.) from the
+two-square vacuum-world."
+    (square "The square's index (`left' or `right')")
+    (@to "The square-status"))
+  vector-ref)
 
-(define world-location-set! vector-set!)
+(define world-location-set!
+  @("Set the status of a square to dirty, clean, unknown, &c."
+    (square "The square to be set")
+    (status "The status to set it to"))
+  vector-set!)
 
 (define-record agent
+  @("The fundamental agent-record"
+    (location "Where the agent is located")
+    (score "The agent's score at a given time")
+    (program "The agent's program: an n-ary procedure where each
+argument corresponds to a sensor; what is received by the sensors
+depends on the environments contract with its agents."))
   location
   score
   program)
