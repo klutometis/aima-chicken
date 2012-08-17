@@ -2,7 +2,8 @@
  (author "Peter Danenberg")
  (category data)
  (license "BSD")
- (depends debug
+ (depends cock
+          debug
           foof-loop
           matchable
           random-bsd
