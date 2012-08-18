@@ -11,3 +11,7 @@
  'aima-vacuum
  (extension-version "0.5.2")
  compile-options: '(-X cock))
+
+;;; Generate docs.
+(run (cock -o aima.wiki aima.scm aima-core.scm aima-vacuum.scm aima-vacuum-core.scm "||"
+           echo cock not "installed:" not creating documentation))
