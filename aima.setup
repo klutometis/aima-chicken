@@ -4,12 +4,12 @@
 
 (setup-shared-extension-module
  'aima
- (extension-version "0.5.2")
+ (extension-version "0.5.3")
  compile-options: '(-X cock))
 
 (setup-shared-extension-module
  'aima-vacuum
- (extension-version "0.5.2")
+ (extension-version "0.5.3")
  compile-options: '(-X cock))
 
 ;;; Generate docs.
