@@ -1,7 +1,8 @@
 (define n-vertices (make-parameter 100))
 
+(R-apply "library" '(deldir))
+
 (define (R-voronoi n-vertices)
-  (R-apply "library" '(deldir))
   (R-apply "$" (list
                 (R-apply "deldir"
                          (list (R-apply "rnorm" (list n-vertices))
@@ -114,14 +115,15 @@ tessellated-plane; as well as start and end nodes."
 (define (make-title title path-distance)
   (format "~a (~,2f)" title path-distance))
 
-(define (plot-tessellation tessellation path filename title)
+(R-apply "source" (list (make-pathname (repository-path)
+                                       "aima-tessellation.R")))
+
+(define (plot-tessellation tessellation path title filename)
   @("Plot the tessellation with its start and end nodes, as well as
 the path taken from start to end."
     (tessellation "The tessellation to plot")
     (path "A list of nodes")
     (filename "The PNG to which to write"))
-  (R-apply "source" (list (make-pathname (repository-path)
-                                         "aima-tessellation.R")))
   (let ((title (make-title title (path-distance path)))
         (path (list->vector path)))
     (let ((path-x (vector-map (lambda (i point) (point-x point)) path))
