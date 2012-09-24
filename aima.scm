@@ -1,6 +1,8 @@
-@(title "AIMA for Chicken Scheme")
+@(title "aima")
+@(description "AIMA-support for Chicken Scheme")
 @(author "Peter Danenberg")
 @(email "pcd@roxygen.org")
+@(username "klutometis")
 @(heading "AIMA")
 
 (module aima
@@ -9,6 +11,7 @@
    debug?
    debug-print
    default-steps
+   define-record-and-printer
    make-debug-environment
    make-step-limited-environment
    make-performance-measuring-environment
