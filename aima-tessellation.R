@@ -8,13 +8,15 @@ plot.voronoi <- function(voronoi,
                          start.y,
                          end.x,
                          end.y,
-                         filename) {
+                         filename,
+                         title) {
   png(filename, width=1024, heigh=768)
   q <- qplot(voronoi$x1,
              voronoi$y1,
              xlab="",
              ylab="") +
-  opts(legend.position='none') +
+  opts(legend.position='none',
+       title=title) +
   geom_point(aes(x=start.x,
                  y=start.y,
                  alpha=1.0),
