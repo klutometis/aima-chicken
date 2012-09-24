@@ -19,5 +19,11 @@
  files: '("aima-tessellation.R"))
 
 ;;; Generate docs.
-(run (cock -o aima.wiki aima.scm aima-core.scm aima-vacuum.scm aima-vacuum-core.scm "||"
-           echo cock not "installed:" not creating documentation))
+(run (cock -o aima.wiki
+           aima.scm
+           aima-core.scm
+           aima-vacuum.scm
+           aima-vacuum-core.scm
+           aima-tessellation.scm
+           aima-tessellation-core.scm
+           "||" echo cock not "installed:" not creating documentation))
