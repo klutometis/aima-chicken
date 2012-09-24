@@ -142,6 +142,10 @@ the path taken from start to end."
               title))))
 
 (define (plot-tessellation/animation tessellation path title filename)
+  @("Plot the tessellation as an animation fit for YouTube."
+    (tessellation "The tessellation to plot")
+    (path "A list of nodes")
+    (filename "A base filename, unto which will be appended `.avi'"))
   (let ((directory (create-temporary-directory)))
     (let iter ((path path)
                (i (- (length path) 1)))
