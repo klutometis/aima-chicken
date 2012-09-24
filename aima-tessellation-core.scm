@@ -118,22 +118,35 @@ tessellated-plane; as well as start and end nodes."
 (R-apply "source" (list (make-pathname (repository-path)
                                        "aima-tessellation.R")))
 
-(define (plot-tessellation tessellation path title filename)
+(define (path-x path)
+  (vector-map (lambda (i point) (point-x point)) path))
+
+(define (paths-x paths)
+  (R-apply "list" (map path-x paths)))
+
+(define (path-y path)
+  (vector-map (lambda (i point) (point-y point)) path))
+
+(define (paths-y paths)
+  (R-apply "list" (map path-y paths)))
+
+(define (plot-tessellation tessellation path1 path2 title filename)
   @("Plot the tessellation with its start and end nodes, as well as
 the path taken from start to end."
     (tessellation "The tessellation to plot")
     (path "A list of nodes")
     (filename "The PNG to which to write"))
-  (let ((title (make-title title (path-distance path)))
-        (path (list->vector path)))
-    (let ((path-x (vector-map (lambda (i point) (point-x point)) path))
-          (path-y (vector-map (lambda (i point) (point-y point)) path))
-          (start (tessellation-start tessellation))
+  (let ((title (make-title title (path-distance path1)))
+        (path1 (list->vector path1))
+        (path2 (list->vector path2)))
+    (let ((start (tessellation-start tessellation))
           (end (tessellation-end tessellation)))
       (R-eval "plot.voronoi"
               (tessellation-R-object tessellation)
-              path-x
-              path-y
+              (path-x path1)
+              (path-y path1)
+              (path-x path2)
+              (path-y path2)
               (point-x start)
               (point-y start)
               (point-x end)

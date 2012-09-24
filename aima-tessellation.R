@@ -1,9 +1,12 @@
 library(debug)
 library(ggplot2)
+library(lisp)
 
 plot.voronoi <- function(voronoi,
-                         path.x,
-                         path.y,
+                         path1.x,
+                         path1.y,
+                         path2.x,
+                         path2.y,
                          start.x,
                          start.y,
                          end.x,
@@ -50,16 +53,25 @@ plot.voronoi <- function(voronoi,
                   digits=2),
                 alpha=1.0),
             size=5) +
-  ## We have to do this in segments, if we want to be able to model
-  ## bi-directional search.
-  geom_path(aes(x=path.x,
-                y=path.y,
-                alpha=1.0),
-            color='red',
-            size=2.5) +
   geom_point(aes(x=voronoi$x1,
                  y=voronoi$y1,
                  alpha=1.0))
+  q <- q + geom_path(aes(x=path1.x,
+                         y=path1.y,
+                         alpha=1.0),
+                     color=1,
+                     size=2.5)
+  q <- q + geom_path(aes(x=path2.x,
+                         y=path2.y,
+                         alpha=1.0),
+                     color=2,
+                     size=2.5)
+  ## for.each(function(path.x, path.y, color) {
+  ##          q <<- q + 
+  ##          },
+  ##          paths.x,
+  ##          paths.y,
+  ##          seq(length(paths.x)))
   plot(q)
   dev.off()
 }
