@@ -12,6 +12,12 @@
  (extension-version "0.6")
  compile-options: '(-X cock))
 
+(setup-shared-extension-module
+ 'aima-tessellation
+ (extension-version "0.6")
+ compile-options: '(-X cock)
+ files: '("aima-tessellation.R"))
+
 ;;; Generate docs.
 (run (cock -o aima.wiki aima.scm aima-core.scm aima-vacuum.scm aima-vacuum-core.scm "||"
            echo cock not "installed:" not creating documentation))
