@@ -1,4 +1,15 @@
 * TODO =debug?= -> =aima-debug?=
+* DONE Test tessellation
+  CLOSED: [2012-09-24 Mon 05:26]
+  #+BEGIN_SRC scheme :tangle test-tessellation.scm :shebang #!/usr/bin/env chicken-scheme
+    (use aima-tessellation debug)
+    
+    (let ((tessellation (tessellate)))
+      (plot-tessellation tessellation
+                         (vector (tessellation-start tessellation)
+                                 (tessellation-end tessellation))
+                         "harro.png"))
+  #+END_SRC
 * DONE Documentation!
   CLOSED: [2012-07-29 Sun 11:58]
   - CLOSING NOTE [2012-07-29 Sun 11:58] \\
