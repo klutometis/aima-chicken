@@ -10,13 +10,14 @@ plot.voronoi <- function(voronoi,
                          end.y,
                          filename,
                          title) {
-  png(filename, width=1024, heigh=768)
+  png(filename, width=1600, heigh=900)
   q <- qplot(voronoi$x1,
              voronoi$y1,
              xlab="",
              ylab="") +
   opts(legend.position='none',
-       title=title) +
+       title=title,
+       plot.title=theme_text(size=20)) +
   geom_point(aes(x=start.x,
                  y=start.y,
                  alpha=1.0),
@@ -26,7 +27,7 @@ plot.voronoi <- function(voronoi,
                 y=start.y,
                 label='Start',
                 alpha=1.0),
-            size=3) +
+            size=7) +
   geom_point(aes(x=end.x,
                  y=end.y,
                  alpha=1.0),
@@ -36,7 +37,7 @@ plot.voronoi <- function(voronoi,
                 y=end.y,
                 label='End',
                 alpha=1.0),
-            size=3) +
+            size=7) +
   geom_segment(aes(x=voronoi$x1,
                    xend=voronoi$x2,
                    y=voronoi$y1,
@@ -48,14 +49,14 @@ plot.voronoi <- function(voronoi,
                   (voronoi$y2 - voronoi$y1) ^ 2),
                   digits=2),
                 alpha=1.0),
-            size=3) +
+            size=5) +
   ## We have to do this in segments, if we want to be able to model
   ## bi-directional search.
   geom_path(aes(x=path.x,
                 y=path.y,
                 alpha=1.0),
             color='red',
-            size=2.0) +
+            size=3) +
   geom_point(aes(x=voronoi$x1,
                  y=voronoi$y1,
                  alpha=1.0))
