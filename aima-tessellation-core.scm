@@ -140,3 +140,35 @@ the path taken from start to end."
               (point-y end)
               filename
               title))))
+
+(define (plot-tessellation/animation tessellation path title filename)
+  (let ((directory (create-temporary-directory)))
+    (let iter ((path path)
+               (i (- (length path) 1)))
+      (debug i)
+      (if (null? path)
+          (begin
+            ;; Use `shell' instead.
+            #;
+            (system* "convert $(find ~a -type f | sort -k 1.~a -n) $(yes $(find ~a -type f | sort -k 1.~a -n | tail -n 1) | head -n 10) -loop 1 -delay 25 ~a.gif"
+                     directory
+                     (+ (string-length directory) 2)
+                     directory
+                     (+ (string-length directory) 2)
+                     filename)
+            (system* "convert $(find ~a -type f | sort -k 1.~a -n) $(yes $(find ~a -type f | sort -k 1.~a -n | tail -n 1) | head -n 10) -loop 0 ~a.gif"
+                     directory
+                     (+ (string-length directory) 2)
+                     directory
+                     (+ (string-length directory) 2)
+                     filename)
+            (system* "mencoder ~a.gif -ovc lavc -o ~a.avi"
+                     filename
+                     filename))
+          (begin
+            (plot-tessellation
+             tessellation
+             path
+             title
+             (make-pathname directory (format "~a.png" i)))
+            (iter (cdr path) (- i 1)))))))
