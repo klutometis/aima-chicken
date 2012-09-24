@@ -98,7 +98,7 @@ tessellated-plane; as well as start and end nodes."
            start
            end)))))))
 
-(define (plot-tessellation tessellation path filename)
+(define (plot-tessellation tessellation path filename title)
   @("Plot the tessellation with its start and end nodes, as well as
 the path taken from start to end."
     (tessellation "The tessellation to plot")
@@ -118,4 +118,5 @@ the path taken from start to end."
             (point-y start)
             (point-x end)
             (point-y end)
-            filename)))
+            filename
+            title)))
