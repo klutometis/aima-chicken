@@ -66,6 +66,12 @@
               (iter rest end))))))
 
 (define-record-and-printer tessellation
+  @("tessellation contains point and adjacency information for a
+tessellated-plane; as well as start and end nodes."
+    (points "The points in the tessellation")
+    (neighbors "The adjacency information for points")
+    (start "The start node for the problem")
+    (end "The end node for the problem"))
   R-object
   points
   neighbors
@@ -73,6 +79,9 @@
   end)
 
 (define tessellate
+  @("Tessellate the plane into disjoint, convex polygons."
+    (n-vertices "The numbers of vertices in the tessellation")
+    (@to "tessellation"))
   (case-lambda
    (() (tessellate (n-vertices)))
    ((n-vertices)
@@ -90,6 +99,11 @@
            end)))))))
 
 (define (plot-tessellation tessellation path filename)
+  @("Plot the tessellation with its start and end nodes, as well as
+the path taken from start to end."
+    (tessellation "The tessellation to plot")
+    (path "A vector of nodes")
+    (filename "The PNG to which to write"))
   (R-apply "source" (list (make-pathname (repository-path)
                                          "aima-tessellation.R")))
   (let ((path-x (vector-map (lambda (i point) (point-x point)) path))

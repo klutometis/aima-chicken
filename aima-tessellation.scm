@@ -1,4 +1,9 @@
+@(heading "AIMA-Tessellation")
+
 (module aima-tessellation
+  @("aima-tessellation has procedures for tessellating a plane into
+disjoint, convex polygons suitable for exercise 3.7; and then plotting
+that tessellation with a path.")
   (plot-tessellation
    point-x
    point-y
