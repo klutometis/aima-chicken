@@ -17,7 +17,7 @@ plot.voronoi <- function(voronoi,
              ylab="") +
   opts(legend.position='none',
        title=title,
-       plot.title=theme_text(size=20)) +
+       plot.title=theme_text(size=36)) +
   geom_point(aes(x=start.x,
                  y=start.y,
                  alpha=1.0),
@@ -56,7 +56,7 @@ plot.voronoi <- function(voronoi,
                 y=path.y,
                 alpha=1.0),
             color='red',
-            size=3) +
+            size=2.5) +
   geom_point(aes(x=voronoi$x1,
                  y=voronoi$y1,
                  alpha=1.0))
