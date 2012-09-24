@@ -1,5 +1,7 @@
 (define n-vertices (make-parameter 100))
 
+(define-record node state parent action path-cost)
+
 (R-apply "library" '(deldir))
 
 (define (R-voronoi n-vertices)
@@ -99,10 +101,11 @@ tessellated-plane; as well as start and end nodes."
            start
            end)))))))
 
-(define (distance p1 p2)
+(define (point-distance p1 p2)
   (sqrt (+ (expt (- (point-x p1) (point-x p2)) 2)
            (expt (- (point-y p1) (point-y p2)) 2))))
 
+#;
 (define (path-distance path)
   (if (= (length path) 1)
       0
@@ -118,35 +121,35 @@ tessellated-plane; as well as start and end nodes."
 (R-apply "source" (list (make-pathname (repository-path)
                                        "aima-tessellation.R")))
 
-(define (path-x path)
-  (vector-map (lambda (i point) (point-x point)) path))
+(define (predecessor-path node)
+  (let iter ((path (list node)))
+    (let ((parent (node-parent (car path))))
+      (if parent
+          (iter (cons parent path))
+          path))))
 
-(define (paths-x paths)
-  (R-apply "list" (map path-x paths)))
+(define (path-x path)
+  (map (lambda (node) (point-x (node-state node)))
+       path))
 
 (define (path-y path)
-  (vector-map (lambda (i point) (point-y point)) path))
+  (map (lambda (node) (point-y (node-state node)))
+       path))
 
-(define (paths-y paths)
-  (R-apply "list" (map path-y paths)))
-
-(define (plot-tessellation tessellation path1 path2 title filename)
+(define (plot-tessellation tessellation node title filename)
   @("Plot the tessellation with its start and end nodes, as well as
 the path taken from start to end."
     (tessellation "The tessellation to plot")
     (path "A list of nodes")
     (filename "The PNG to which to write"))
-  (let ((title (make-title title (path-distance path1)))
-        (path1 (list->vector path1))
-        (path2 (list->vector path2)))
+  (let ((title (make-title title (node-path-cost node)))
+        (path (predecessor-path node)))
     (let ((start (tessellation-start tessellation))
           (end (tessellation-end tessellation)))
       (R-eval "plot.voronoi"
               (tessellation-R-object tessellation)
-              (path-x path1)
-              (path-y path1)
-              (path-x path2)
-              (path-y path2)
+              (list->vector (path-x path))
+              (list->vector (path-y path))
               (point-x start)
               (point-y start)
               (point-x end)
