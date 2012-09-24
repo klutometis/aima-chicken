@@ -1,3 +1,4 @@
+* TODO Search-strategy and distance for tessellation-solution as title
 * TODO =debug?= -> =aima-debug?=
 * DONE Test tessellation
   CLOSED: [2012-09-24 Mon 05:26]
