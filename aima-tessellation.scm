@@ -5,6 +5,7 @@
 disjoint, convex polygons suitable for exercise 3.7; and then plotting
 that tessellation with a path.")
   (plot-tessellation
+   plot-tessellation/animation
    point-x
    point-y
    tessellate
@@ -24,6 +25,7 @@ that tessellation with a path.")
        R
        srfi-1
        srfi-69
+       utils
        vector-lib)
 
   (include "aima-tessellation-core.scm"))
