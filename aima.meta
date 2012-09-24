@@ -5,6 +5,7 @@
  (depends cock
           debug
           foof-loop
+          format
           matchable
           R
           random-bsd

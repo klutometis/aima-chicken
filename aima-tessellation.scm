@@ -18,6 +18,7 @@ that tessellation with a path.")
   (use aima
        debug
        files
+       format
        lolevel
        matchable
        R

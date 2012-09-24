@@ -98,25 +98,43 @@ tessellated-plane; as well as start and end nodes."
            start
            end)))))))
 
+(define (distance p1 p2)
+  (sqrt (+ (expt (- (point-x p1) (point-x p2)) 2)
+           (expt (- (point-y p1) (point-y p2)) 2))))
+
+(define (path-distance path)
+  (if (= (length path) 1)
+      0
+      (let ((distances
+             (map distance
+                  (drop-right path 1)
+                  (drop path 1))))
+        (apply + distances))))
+
+(define (make-title title path-distance)
+  (format "~a (~,2f)" title path-distance))
+
 (define (plot-tessellation tessellation path filename title)
   @("Plot the tessellation with its start and end nodes, as well as
 the path taken from start to end."
     (tessellation "The tessellation to plot")
-    (path "A vector of nodes")
+    (path "A list of nodes")
     (filename "The PNG to which to write"))
   (R-apply "source" (list (make-pathname (repository-path)
                                          "aima-tessellation.R")))
-  (let ((path-x (vector-map (lambda (i point) (point-x point)) path))
-        (path-y (vector-map (lambda (i point) (point-y point)) path))
-        (start (tessellation-start tessellation))
-        (end (tessellation-end tessellation)))
-    (R-eval "plot.voronoi"
-            (tessellation-R-object tessellation)
-            path-x
-            path-y
-            (point-x start)
-            (point-y start)
-            (point-x end)
-            (point-y end)
-            filename
-            title)))
+  (let ((title (make-title title (path-distance path)))
+        (path (list->vector path)))
+    (let ((path-x (vector-map (lambda (i point) (point-x point)) path))
+          (path-y (vector-map (lambda (i point) (point-y point)) path))
+          (start (tessellation-start tessellation))
+          (end (tessellation-end tessellation)))
+      (R-eval "plot.voronoi"
+              (tessellation-R-object tessellation)
+              path-x
+              path-y
+              (point-x start)
+              (point-y start)
+              (point-x end)
+              (point-y end)
+              filename
+              title))))
