@@ -105,18 +105,8 @@ tessellated-plane; as well as start and end nodes."
   (sqrt (+ (expt (- (point-x p1) (point-x p2)) 2)
            (expt (- (point-y p1) (point-y p2)) 2))))
 
-#;
-(define (path-distance path)
-  (if (= (length path) 1)
-      0
-      (let ((distances
-             (map distance
-                  (drop-right path 1)
-                  (drop path 1))))
-        (apply + distances))))
-
-(define (make-title title path-distance)
-  (format "~a (~,2f)" title path-distance))
+(define (make-title title path-length path-cost)
+  (format "~a; length: ~a, cost: ~,2f" title path-length path-cost))
 
 (R-apply "source" (list (make-pathname (repository-path)
                                        "aima-tessellation.R")))
@@ -136,14 +126,13 @@ tessellated-plane; as well as start and end nodes."
   (map (lambda (node) (point-y (node-state node)))
        path))
 
-(define (plot-tessellation tessellation node title filename)
+(define (plot-tessellation tessellation path title filename)
   @("Plot the tessellation with its start and end nodes, as well as
 the path taken from start to end."
     (tessellation "The tessellation to plot")
     (path "A list of nodes")
     (filename "The PNG to which to write"))
-  (let ((title (make-title title (node-path-cost node)))
-        (path (predecessor-path node)))
+  (let ((title (make-title title (length path) (node-path-cost (car path)))))
     (let ((start (tessellation-start tessellation))
           (end (tessellation-end tessellation)))
       (R-eval "plot.voronoi"
@@ -157,26 +146,18 @@ the path taken from start to end."
               filename
               title))))
 
-(define (plot-tessellation/animation tessellation node title filename)
+(define (plot-tessellation/animation tessellation path title filename)
   @("Plot the tessellation as an animation fit for YouTube."
     (tessellation "The tessellation to plot")
     (path "A list of nodes")
     (filename "A base filename, unto which will be appended `.avi'"))
-  (let ((directory (create-temporary-directory))
-        (path (predecessor-path node)))
-    (let iter ((path path)
+  (let ((directory (create-temporary-directory)))
+    (let iter ((path (reverse path))
                (i (- (length path) 1)))
       (debug i)
       (if (null? path)
           (begin
-            ;; Use `shell' instead.
-            #;
-            (system* "convert $(find ~a -type f | sort -k 1.~a -n) $(yes $(find ~a -type f | sort -k 1.~a -n | tail -n 1) | head -n 10) -loop 1 -delay 25 ~a.gif"
-                     directory
-                     (+ (string-length directory) 2)
-                     directory
-                     (+ (string-length directory) 2)
-                     filename)
+            ;; TODO: Use `shell' instead.
             (system* "convert $(find ~a -type f | sort -k 1.~a -n) $(yes $(find ~a -type f | sort -k 1.~a -n | tail -n 1) | head -n 10) -loop 0 ~a.gif"
                      directory
                      (+ (string-length directory) 2)
