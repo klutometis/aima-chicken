@@ -1,6 +1,15 @@
 (define n-vertices (make-parameter 100))
 
-(define-record node state parent action path-cost)
+(define-record node
+  @("Data structure for graphs"
+    (state "An indexable point")
+    (parent "The node-predecessor")
+    (action "Not used")
+    (path-cost "Cost of the path up to this point"))
+  state
+  parent
+  action
+  path-cost)
 
 (R-apply "library" '(deldir))
 
@@ -102,6 +111,10 @@ tessellated-plane; as well as start and end nodes."
            end)))))))
 
 (define (point-distance p1 p2)
+  @("Calculate the distance between two points."
+    (p1 "The first point")
+    (p2 "The second point")
+    (@to "distance"))
   (sqrt (+ (expt (- (point-x p1) (point-x p2)) 2)
            (expt (- (point-y p1) (point-y p2)) 2))))
 
@@ -112,6 +125,9 @@ tessellated-plane; as well as start and end nodes."
                                        "aima-tessellation.R")))
 
 (define (predecessor-path node)
+  @("List the predecessors of this node."
+    (node "The node to predecess")
+    (@to "list"))
   (let iter ((path (list node)))
     (let ((parent (node-parent (car path))))
       (if parent
@@ -131,6 +147,7 @@ tessellated-plane; as well as start and end nodes."
 the path taken from start to end."
     (tessellation "The tessellation to plot")
     (path "A list of nodes")
+    (title "Title for the graph")
     (filename "The PNG to which to write"))
   (let ((title (make-title title (length path) (node-path-cost (car path)))))
     (let ((start (tessellation-start tessellation))
@@ -150,6 +167,7 @@ the path taken from start to end."
   @("Plot the tessellation as an animation fit for YouTube."
     (tessellation "The tessellation to plot")
     (path "A list of nodes")
+    (title "Title for the animation")
     (filename "A base filename, unto which will be appended `.avi'"))
   (let ((directory (create-temporary-directory)))
     (let iter ((path (reverse path))
