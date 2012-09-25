@@ -1,5 +1,5 @@
 * TODO Join tessellation-animations.
-  See [[http://www.misterhowto.com/index.phpcategory%3DComputers&subcategory%3DVideo&article%3Djoin_with_mencoder][here]].
+  See [[http://www.misterhowto.com/index.php?category%3DComputers&subcategory%3DVideo&article%3Djoin_with_mencoder][here]].
 * TODO Comparative animations of multiple paths
 * DONE Search-strategy and distance for tessellation-solution as title
   CLOSED: [2012-09-24 Mon 08:09]
