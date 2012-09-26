@@ -4,7 +4,8 @@
   @("aima-tessellation has procedures for tessellating a plane into
 disjoint, convex polygons suitable for exercise 3.7; and then plotting
 that tessellation with a path.")
-  (make-node
+  (join-animations
+   make-node
    node-state
    node-state-set!
    node-parent
@@ -28,12 +29,16 @@ that tessellation with a path.")
   (import chicken scheme)
 
   (use aima
+       data-structures
        debug
+       extras
        files
        format
        lolevel
        matchable
+       posix
        R
+       shell
        srfi-1
        srfi-69
        utils
