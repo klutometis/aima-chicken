@@ -1,9 +1,15 @@
-* TODO Join tessellation-animations.
+* TODO =debug?= -> =aima-debug?=
+* TODO Screencast on how to do a simple reflex agent.
+* DONE Skip the animated gif!
+  CLOSED: [2012-09-25 Tue 18:19]
+  #+BEGIN_SRC sh
+    mencoder "mf://@list" -mf fps=4 -o output.avi -ovc lavc -lavcopts vcodec=mpeg4
+  #+END_SRC
+* DONE Join tessellation-animations.
+  CLOSED: [2012-09-25 Tue 18:19]
   See [[http://www.misterhowto.com/index.php?category%3DComputers&subcategory%3DVideo&article%3Djoin_with_mencoder][here]].
-* TODO Comparative animations of multiple paths
 * DONE Search-strategy and distance for tessellation-solution as title
   CLOSED: [2012-09-24 Mon 08:09]
-* TODO =debug?= -> =aima-debug?=
 * DONE Test tessellation
   CLOSED: [2012-09-24 Mon 05:26]
   #+BEGIN_SRC scheme :tangle test-tessellation.scm :shebang #!/usr/bin/env chicken-scheme
@@ -953,13 +959,6 @@
 ** TODO There's a disparity between what characters TeX and Scheme allow.
    This may bite us in things like labels; certainly, some escaping
    will have to take place.
-* TODO Allow specifying agent programs for graph agents.
-* TODO Disguise hash-table operations in graph-world.
-* TODO Need to distinguish betwee world and graph-world in vacuum.
-* TODO =aima-vacuum= as a module that exposes =vacuum-two-square= and =vacuum-graph=
-* TODO When agent return =#<undefined>=, there is an infinite loop.
-* TODO Screencast on how to do a simple reflex agent.
-* TODO One final debug output after last action.
 * DONE Optional debugging environments.
   CLOSED: [2012-06-29 Fri 16:40]
   Can either have no-op environments that we graft in; or some other
@@ -1193,6 +1192,22 @@
     
     (debug <stack>)
   #+END_SRC
+* CANCELED Comparative animations of multiple paths
+  CLOSED: [2012-09-25 Tue 18:19]
+  - CLOSING NOTE [2012-09-25 Tue 18:19] \\
+    We're doing serial animations with join-animations.
+* CANCELED Allow specifying agent programs for graph agents.
+  CLOSED: [2012-09-25 Tue 18:19]
+* CANCELED Disguise hash-table operations in graph-world.
+  CLOSED: [2012-09-25 Tue 18:19]
+* CANCELED Need to distinguish betwee world and graph-world in vacuum.
+  CLOSED: [2012-09-25 Tue 18:19]
+* CANCELED =aima-vacuum= as a module that exposes =vacuum-two-square= and =vacuum-graph=
+  CLOSED: [2012-09-25 Tue 18:19]
+* CANCELED When agent return =#<undefined>=, there is an infinite loop.
+  CLOSED: [2012-09-25 Tue 18:19]
+* CANCELED One final debug output after last action.
+  CLOSED: [2012-09-25 Tue 18:20]
 * CANCELED sample-with-replacement
   CLOSED: [2012-06-28 Thu 11:32]
   #+BEGIN_SRC scheme
