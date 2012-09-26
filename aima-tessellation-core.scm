@@ -163,34 +163,36 @@ the path taken from start to end."
               filename
               title))))
 
+(define (animation-filename directory index)
+  (make-pathname directory (format "~4,48d" index) "png"))
+
 (define (plot-tessellation/animation tessellation path title filename)
   @("Plot the tessellation as an animation fit for YouTube."
     (tessellation "The tessellation to plot")
     (path "A list of nodes")
     (title "Title for the animation")
-    (filename "A base filename, unto which will be appended `.avi'"))
+    (filename "A filename for the movie (ending in e.g. .avi)"))
   (let ((directory (create-temporary-directory)))
     (let iter ((path (reverse path))
                (i (- (length path) 1)))
-      (debug i)
       (if (null? path)
-          (begin
-            ;; TODO: Use `shell' instead.
-            (system* "convert $(find ~a -type f | sort -k 1.~a -n) $(yes $(find ~a -type f | sort -k 1.~a -n | tail -n 1) | head -n 10) -loop 0 ~a.gif"
-                     directory
-                     (+ (string-length directory) 2)
-                     directory
-                     (+ (string-length directory) 2)
-                     filename)
-            (system* "mencoder ~a.gif -ovc lavc -o ~a.avi"
-                     filename
-                     filename))
-          (begin
+          ;; The first frame corrupts the movie; I don't know why.
+          (let* ((frames (cdr (sort (glob (make-pathname directory "*")) string<?)))
+                 (final-frame (last frames))
+                 ;; Freeze the final frame for a little while.
+                 (epilogue (make-list 10 final-frame)))
+            (let ((frame-list (create-temporary-file)))
+              (with-output-to-file frame-list
+                (lambda () (for-each write-line (append frames epilogue))))
+              (run (mencoder ,(format "mf://@~a" frame-list) -mf fps=4 -o ,filename -ovc copy))))
+          (let ((filename (animation-filename directory i)))
+            (format #t "~a~%" filename)
             (plot-tessellation
              tessellation
              path
              title
-             (make-pathname directory (format "~a.png" i)))
+             filename)
             (iter (cdr path) (- i 1)))))))
+
 (define (join-animations output . animations)
   (run (mencoder -ovc copy -idx -o ,output ,@animations)))
