@@ -171,7 +171,7 @@ the path taken from start to end."
     (tessellation "The tessellation to plot")
     (path "A list of nodes")
     (title "Title for the animation")
-    (filename "A filename for the movie (ending in e.g. .avi)"))
+    (filename "A filename for the movie (ending in e.g. `.avi')"))
   (let ((directory (create-temporary-directory)))
     (let iter ((path (reverse path))
                (i (- (length path) 1)))
@@ -195,4 +195,7 @@ the path taken from start to end."
             (iter (cdr path) (- i 1)))))))
 
 (define (join-animations output . animations)
+  @("Join the animation files into one long file."
+    (output "The resultant file")
+    (animations "The input files"))
   (run (mencoder -ovc copy -idx -o ,output ,@animations)))
