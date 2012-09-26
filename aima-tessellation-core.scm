@@ -192,3 +192,5 @@ the path taken from start to end."
              title
              (make-pathname directory (format "~a.png" i)))
             (iter (cdr path) (- i 1)))))))
+(define (join-animations output . animations)
+  (run (mencoder -ovc copy -idx -o ,output ,@animations)))
