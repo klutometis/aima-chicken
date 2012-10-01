@@ -173,7 +173,7 @@ the path taken from start to end."
     (title "Title for the animation")
     (filename "A filename for the movie (ending in e.g. `.avi')"))
   (let ((directory (create-temporary-directory)))
-    (let iter ((path (reverse path))
+    (let iter ((path path)
                (i (- (length path) 1)))
       (if (null? path)
           ;; The first frame corrupts the movie; I don't know why.
@@ -184,7 +184,7 @@ the path taken from start to end."
             (let ((frame-list (create-temporary-file)))
               (with-output-to-file frame-list
                 (lambda () (for-each write-line (append frames epilogue))))
-              (run (mencoder ,(format "mf://@~a" frame-list) -mf fps=4 -o ,filename -ovc copy))))
+              (run (mencoder ,(format "mf://@~a" frame-list) -mf fps=4 -o ,filename -ovc lavc))))
           (let ((filename (animation-filename directory i)))
             (format #t "~a~%" filename)
             (plot-tessellation
