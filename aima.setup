@@ -4,17 +4,17 @@
 
 (setup-shared-extension-module
  'aima
- (extension-version "0.7.3")
+ (extension-version "0.7.4")
  compile-options: '(-X cock))
 
 (setup-shared-extension-module
  'aima-vacuum
- (extension-version "0.7.3")
+ (extension-version "0.7.4")
  compile-options: '(-X cock))
 
 (setup-shared-extension-module
  'aima-tessellation
- (extension-version "0.7.3")
+ (extension-version "0.7.4")
  compile-options: '(-X cock)
  files: '("aima-tessellation.R"))
 
