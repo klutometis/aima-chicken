@@ -1,5 +1,6 @@
 * TODO Abstract a =general-search=.
-  See AIMA 3.7d.
+  See AIMA 3.7d. Might even create a search egg, if it's general
+  enough.
 * TODO =debug?= -> =aima-debug?=
 * TODO Screencast on how to do a simple reflex agent.
 * DONE Skip the animated gif!
