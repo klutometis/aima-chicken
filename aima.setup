@@ -26,4 +26,4 @@
            aima-vacuum-core.scm
            aima-tessellation.scm
            aima-tessellation-core.scm
-           "||" echo cock not "installed:" not creating documentation))
+           "||" echo cock-utils not "installed:" not creating documentation))
