@@ -11,26 +11,23 @@
   action
   path-cost)
 
-(R-apply "library" '(deldir))
+(R (library "deldir"))
+(R (source ,(make-pathname (repository-path) "aima-tessellation.R")))
 
 (define (R-voronoi n-vertices)
-  (R-apply "$" (list
-                (R-apply "deldir"
-                         (list (R-apply "rnorm" (list n-vertices))
-                               (R-apply "rnorm" (list n-vertices))))
-                "dirsgs")))
+  (R ($ (deldir (rnorm ,n-vertices) (rnorm ,n-vertices)) "dirsgs")))
 
 (define (voronoi R-voronoi)
-  (R-eval "apply" R-voronoi 1 (R-apply "get" '("list"))))
+  (R* (apply ,R-voronoi 1 list)))
 
 (define-record-and-printer point x y)
 
 (define (voronoi-for-each f voronoi)
-  (vector-for-each
-   (lambda (i x)
-     (match x
-       (#(#(x1 y1 x2 y2 i1 i2 e1 e2))
-        (f x1 y1 x2 y2))))
+  (for-each
+      (lambda (x)
+        (match x
+          ((#(x1 y1 x2 y2 i1 i2 e1 e2))
+           (f x1 y1 x2 y2))))
    voronoi))
 
 (define (neighbors voronoi)
@@ -121,9 +118,6 @@ tessellated-plane; as well as start and end nodes."
 (define (make-title title path-length path-cost)
   (format "~a; length: ~a, cost: ~,2f" title path-length path-cost))
 
-(R-apply "source" (list (make-pathname (repository-path)
-                                       "aima-tessellation.R")))
-
 (define (predecessor-path node)
   @("List the predecessors of this node."
     (node "The node to predecess")
@@ -152,16 +146,16 @@ the path taken from start to end."
   (let ((title (make-title title (length path) (node-path-cost (car path)))))
     (let ((start (tessellation-start tessellation))
           (end (tessellation-end tessellation)))
-      (R-eval "plot.voronoi"
-              (tessellation-R-object tessellation)
-              (list->vector (path-x path))
-              (list->vector (path-y path))
-              (point-x start)
-              (point-y start)
-              (point-x end)
-              (point-y end)
-              filename
-              title))))
+      (R (plot.voronoi
+          ,(tessellation-R-object tessellation)
+          ,(list->vector (path-x path))
+          ,(list->vector (path-y path))
+          ,(point-x start)
+          ,(point-y start)
+          ,(point-x end)
+          ,(point-y end)
+          ,filename
+          ,title)))))
 
 (define (animation-filename directory index)
   (make-pathname directory (format "~4,48d" index) "png"))
