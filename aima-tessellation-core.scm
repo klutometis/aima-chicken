@@ -54,7 +54,7 @@
 
 (define (start points)
   (let iter ((points points)
-             (start (make-point +inf +inf)))
+             (start (make-point +inf.0 +inf.0)))
     (if (null? points)
         start
         (let ((point (car points))
@@ -65,7 +65,7 @@
 
 (define (end points)
   (let iter ((points points)
-             (end (make-point -inf -inf)))
+             (end (make-point -inf.0 -inf.0)))
     (if (null? points)
         end
         (let ((point (car points))

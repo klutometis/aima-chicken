@@ -36,6 +36,7 @@ that tessellation with a path.")
        format
        lolevel
        matchable
+       numbers
        posix
        R
        shell

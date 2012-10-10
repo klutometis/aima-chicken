@@ -7,6 +7,7 @@
           foof-loop
           format
           matchable
+          numbers
           R
           random-bsd
           setup-helper
