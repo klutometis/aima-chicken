@@ -73,3 +73,5 @@
                           (simulate-graph world agent))
                         (agent-score agent))))))
        (/ (apply + scores) (length scores))))))
+
+(test-exit)
