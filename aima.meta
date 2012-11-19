@@ -4,8 +4,10 @@
  (license "BSD")
  (depends cock
           debug
+          define-record-and-printer
           foof-loop
           format
+          heap
           matchable
           numbers
           R

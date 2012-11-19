@@ -18,6 +18,11 @@
  compile-options: '(-X cock)
  files: '("aima-tessellation.R"))
 
+(setup-shared-extension-module
+ 'aima-search
+ (extension-version "0.7.7")
+ compile-options: '(-X cock))
+
 ;;; Generate docs.
 (run (cock -o aima.wiki
            aima.scm
