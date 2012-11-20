@@ -14,6 +14,7 @@ depth-first, uniform-cost, recursive best-first (in progress).")
    node-action-set!
    node-path-cost
    node-path-cost-set!
+   predecessor-path
    ;; Points
    make-point
    point-x
