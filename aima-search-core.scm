@@ -138,7 +138,7 @@
         (return (predecessor-path predecessor))
         (let ((successors (successors predecessor)))
           (if (null? successors)
-              (values #f +inf)
+              (values #f +inf.0)
               (let ((heap (make-min-heap)))
                 (for-each
                     (lambda (successor)
@@ -167,7 +167,7 @@
                         (values #f best-path-cost)
                         (let ((alternative
                                (if (= (heap-size heap) 1)
-                                   +inf
+                                   +inf.0
                                    (let ((first
                                           (heap-extract-extremum! heap))
                                          (alternative
@@ -196,7 +196,7 @@
                                 (values predecessor best-path-cost)
                                 (iter))))))))))))
   (call/cc (lambda (return)
-             (search return (make-initial-node start) +inf))))
+             (search return (make-initial-node start) +inf.0))))
 
 (define-record-and-printer point x y)
 
