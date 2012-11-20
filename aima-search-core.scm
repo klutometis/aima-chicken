@@ -40,7 +40,7 @@
           (let* ((predecessor (frontier-delete! frontier))
                  (successors (successors predecessor)))
             (hash-table-set! visited (node-state predecessor) #f)
-            (if (goal? (node-state predecessor))
+            (if (goal? predecessor)
                 (reverse (predecessor-path predecessor))
                 (let ((unvisited-successors
                        (filter (lambda (successor)
