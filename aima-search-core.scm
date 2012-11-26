@@ -200,6 +200,11 @@
 
 (define-record-and-printer point x y)
 
+(define (make-random-points n)
+  (do ((points '() (cons (make-point (random-real) (random-real)) points))
+       (n n (- n 1)))
+      ((zero? n) points)))
+
 (define (point-distance p1 p2)
   @("Calculate the distance between two points."
     (p1 "The first point")

@@ -17,6 +17,7 @@ depth-first, uniform-cost, recursive best-first (in progress).")
    predecessor-path
    ;; Points
    make-point
+   make-random-points
    point-x
    point-x-set!
    point-y
