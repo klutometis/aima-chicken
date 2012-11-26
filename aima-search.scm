@@ -40,6 +40,7 @@ depth-first, uniform-cost, recursive best-first (in progress).")
        debug
        define-record-and-printer
        heap
+       random-bsd
        stack)
 
   (include "aima-search-core.scm"))
