@@ -4,23 +4,23 @@
 
 (setup-shared-extension-module
  'aima
- (extension-version "0.8.2")
+ (extension-version "0.8.3")
  compile-options: '(-X cock))
 
 (setup-shared-extension-module
  'aima-vacuum
- (extension-version "0.8.2")
+ (extension-version "0.8.3")
  compile-options: '(-X cock))
 
 (setup-shared-extension-module
  'aima-tessellation
- (extension-version "0.8.2")
+ (extension-version "0.8.3")
  compile-options: '(-X cock)
  files: '("aima-tessellation.R"))
 
 (setup-shared-extension-module
  'aima-search
- (extension-version "0.8.2")
+ (extension-version "0.8.3")
  compile-options: '(-X cock))
 
 ;;; Generate docs.
