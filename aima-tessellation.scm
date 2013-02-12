@@ -7,6 +7,7 @@ that tessellation with a path.")
   (join-animations
    make-point
    make-node
+   n-vertices
    node-state
    node-state-set!
    node-parent
