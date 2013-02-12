@@ -5,6 +5,7 @@
 disjoint, convex polygons suitable for exercise 3.7; and then plotting
 that tessellation with a path.")
   (join-animations
+   make-point
    make-node
    node-state
    node-state-set!
