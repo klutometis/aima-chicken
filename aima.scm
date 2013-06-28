@@ -1,4 +1,4 @@
-@(title "aima")
+@(egg "aima")
 @(description "AIMA-support for Chicken Scheme")
 @(author "Peter Danenberg")
 @(email "pcd@roxygen.org")
