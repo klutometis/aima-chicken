@@ -23,6 +23,11 @@
  (extension-version "0.8.4")
  compile-options: '(-X cock))
 
+(setup-shared-extension-module
+ 'aima-csp
+ (extension-version "0.8.4")
+ compile-options: '(-X cock))
+
 ;;; Generate docs.
 (run (cock -o aima.wiki
            aima.scm
