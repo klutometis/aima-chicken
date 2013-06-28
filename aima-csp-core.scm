@@ -157,7 +157,7 @@ is {{#f}} or unspecified."
   @("Check arc-consistency of a csp; returns {{#t}} if the object is
 arc-consistent."
     (csp "A constraint-satisfaction object")
-    (to "boolean"))
+    (@to "boolean"))
   (let ((queue (list->queue (hash-table-keys (csp-constraints csp)))))
     (let iter ()
       (if (queue-empty? queue)
