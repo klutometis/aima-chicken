@@ -32,8 +32,10 @@
 (run (cock -o aima.wiki
            aima.scm
            aima-core.scm
-           aima-vacuum.scm
-           aima-vacuum-core.scm
+           aima-csp.scm
+           aima-csp-core.scm
            aima-tessellation.scm
            aima-tessellation-core.scm
+           aima-vacuum.scm
+           aima-vacuum-core.scm
            "||" echo cock-utils not "installed:" not creating documentation))
