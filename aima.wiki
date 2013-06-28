@@ -210,11 +210,10 @@ is {{#f}} or unspecified.
        (enumeration)))))
 </enscript>
 ==== {{ac-3}}
-<procedure>(ac-3 csp) → unspecified</procedure>
+<procedure>(ac-3 csp) → boolean</procedure>
 Check arc-consistency of a csp; returns {{#t}} if the object is
 arc-consistent.
 ; csp : A constraint-satisfaction object
-; to : boolean
 <enscript highlight="scheme">(define (ac-3 csp)
   (let ((queue (list->queue (hash-table-keys (csp-constraints csp)))))
     (let iter ()
