@@ -25,7 +25,7 @@
   (make-world dirty dirty)
   (make-stateful-reflex-agent left)))
 
-(parameterize ((current-test-epsilon 0.005))
+(parameterize ((current-test-epsilon 0.1))
   (test
    "Randomized graph agent on 100 different worlds"
    17300.0
