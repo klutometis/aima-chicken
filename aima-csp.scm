@@ -5,6 +5,9 @@
   (ac-3
    backtracking-search
    backtracking-enumeration
+   csp-constraints
+   csp-domains
+   csp-neighbors
    failure?
    make-csp
    neq?)
