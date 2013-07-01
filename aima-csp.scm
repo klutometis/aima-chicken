@@ -10,12 +10,12 @@
    neq?)
 
   (import scheme
-          chicken
-          data-structures
-          srfi-1
-          srfi-69)
+          chicken)
 
-  (use define-record-and-printer
-       matchable)
+  (use data-structures
+       define-record-and-printer
+       matchable
+       srfi-1
+       srfi-69)
 
   (include "aima-csp-core.scm"))
