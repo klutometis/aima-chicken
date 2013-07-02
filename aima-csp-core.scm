@@ -122,6 +122,8 @@ is {{#f}} or unspecified."
         (let iter ((values (order-domain-values variable csp)))
           (if (null? values)
               failure
+              ;; This is too early; don't need to copy if
+              ;; inconsistent.
               (let ((value (car values))
                     (csp (csp-copy csp))
                     (assignment (hash-table-copy assignment)))
