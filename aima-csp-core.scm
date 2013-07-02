@@ -185,7 +185,8 @@ arc-consistent."
       (if (null? x-domain)
           revised
           (let ((x-value (car x-domain)))
-            (if (any values (map (lambda (y-value) (constraint x-value y-value)) y-domain))
+            (if (any values (map (lambda (y-value)
+                                   (constraint x-value y-value)) y-domain))
                 (iter revised (cdr x-domain))
                 (begin
                   (hash-table-update!
