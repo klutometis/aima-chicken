@@ -97,7 +97,17 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
                        assigned-neighbors))))
 
 (define (inference csp variable value)
-  (make-hash-table))
+  (hash-table-set! (csp-domains csp) variable (list value))
+  (if (ac-3 csp)
+      (begin
+        (debug (hash-table-map (csp-domains csp) (lambda (variable domain) (length domain))))
+        (hash-table-fold (csp-domains csp)
+                         (lambda (variable values inference)
+                           (when (= 1 (length values))
+                             (hash-table-set! inference variable (car values)))
+                           inference)
+                         (make-hash-table)))
+      failure))
 
 (define backtracking-enumeration
   @("Enumerate up to {{n}} solutions of the {{csp}}; enumerate all if {{n}}
