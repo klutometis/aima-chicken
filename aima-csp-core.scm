@@ -157,6 +157,10 @@ is {{#f}} or unspecified."
                       ;; This might actually modify the domains in the CSP;
                       ;; better copy before we get here?
                       (let ((inferences (inference csp variable value)))
+                        ;; (debug (unless (failure? inferences) (hash-table->alist inferences))
+                        ;;        (hash-table->alist assignment))
+                        (unless (failure? inferences)
+                          (debug (hash-table->alist (delta inferences assignment))))
                         (if (failure? inferences)
                             (iter (cdr values))
                             (begin
