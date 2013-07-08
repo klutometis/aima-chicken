@@ -148,12 +148,10 @@ is {{#f}} or unspecified."
               failure
               ;; This is too early; don't need to copy if
               ;; inconsistent.
-              (let ((value (car values))
-                    (csp (csp-copy csp))
-                    (assignment (hash-table-copy assignment)))
-                ;; Do we have to address constraints at this point? Yes.
+              (let ((value (car values)))
                 (if (consistent? variable value assignment csp)
-                    (begin
+                    (let ((csp (csp-copy csp))
+                          (assignment (hash-table-copy assignment)))
                       ;; Copy at this point?
                       (hash-table-set! assignment variable value)
                       ;; This might actually modify the domains in the CSP;
