@@ -121,6 +121,24 @@ is {{#f}} or unspecified."
               (backtrack-enumerate n enumeration (make-assignment csp) csp)
               (enumeration)))))
 
+(define (delta inferences assignment)
+  (let ((delta (make-hash-table))
+        (assigned-variables
+         (hash-table-fold
+          assignment
+          (lambda (variable value assigned-variables)
+            (if (assigned? value)
+                (cons variable assigned-variables)
+                assigned-variables))
+          '()))
+        (inferred-variables (hash-table-keys inferences)))
+    (for-each (lambda (variable)
+                (hash-table-set! delta variable (hash-table-ref inferences variable)))
+      (lset-difference eq?
+                       inferred-variables
+                       assigned-variables))
+    delta))
+
 (define (backtrack-enumerate n enumeration assignment csp)
   (if (complete? assignment)
       (enumeration (cons assignment (enumeration)))
