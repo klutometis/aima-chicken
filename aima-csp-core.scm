@@ -79,13 +79,29 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
 (define (order-domain-values variable csp)
   (hash-table-ref (csp-domains csp) variable))
 
+(define (scope-order scope)
+  (map string->symbol (sort scope string<? symbol->string)))
+
+(define (constraints-set! constraints scope relation)
+  (hash-table-set constraints (scope-order scope) relation))
+
+(define (constraints-ref constraints scope)
+  (hash-table-ref constraints (scope-order scope)))
+
+;;; Messy; we have the convention that we apply values ordered by
+;;; their alphabetic variables?
+;;;
+;;; Or just zip-alist?
+(define (relation-apply relation variables values)
+  (relation (zip-alist variables values)))
+
 ;;; Find the assigned neighbors of the variable; does the value
 ;;; satisfy each constraint?
 ;;;
-;;; What if the variable is already assigned something else? Seems
-;;; like a pathological case.
+;;; For n-ary constraints, we're going to have to check every
+;;; permutation; combination, if we're doing undirected graphs.
 ;;;
-;;; Should we check here if we've already assigned something?
+;;; Pattern matching?
 (define (consistent? variable value assignment csp)
   ;; Use the default case when there are no neighbors.
   (let* ((neighbors (hash-table-ref/default (csp-neighbors csp) variable '()))
