@@ -87,12 +87,8 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
 ;;;
 ;;; Should we check here if we've already assigned something?
 (define (consistent? variable value assignment csp)
-  ;; (debug variable
-  ;;        value
-  ;;        (hash-table-ref assignment variable)
-  ;;        (or (unassigned? (hash-table-ref assignment variable))
-  ;;            (eq? value (hash-table-ref assignment variable))))
-  (let* ((neighbors (hash-table-ref (csp-neighbors csp) variable))
+  ;; Use the default case when there are no neighbors.
+  (let* ((neighbors (hash-table-ref/default (csp-neighbors csp) variable '()))
          (assigned-neighbors (filter (lambda (neighbor) (assigned? (hash-table-ref assignment neighbor)))
                                      neighbors)))
     (every values (map (lambda (neighbor) ((hash-table-ref (csp-constraints csp) (cons variable neighbor))
