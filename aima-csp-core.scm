@@ -107,16 +107,18 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
   (let* ((neighbors (hash-table-ref/default (csp-neighbors csp) variable '()))
          (assigned-neighbors (filter (lambda (neighbor) (assigned? (hash-table-ref assignment neighbor)))
                                      neighbors)))
-    (every values (map (lambda (neighbor) ((hash-table-ref (csp-constraints csp) (cons variable neighbor))
-                                      value
-                                      (hash-table-ref assignment neighbor)))
-                       assigned-neighbors))))
+    (let ((results (map (lambda (neighbor) ((hash-table-ref (csp-constraints csp) (cons variable neighbor))
+                                       value
+                                       (hash-table-ref assignment neighbor)))
+                        assigned-neighbors)))
+      ;; (debug variable value neighbors assigned-neighbors results)
+      (every values results))))
 
 (define (inference csp variable value)
   (hash-table-set! (csp-domains csp) variable (list value))
   (if (ac-3 csp)
       (begin
-        (debug (hash-table-map (csp-domains csp) (lambda (variable domain) (length domain))))
+        ;; (debug (hash-table-map (csp-domains csp) (lambda (variable domain) (length domain))))
         (hash-table-fold (csp-domains csp)
                          (lambda (variable values inference)
                            (when (= 1 (length values))
@@ -124,6 +126,9 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
                            inference)
                          (make-hash-table)))
       failure))
+
+;; (define (inference csp variable value)
+;;   (make-hash-table))
 
 (define backtracking-enumeration
   @("Enumerate up to {{n}} solutions of the {{csp}}; enumerate all if {{n}}
@@ -165,6 +170,10 @@ is {{#f}} or unspecified."
               ;; This is too early; don't need to copy if
               ;; inconsistent.
               (let ((value (car values)))
+                ;; (debug (consistent? variable value assignment csp)
+                ;;        variable
+                ;;        value
+                ;;        (hash-table->alist assignment))
                 (if (consistent? variable value assignment csp)
                     (let ((csp (csp-copy csp))
                           (assignment (hash-table-copy assignment)))
@@ -173,10 +182,12 @@ is {{#f}} or unspecified."
                       ;; This might actually modify the domains in the CSP;
                       ;; better copy before we get here?
                       (let ((inferences (inference csp variable value)))
-                        ;; (debug (unless (failure? inferences) (hash-table->alist inferences))
+                        ;; (debug inferences)
+                        ;; (debug (if (failure? inferences) failure (hash-table->alist inferences))
                         ;;        (hash-table->alist assignment))
-                        (unless (failure? inferences)
-                          (debug (hash-table->alist (delta inferences assignment))))
+                        ;; (debug (hash-table->alist assignment))
+                        ;; (unless (failure? inferences)
+                        ;;   (debug (hash-table->alist (delta inferences assignment))))
                         (if (failure? inferences)
                             (iter (cdr values))
                             (begin
