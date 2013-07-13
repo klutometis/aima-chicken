@@ -251,6 +251,66 @@ arc-consistent."
                      (delete x-value x-domain)))
                   (iter #t (cdr x-domain)))))))))
 
+(define (neighbors-from-constraints constraints)
+  (let ((neighbors (make-hash-table)))
+    (for-each (match-lambda ((x . y)
+                        (hash-table-update!/default
+                         neighbors
+                         x
+                         (lambda (Y) (cons y Y))
+                         '())))
+      (hash-table-keys constraints))
+    neighbors))
+
+(define (set-domains! domains variables domain)
+  (for-each (lambda (variable) (hash-table-set! domains variable domain))
+    variables))
+
+(define-syntax xor
+  (lambda (expression rename compare)
+    (match expression
+      ((_ x y)
+       (let ((%or (rename 'or))
+             (%and (rename 'and))
+             (%not (rename 'not)))
+         `(,%and (,%or ,x ,y)
+                 (,%not (,%and ,x ,y))))))))
+
+(define (set-pairwise-constraints! constraints X Y relation) 
+  R(for-each
+      (lambda (x)
+        (for-each
+            (lambda (y)
+              ;; Or do we want to merge these with some binary
+              ;; operation?
+              (hash-table-set! constraints (cons x y) relation))
+          (delete x Y)))
+    X))
+
+(define (set-bidirectional-constraint! constraints x y constraint-x constraint-y)
+  (hash-table-update!/default constraints
+                              (cons x y)
+                              (lambda (constraints-x)
+                                (lambda (x y) (and (constraint-x x y)
+                                              (constraints-x x y))))
+                              (lambda (x y) #t))
+  (hash-table-update!/default constraints
+                              (cons y x)
+                              (lambda (constraints-y)
+                                (lambda (y x) (and (constraint-y y x)
+                                              (constraints-y y x))))
+                              (lambda (x y) #t)))
+
+(define (set-pairwise-bidirectional-constraints! constraints X Y constraint-x constraint-y)
+  (for-each
+      (lambda (x y)
+        (set-bidirectional-constraint! constraints x y constraint-x constraint-y))
+    X
+    Y))
+
+(define (set-alldiff-constraints! constraints variables)
+  (set-pairwise-constraints! constraints variables variables neq?))
+
 (define neq?
   @("The complement to {{eq?}}"
     (x "Comparandum")
