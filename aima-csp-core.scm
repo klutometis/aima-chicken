@@ -102,7 +102,7 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
 ;;; permutation; combination, if we're doing undirected graphs.
 ;;;
 ;;; Pattern matching?
-(define (consistent? variable value assignment csp)
+(define (binary-consistent? variable value assignment csp)
   ;; Use the default case when there are no neighbors.
   (let* ((neighbors (hash-table-ref/default (csp-neighbors csp) variable '()))
          (assigned-neighbors (filter (lambda (neighbor) (assigned? (hash-table-ref assignment neighbor)))
@@ -114,7 +114,9 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
       ;; (debug variable value neighbors assigned-neighbors results)
       (every values results))))
 
-(define (inference csp variable value)
+(define consistent? (make-parameter binary-consistent?))
+
+(define (arc-inference csp variable value)
   (hash-table-set! (csp-domains csp) variable (list value))
   (if (ac-3 csp)
       (begin
@@ -126,6 +128,8 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
                            inference)
                          (make-hash-table)))
       failure))
+
+(define inference (make-parameter arc-inference))
 
 ;; (define (inference csp variable value)
 ;;   (make-hash-table))
@@ -143,6 +147,7 @@ is {{#f}} or unspecified."
               (enumeration)))))
 
 (define (delta inferences assignment)
+  (constraint-set! constraints (e) (= e 4))
   (let ((delta (make-hash-table))
         (assigned-variables
          (hash-table-fold
@@ -174,14 +179,14 @@ is {{#f}} or unspecified."
                 ;;        variable
                 ;;        value
                 ;;        (hash-table->alist assignment))
-                (if (consistent? variable value assignment csp)
+                (if ((consistent?) variable value assignment csp)
                     (let ((csp (csp-copy csp))
                           (assignment (hash-table-copy assignment)))
                       ;; Copy at this point?
                       (hash-table-set! assignment variable value)
                       ;; This might actually modify the domains in the CSP;
                       ;; better copy before we get here?
-                      (let ((inferences (inference csp variable value)))
+                      (let ((inferences ((inference) csp variable value)))
                         ;; (debug inferences)
                         ;; (debug (if (failure? inferences) failure (hash-table->alist inferences))
                         ;;        (hash-table->alist assignment))
