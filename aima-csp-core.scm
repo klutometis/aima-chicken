@@ -79,22 +79,6 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
 (define (order-domain-values variable csp)
   (hash-table-ref (csp-domains csp) variable))
 
-(define (scope-order scope)
-  (map string->symbol (sort scope string<? symbol->string)))
-
-(define (constraints-set! constraints scope relation)
-  (hash-table-set constraints (scope-order scope) relation))
-
-(define (constraints-ref constraints scope)
-  (hash-table-ref constraints (scope-order scope)))
-
-;;; Messy; we have the convention that we apply values ordered by
-;;; their alphabetic variables?
-;;;
-;;; Or just zip-alist?
-(define (relation-apply relation variables values)
-  (relation (zip-alist variables values)))
-
 ;;; Find the assigned neighbors of the variable; does the value
 ;;; satisfy each constraint?
 ;;;
@@ -147,7 +131,6 @@ is {{#f}} or unspecified."
               (enumeration)))))
 
 (define (delta inferences assignment)
-  (constraint-set! constraints (e) (= e 4))
   (let ((delta (make-hash-table))
         (assigned-variables
          (hash-table-fold
@@ -282,7 +265,7 @@ arc-consistent."
                  (,%not (,%and ,x ,y))))))))
 
 (define (set-pairwise-constraints! constraints X Y relation) 
-  R(for-each
+  (for-each
       (lambda (x)
         (for-each
             (lambda (y)

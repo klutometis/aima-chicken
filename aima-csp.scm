@@ -19,6 +19,7 @@
 
   (use data-structures
        define-record-and-printer
+       list-utils
        matchable
        srfi-1
        srfi-69)
