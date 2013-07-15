@@ -5,10 +5,12 @@
   (ac-3
    backtracking-search
    backtracking-enumeration
+   consistent?
    csp-constraints
    csp-domains
    csp-neighbors
    failure?
+   inference
    make-csp
    neq?)
 
