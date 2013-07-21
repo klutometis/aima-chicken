@@ -25,4 +25,6 @@
        srfi-1
        srfi-69)
 
+  (import-for-syntax matchable)
+
   (include "aima-csp-core.scm"))
