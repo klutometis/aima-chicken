@@ -261,6 +261,11 @@ arc-consistent."
     variables))
 
 (define-syntax xor
+  @("Logical xor: whether one or the other proposition is true (but
+not both)"
+    (x "A proposition")
+    (y "Another proposition")
+    (@to "boolean"))
   (lambda (expression rename compare)
     (match expression
       ((_ x y)
