@@ -8,6 +8,7 @@
           foof-loop
           format
           heap
+          list-utils
           matchable
           numbers
           R
