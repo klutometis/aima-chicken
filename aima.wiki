@@ -160,6 +160,7 @@ Solver for constraint-satisfaction-problems
 * [[#inference]]
 * [[#make-csp]]
 * [[#neq?]]
+* [[#xor]]
 ==== {{failure}}
 <constant>failure → (make-failure)</constant>
 The failure object: to distinguish ''bona-fide'' solutions to a
