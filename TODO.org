@@ -1,3 +1,4 @@
+* TODO Recursively sort the Australia tests.
 * TODO Create neighbors from constraints when creating CSPs.
 * TODO Abstract a =general-search=.
   See AIMA 3.7d. Might even create a search egg, if it's general
