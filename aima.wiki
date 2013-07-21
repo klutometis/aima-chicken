@@ -160,12 +160,19 @@ Solver for constraint-satisfaction-problems
 * [[#inference]]
 * [[#make-csp]]
 * [[#neq?]]
+* [[#success?]]
 * [[#xor]]
 ==== {{failure}}
 <constant>failure → (make-failure)</constant>
 The failure object: to distinguish ''bona-fide'' solutions to a
 CSP that are {{#f}}.
 <enscript highlight="scheme">(define failure (make-failure))
+</enscript>
+==== {{success?}}
+<procedure>(success? result) → boolean</procedure>
+Success is defined negatively as the absence of failure.
+; result : The result to test
+<enscript highlight="scheme">(define success? (complement failure?))
 </enscript>
 ==== {{csp}}
 <record>csp</record>
@@ -237,6 +244,20 @@ arc-consistent.
                         (delete y (hash-table-ref (csp-neighbors csp) x)))
                       (iter)))
                   (iter))))))))
+</enscript>
+==== {{xor}}
+<syntax>(xor x y) → boolean</syntax>
+Logical xor: whether one or the other proposition is true (but
+not both)
+; x : A proposition
+; y : Another proposition
+<enscript highlight="scheme">(define-syntax
+  xor
+  (lambda (expression rename compare)
+    (match expression
+           ((_ x y)
+            (let ((%or (rename 'or)) (%and (rename 'and)) (%not (rename 'not)))
+              `(,%and (,%or ,x ,y) (,%not (,%and ,x ,y))))))))
 </enscript>
 ==== {{neq?}}
 <procedure>(neq? x y) → boolean</procedure>
