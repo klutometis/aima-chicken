@@ -12,7 +12,8 @@
    failure?
    inference
    make-csp
-   neq?)
+   neq?
+   xor)
 
   (import scheme
           chicken)
