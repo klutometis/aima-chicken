@@ -8,6 +8,12 @@
 CSP that are {{#f}}.")
   (make-failure))
 
+(define success?
+  @("Success is defined negatively as the absence of failure."
+    (result "The result to test")
+    (@to "boolean"))
+ (complement failure?))
+
 (define-record-and-printer csp
   @("A constraint-satisfaction-problem"
     (domains "A hash-table mapping variables to possible values")
