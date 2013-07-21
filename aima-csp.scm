@@ -13,6 +13,7 @@
    inference
    make-csp
    neq?
+   success?
    xor)
 
   (import scheme
