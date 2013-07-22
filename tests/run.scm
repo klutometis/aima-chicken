@@ -179,9 +179,8 @@
 (test-assert "Arc-inconsistency"
              (not (ac-3 arc-inconsistent-coloring)))
 
-(test "Arc-consistent coloring"
-      '((b . white) (a . black))
-      (hash-table->alist (backtracking-search arc-consistent-coloring)))
+(test-assert "Arc-consistent coloring"
+             (success? (backtracking-search arc-consistent-coloring)))
 
 (test-assert "Arc-inconsistent coloring"
              (failure? (backtracking-search arc-inconsistent-coloring)))
