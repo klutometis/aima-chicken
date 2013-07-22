@@ -9,6 +9,7 @@
    csp-constraints
    csp-domains
    csp-neighbors
+   failure
    failure?
    inference
    make-csp
