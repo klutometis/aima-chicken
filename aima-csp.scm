@@ -13,6 +13,11 @@
    inference
    make-csp
    neq?
+   set-alldiff-constraints!
+   set-bidirectional-constraint!
+   set-pairwise-bidirectional-constraints!
+   set-pairwise-constraints!
+   set-domains!
    success?
    xor)
 
