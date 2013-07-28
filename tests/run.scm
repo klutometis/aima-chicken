@@ -195,4 +195,9 @@
       '()
       (backtracking-enumeration 2-color-australia))
 
+(let ((n 10))
+  (test "Random k-coloring problem"
+        n
+        (length (hash-table-keys (random-map n)))))
+
 (test-exit)
