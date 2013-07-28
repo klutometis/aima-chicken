@@ -14,6 +14,7 @@
    inference
    make-csp
    neq?
+   random-map
    set-alldiff-constraints!
    set-bidirectional-constraint!
    set-pairwise-bidirectional-constraints!
@@ -29,8 +30,10 @@
        define-record-and-printer
        list-utils
        matchable
+       random-bsd
        srfi-1
-       srfi-69)
+       srfi-69
+       srfi-95)
 
   (import-for-syntax matchable)
 
