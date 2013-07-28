@@ -316,3 +316,89 @@ not both)"
     (y "Comparator")
     (@to "boolean"))
   (complement eq?))
+
+(define (random-map n)
+  @("Create a random k-coloring problem; returns an adjacency-list of
+nodes as a hash-table."
+    (n "The number of nodes in the problem")
+    (@to "hash-table"))
+  (let ((random-points (random-points n))
+        (connections (make-hash-table)))
+    (let iter-point ((points random-points)
+                     (modified? #f))
+      (if (null? points)
+          (if modified?
+              (iter-point (shuffle random-points) #f)
+              connections)
+          (let ((point (car points)))
+            (let iter-counter-point
+                ((counter-points
+                  (sort-by-proximity point (delete point random-points))))
+              (if (null? counter-points)
+                  (iter-point (cdr points) modified?)
+                  (let ((counter-point (car counter-points)))
+                    (if (member point
+                                (hash-table-ref/default connections counter-point '()))
+                        (iter-counter-point (cdr counter-points))
+                        (if (intersects-other? connections point counter-point)
+                            (iter-counter-point (cdr counter-points))
+                            (begin
+                              (hash-table-update!/default
+                               connections
+                               point
+                               (lambda (counter-points)
+                                 (lset-adjoin eq? counter-points counter-point))
+                               '())
+                              (hash-table-update!/default
+                               connections
+                               counter-point
+                               (lambda (points)
+                                 (lset-adjoin eq? points point))
+                               '())
+                              (iter-point (cdr points) #t))))))))))))
+
+(define (counter-clockwise? a b c)
+  (> (* (- (point-y c) (point-y a))
+        (- (point-x b) (point-x a)))
+     (* (- (point-y b) (point-y a))
+        (- (point-x c) (point-x a)))))
+
+(define (intersect? a b c d)
+  (and (neq? a b) (neq? a d) (neq? b c) (neq? b d)
+       (xor (counter-clockwise? a c d) (counter-clockwise? b c d))
+       (xor (counter-clockwise? a b c) (counter-clockwise? a b d))))
+
+(define (random-points n)
+  (list-tabulate n (lambda (i) (make-point (random-real) (random-real)))))
+
+(define (sort-by-proximity point points)
+  (sort points < (lambda (sortiendum) (point-distance point sortiendum))))
+
+(define (intersects-other? connections point counter-point)
+  (call/cc
+   (lambda (return)
+     (hash-table-walk connections
+       (lambda (whence whithers)
+         (for-each (lambda (whither)
+                     (when (intersect? whence whither point counter-point)
+                       (return #t)))
+           whithers)))
+     (return #f))))
+
+(define-record-and-printer point x y)
+
+(define (point-distance p1 p2)
+  (sqrt (+ (expt (- (point-x p1) (point-x p2)) 2)
+           (expt (- (point-y p1) (point-y p2)) 2))))
+
+(define (shuffle! v)
+  (do ((n (vector-length v) (- n 1)))
+      ((zero? n) v)
+    (let* ((r (random n)) (t (vector-ref v r)))
+      (vector-set! v r (vector-ref v (- n 1)))
+      (vector-set! v (- n 1) t))))
+
+(define (shuffle list)
+  (let ((vector (list->vector list)))
+    (shuffle! vector)
+    (vector->list vector)))
