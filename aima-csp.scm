@@ -9,6 +9,7 @@
    csp-constraints
    csp-domains
    csp-neighbors
+   display-map-as-png
    failure
    failure?
    inference
@@ -21,6 +22,8 @@
    set-pairwise-constraints!
    set-domains!
    success?
+   write-map-as-dot
+   write-map-as-png
    xor)
 
   (import scheme
@@ -28,9 +31,12 @@
 
   (use data-structures
        define-record-and-printer
+       files
+       graphviz
        list-utils
        matchable
        random-bsd
+       shell
        srfi-1
        srfi-69
        srfi-95)
