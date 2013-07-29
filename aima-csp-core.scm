@@ -402,3 +402,47 @@ nodes as a hash-table."
   (let ((vector (list->vector list)))
     (shuffle! vector)
     (vector->list vector)))
+
+(define (make-labels points)
+  (let ((labels (make-hash-table)))
+    (for-each (lambda (point) (hash-table-set! labels point (gensym))) points)
+    labels))
+
+(define (write-map-as-dot map solution dot)
+  (with-output-to-file dot
+    (let ((points (hash-table-keys map))
+          (edges (make-hash-table)))
+      (lambda ()
+        (write-dot-preamble)
+        (let ((labels (make-labels points)))
+          (for-each (lambda (point)
+                      (write-node (hash-table-ref labels point)
+                                  (point-x point)
+                                  (point-y point)
+                                  (hash-table-ref solution point)))
+            points)
+          (hash-table-walk map
+            (lambda (whence whithers)
+              (let ((whence-label (hash-table-ref labels whence)))
+                (for-each (lambda (whither)
+                            (unless (hash-table-exists? edges (cons whither whence))
+                              (hash-table-set! edges (cons whence whither) #t)
+                              (let ((whither-label (hash-table-ref labels whither)))
+                                (write-edge whence-label whither-label))))
+                  whithers)))))
+        (write-dot-postscript)))))
+
+(define (write-map-as-png map solution png)
+  (let ((dot (create-temporary-file)))
+    (write-map-as-dot map solution dot)
+    (run (neato -n1 -Tpng -o ,png < ,dot))))
+
+(define default-viewer (make-parameter "sxiv"))
+
+(define display-map-as-png
+  (case-lambda ((map solution)
+           (display-map-as-png map solution (default-viewer)))
+          ((map solution viewer)
+           (let ((png (create-temporary-file ".png")))
+             (write-map-as-png map solution png)
+             (run (sxiv ,png))))))
