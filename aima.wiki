@@ -156,6 +156,7 @@ Solver for constraint-satisfaction-problems
 * [[#csp-constraints]]
 * [[#csp-domains]]
 * [[#csp-neighbors]]
+* [[#display-map-as-png]]
 * [[#failure]]
 * [[#failure?]]
 * [[#inference]]
@@ -168,6 +169,8 @@ Solver for constraint-satisfaction-problems
 * [[#set-pairwise-constraints!]]
 * [[#set-domains!]]
 * [[#success?]]
+* [[#write-map-as-dot]]
+* [[#write-map-as-png]]
 * [[#xor]]
 ==== {{failure}}
 <constant>failure → (make-failure)</constant>
