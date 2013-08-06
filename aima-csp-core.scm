@@ -129,12 +129,30 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
 is {{#f}} or unspecified."
     (n "Enumerate up to {{n}} solutions")
     (csp "The CSP to solve")
+    (cons "How to construct enumerations ({{cons}} by default)")
+    (nil "Base enumeration ({{()}} by default)")
+    (stop? "Unary function taking the current enumeration: {{#t}}
+stops, {{#f}} continues; by default, compares {{n}} to the length of
+the current enumeration.")
     (@to "list"))
   (case-lambda
    ((csp) (backtracking-enumeration #f csp))
-   ((n csp) (let ((enumeration (make-parameter '())))
-              (backtrack-enumerate n enumeration (make-assignment csp) csp)
-              (enumeration)))))
+   ((n csp)
+    (backtracking-enumeration
+     csp
+     cons
+     '()
+     (lambda (enumeration)
+       (and n (= (length enumeration) n)))))
+   ((csp cons nil stop?)
+    (let ((enumeration (make-parameter nil)))
+      (backtrack-enumerate
+       enumeration
+       (make-assignment csp)
+       csp
+       cons
+       stop?)
+      (enumeration)))))
 
 (define (delta inferences assignment)
   (let ((delta (make-hash-table))
@@ -154,7 +172,7 @@ is {{#f}} or unspecified."
                        assigned-variables))
     delta))
 
-(define (backtrack-enumerate n enumeration assignment csp)
+(define (backtrack-enumerate enumeration assignment csp cons stop?)
   (if (complete? assignment)
       (enumeration (cons assignment (enumeration)))
       (let ((variable (select-unassigned-variable assignment)))
@@ -193,11 +211,11 @@ is {{#f}} or unspecified."
                               ;; we have a complete assignment; don't
                               ;; we? Or should we handle the
                               ;; enumeration at the leaf?
-                              (let ((result (backtrack-enumerate n enumeration assignment csp)))
+                              (let ((result (backtrack-enumerate enumeration assignment csp cons stop?)))
                                 ;; (debug (if (failure? result) result (hash-table->alist result)))
                                 (if (failure? result)
                                     (iter (cdr values))
-                                    (unless (and n (= (length (enumeration)) n))
+                                    (unless (stop? (enumeration))
                                       (iter (cdr values)))))))))
                     (iter (cdr values)))))))))
 
