@@ -154,6 +154,7 @@ Solver for constraint-satisfaction-problems
 * [[#backtracking-enumeration]]
 * [[#consistent?]]
 * [[#csp-constraints]]
+* [[#csp-copy]]
 * [[#csp-domains]]
 * [[#csp-neighbors]]
 * [[#display-map-as-png]]
@@ -220,16 +221,26 @@ A trivial 2-coloring problem
 ==== {{backtracking-enumeration}}
 <procedure>(backtracking-enumeration csp) → list</procedure>
 <procedure>(backtracking-enumeration n csp) → list</procedure>
+<procedure>(backtracking-enumeration csp cons nil stop?) → list</procedure>
 Enumerate up to {{n}} solutions of the {{csp}}; enumerate all if {{n}}
 is {{#f}} or unspecified.
 ; n : Enumerate up to {{n}} solutions
 ; csp : The CSP to solve
+; cons : How to construct enumerations ({{cons}} by default)
+; nil : Base enumeration ({{()}} by default)
+; stop? : Unary function taking the current enumeration: {{#t}} stops, {{#f}} continues; by default, compares {{n}} to the length of the current enumeration.
 <enscript highlight="scheme">(define backtracking-enumeration
   (case-lambda
     ((csp) (backtracking-enumeration #f csp))
     ((n csp)
-     (let ((enumeration (make-parameter '())))
-       (backtrack-enumerate n enumeration (make-assignment csp) csp)
+     (backtracking-enumeration
+       csp
+       cons
+       '()
+       (lambda (enumeration) (and n (= (length enumeration) n)))))
+    ((csp cons nil stop?)
+     (let ((enumeration (make-parameter nil)))
+       (backtrack-enumerate enumeration (make-assignment csp) csp cons stop?)
        (enumeration)))))
 </enscript>
 ==== {{ac-3}}
