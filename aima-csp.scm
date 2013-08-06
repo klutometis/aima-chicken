@@ -7,6 +7,7 @@
    backtracking-enumeration
    consistent?
    csp-constraints
+   csp-copy
    csp-domains
    csp-neighbors
    display-map-as-png
