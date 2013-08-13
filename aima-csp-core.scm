@@ -417,6 +417,9 @@ nodes as a hash-table."
       (vector-set! v (- n 1) t))))
 
 (define (shuffle list)
+  @("Shuffle a list."
+    (list "The list to shuffle")
+    (@to "list"))
   (let ((vector (list->vector list)))
     (shuffle! vector)
     (vector->list vector)))
