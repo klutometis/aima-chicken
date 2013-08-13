@@ -22,6 +22,7 @@
    set-pairwise-bidirectional-constraints!
    set-pairwise-constraints!
    set-domains!
+   shuffle
    success?
    write-map-as-dot
    write-map-as-png
