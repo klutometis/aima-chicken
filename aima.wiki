@@ -327,9 +327,9 @@ nodes as a hash-table.
                       (iter-point (cdr points) #t))))))))))))
 </enscript>
 ==== {{shuffle}}
-<procedure>(shuffle list) → unspecified</procedure>
+<procedure>(shuffle list) → list</procedure>
 Shuffle a list.
-; list : The list to 
+; list : The list to shuffle
 <enscript highlight="scheme">(define (shuffle list)
   (let ((vector (list->vector list))) (shuffle! vector) (vector->list vector)))
 </enscript>
