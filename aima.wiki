@@ -1235,6 +1235,61 @@ Requires Graphviz.
 ==== Author
 
 [[/users/klutometis|Peter Danenberg]]
+
+==== License
+BSD
+==== Dependencies
+* [[cock]]
+* [[debug]]
+* [[define-record-and-printer]]
+* [[foof-loop]]
+* [[format]]
+* [[graphviz]]
+* [[heap]]
+* [[list-utils]]
+* [[matchable]]
+* [[numbers]]
+* [[R]]
+* [[random-bsd]]
+* [[setup-helper]]
+* [[shell]]
+* [[srfi-95]]
+* [[stack]]
+* [[vector-lib]]
+
+==== Versions
+; 0.1 : Version 0.1
+; 0.2 : 0.2
+; 0.3 : Version 0.3
+; 0.4 : Version 0.4
+; 0.5 : Version 0.5
+; 0.5.1 : Add some docs.
+; 0.5.2 : Add cock to depends.
+; 0.5.3 : Generate docs at setup-time.
+; 0.6 : Version 0.6
+; 0.7 : Tessellation!
+; 0.7.1 : Animated plots of tessellations
+; 0.7.2 : Fix dependency in R.
+; 0.7.3 : Add lolevel.
+; 0.7.4 : Use lavc.
+; 0.7.5 : With a note about cock-utils
+; 0.7.6 : Use numbers.
+; 0.7.7 : Add test-exit.
+; 0.8 : Search
+; 0.8.1 : Fix +inf; `goal?' is node, not state.
+; 0.8.2 : make-random-points
+; 0.8.3 : Add random-bsd.
+; 0.8.4 : Tessellation has its own point?
+; 0.9 : Add CSPs.
+; 0.9.1 : Add some csp-functions.
+; 0.9.2 : CSP: Use null-neighbors as default.
+; 0.9.3 : Debug
+; 0.9.4 : Fix some tests; export a few functions; &c.
+; 0.9.5 : Fix test.
+; 0.9.6 : Random-map
+; 0.9.7 : Graph visualization functions
+; 0.9.8 : Cons in enumeration
+; 0.9.9 : Export shuffle.
 ==== Colophon
 
 Documented by [[/egg/cock|cock]].
