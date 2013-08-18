@@ -434,7 +434,7 @@ nodes as a hash-table."
     (let ((points (hash-table-keys map))
           (edges (make-hash-table)))
       (lambda ()
-        (write-dot-preamble)
+        (write-graph-preamble)
         (let ((labels (make-labels points)))
           (for-each (lambda (point)
                       (write-node (hash-table-ref labels point)
@@ -451,7 +451,7 @@ nodes as a hash-table."
                               (let ((whither-label (hash-table-ref labels whither)))
                                 (write-edge whence-label whither-label))))
                   whithers)))))
-        (write-dot-postscript)))))
+        (write-graph-postamble)))))
 
 (define (write-map-as-png map solution png)
   (let ((dot (create-temporary-file)))
