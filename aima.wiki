@@ -1,6 +1,6 @@
 == aima
 
-AIMA-support for Chicken Scheme
+Support for Russell-Norvig's AIMA
 [[toc:]]
 === AIMA
 ==== {{aima}}
@@ -1235,7 +1235,8 @@ Requires Graphviz.
 ==== Author
 
 [[/users/klutometis|Peter Danenberg]]
-
+==== Repository
+[[https://github.com/klutometis/aima-chicken]]
 ==== License
 BSD
 ==== Dependencies
@@ -1282,6 +1283,7 @@ BSD
 ; 0.8.4 : Tessellation has its own point?
 ; 0.9 : Add CSPs.
 ; 0.9.1 : Add some csp-functions.
+; 0.9.10 : Use the new graphviz.
 ; 0.9.2 : CSP: Use null-neighbors as default.
 ; 0.9.3 : Debug
 ; 0.9.4 : Fix some tests; export a few functions; &c.

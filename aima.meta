@@ -1,5 +1,8 @@
 ((synopsis "Support for Russell-Norvig's AIMA")
  (author "Peter Danenberg")
+ (email "pcd@roxygen.org")
+ (user "klutometis")
+ (repo "https://github.com/klutometis/aima-chicken")
  (category data)
  (license "BSD")
  (depends cock

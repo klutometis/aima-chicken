@@ -1,8 +1,3 @@
-@(egg "aima")
-@(description "AIMA-support for Chicken Scheme")
-@(author "Peter Danenberg")
-@(email "pcd@roxygen.org")
-@(username "klutometis")
 @(heading "AIMA")
 
 (module aima
