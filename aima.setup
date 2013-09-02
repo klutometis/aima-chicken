@@ -28,14 +28,15 @@
  (extension-version "0.9.10")
  compile-options: '(-X cock))
 
-;;; Generate docs.
-(run (cock -o aima.wiki
-           aima.scm
-           aima-core.scm
-           aima-csp.scm
-           aima-csp-core.scm
-           aima-tessellation.scm
-           aima-tessellation-core.scm
-           aima-vacuum.scm
-           aima-vacuum-core.scm
-           "||" echo cock-utils not "installed:" not creating documentation))
+(handle-exceptions exn
+  (warning "Not generating documentation")
+  (include "setup-helper-cock")
+  (run-cock -o aima.wiki
+            aima.scm
+            aima-core.scm
+            aima-csp.scm
+            aima-csp-core.scm
+            aima-tessellation.scm
+            aima-tessellation-core.scm
+            aima-vacuum.scm
+            aima-vacuum-core.scm)) 
