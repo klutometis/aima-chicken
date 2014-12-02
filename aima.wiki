@@ -1259,39 +1259,39 @@ BSD
 * [[vector-lib]]
 
 ==== Versions
-; 0.1 : Version 0.1
-; 0.2 : 0.2
-; 0.3 : Version 0.3
-; 0.4 : Version 0.4
-; 0.5 : Version 0.5
-; 0.5.1 : Add some docs.
-; 0.5.2 : Add cock to depends.
-; 0.5.3 : Generate docs at setup-time.
-; 0.6 : Version 0.6
-; 0.7 : Tessellation!
-; 0.7.1 : Animated plots of tessellations
-; 0.7.2 : Fix dependency in R.
-; 0.7.3 : Add lolevel.
-; 0.7.4 : Use lavc.
-; 0.7.5 : With a note about cock-utils
-; 0.7.6 : Use numbers.
-; 0.7.7 : Add test-exit.
-; 0.8 : Search
-; 0.8.1 : Fix +inf; `goal?' is node, not state.
-; 0.8.2 : make-random-points
-; 0.8.3 : Add random-bsd.
-; 0.8.4 : Tessellation has its own point?
-; 0.9 : Add CSPs.
-; 0.9.1 : Add some csp-functions.
-; 0.9.10 : Use the new graphviz.
-; 0.9.2 : CSP: Use null-neighbors as default.
-; 0.9.3 : Debug
-; 0.9.4 : Fix some tests; export a few functions; &c.
-; 0.9.5 : Fix test.
-; 0.9.6 : Random-map
-; 0.9.7 : Graph visualization functions
-; 0.9.8 : Cons in enumeration
-; 0.9.9 : Export shuffle.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.1|0.1]] : Version 0.1
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.2|0.2]] : 0.2
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.3|0.3]] : Version 0.3
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.4|0.4]] : Version 0.4
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.5|0.5]] : Version 0.5
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.5.1|0.5.1]] : Add some docs.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.5.2|0.5.2]] : Add cock to depends.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.5.3|0.5.3]] : Generate docs at setup-time.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.6|0.6]] : Version 0.6
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7|0.7]] : Tessellation!
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.1|0.7.1]] : Animated plots of tessellations
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.2|0.7.2]] : Fix dependency in R.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.3|0.7.3]] : Add lolevel.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.4|0.7.4]] : Use lavc.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.5|0.7.5]] : With a note about cock-utils
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.6|0.7.6]] : Use numbers.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.7|0.7.7]] : Add test-exit.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8|0.8]] : Search
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8.1|0.8.1]] : Fix +inf; `goal?' is node, not state.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8.2|0.8.2]] : make-random-points
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8.3|0.8.3]] : Add random-bsd.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8.4|0.8.4]] : Tessellation has its own point?
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9|0.9]] : Add CSPs.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.1|0.9.1]] : Add some csp-functions.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.2|0.9.2]] : CSP: Use null-neighbors as default.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.3|0.9.3]] : Debug
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.4|0.9.4]] : Fix some tests; export a few functions; &c.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.5|0.9.5]] : Fix test.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.6|0.9.6]] : Random-map
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.7|0.9.7]] : Graph visualization functions
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.8|0.9.8]] : Cons in enumeration
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.9|0.9.9]] : Export shuffle.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.10|0.9.10]] : Use the new graphviz.
 ==== Colophon
 
 Documented by [[/egg/cock|cock]].

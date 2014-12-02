@@ -1,42 +1,39 @@
-(include "setup-helper")
+(use cock setup-helper-mod)
 
 (verify-extension-name "aima")
 
 (setup-shared-extension-module
  'aima
- (extension-version "0.9.10")
+ (extension-version "0.9.11")
  compile-options: '(-X cock))
 
 (setup-shared-extension-module
  'aima-vacuum
- (extension-version "0.9.10")
+ (extension-version "0.9.11")
  compile-options: '(-X cock))
 
 (setup-shared-extension-module
  'aima-tessellation
- (extension-version "0.9.10")
+ (extension-version "0.9.11")
  compile-options: '(-X cock)
  files: '("aima-tessellation.R"))
 
 (setup-shared-extension-module
  'aima-search
- (extension-version "0.9.10")
+ (extension-version "0.9.11")
  compile-options: '(-X cock))
 
 (setup-shared-extension-module
  'aima-csp
- (extension-version "0.9.10")
+ (extension-version "0.9.11")
  compile-options: '(-X cock))
 
-(handle-exceptions exn
-  (warning "Not generating documentation")
-  (include "setup-helper-cock")
-  (run-cock -o aima.wiki
-            aima.scm
-            aima-core.scm
-            aima-csp.scm
-            aima-csp-core.scm
-            aima-tessellation.scm
-            aima-tessellation-core.scm
-            aima-vacuum.scm
-            aima-vacuum-core.scm)) 
+(run-cock -o aima.wiki
+          aima.scm
+          aima-core.scm
+          aima-csp.scm
+          aima-csp-core.scm
+          aima-tessellation.scm
+          aima-tessellation-core.scm
+          aima-vacuum.scm
+          aima-vacuum-core.scm) 
