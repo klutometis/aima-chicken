@@ -32,7 +32,6 @@ that tessellation with a path.")
 
   (use aima
        data-structures
-       debug
        extras
        files
        format

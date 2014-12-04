@@ -75,7 +75,6 @@ Intelligent Agents.")
           utils)
 
   (use aima
-       debug
        files
        lolevel
        posix

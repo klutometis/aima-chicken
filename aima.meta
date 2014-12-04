@@ -6,7 +6,6 @@
  (category data)
  (license "BSD")
  (depends cock
-          debug
           define-record-and-printer
           foof-loop
           format
