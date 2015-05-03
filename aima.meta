@@ -5,12 +5,12 @@
  (repo "https://github.com/klutometis/aima-chicken")
  (category data)
  (license "BSD")
- (depends hahn
-          debug
+ (depends debug
           define-record-and-printer
           foof-loop
           format
           graphviz
+          (hahn "0.9.3")
           heap
           list-utils
           matchable

@@ -5,30 +5,30 @@
 (setup-shared-extension-module
  'aima
  (extension-version "0.9.14")
- compile-options: '(-X cock))
+ compile-options: '(-X hahn))
 
 (setup-shared-extension-module
  'aima-vacuum
  (extension-version "0.9.14")
- compile-options: '(-X cock))
+ compile-options: '(-X hahn))
 
 (setup-shared-extension-module
  'aima-tessellation
  (extension-version "0.9.14")
- compile-options: '(-X cock)
+ compile-options: '(-X hahn)
  files: '("aima-tessellation.R"))
 
 (setup-shared-extension-module
  'aima-search
  (extension-version "0.9.14")
- compile-options: '(-X cock))
+ compile-options: '(-X hahn))
 
 (setup-shared-extension-module
  'aima-csp
  (extension-version "0.9.14")
- compile-options: '(-X cock))
+ compile-options: '(-X hahn))
 
-(run-cock -o aima.wiki
+(run-hahn -o aima.wiki
           aima.scm
           aima-core.scm
           aima-csp.scm
@@ -36,4 +36,4 @@
           aima-tessellation.scm
           aima-tessellation-core.scm
           aima-vacuum.scm
-          aima-vacuum-core.scm) 
+          aima-vacuum-core.scm)
