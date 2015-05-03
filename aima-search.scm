@@ -37,7 +37,6 @@ depth-first, uniform-cost, recursive best-first (in progress).")
   (import scheme chicken srfi-1 srfi-69)
 
   (use data-structures
-       debug
        define-record-and-printer
        heap
        random-bsd

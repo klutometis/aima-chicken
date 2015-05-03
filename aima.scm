@@ -22,8 +22,6 @@
 
   (import-for-syntax matchable)
 
-  (use debug
-       lolevel
-       foof-loop)
+  (use lolevel foof-loop)
 
   (include "aima-core.scm"))

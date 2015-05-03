@@ -50,9 +50,9 @@ Should we print debugging information to stdout?
 <procedure>(debug-print key value) → unspecified</procedure>
 <procedure>(debug-print key value out) → unspecified</procedure>
 Print key-value pairs if the parameter `debug?' is true.
-; key : The key to print
-; value : The value to print
-; out : The port to print to
+; {{key}} : The key to print
+; {{value}} : The value to print
+; {{out}} : The port to print to
 <enscript highlight="scheme">(define debug-print
   (case-lambda
     ((key value) (debug-print key value #t))
@@ -74,9 +74,9 @@ Print key-value pairs if the parameter `debug?' is true.
 <procedure>(simulate environment randomize! random-seed) → #f</procedure>
 Run an environment to completion; an environment
 is complete when it returns false.
-; environment : The environment to simulate
-; randomize! : Function to seed the random-number generator for reproducible results
-; random-seed : Seed to seed the random-number generator
+; {{environment}} : The environment to simulate
+; {{randomize!}} : Function to seed the random-number generator for reproducible results
+; {{random-seed}} : Seed to seed the random-number generator
 <enscript highlight="scheme">(define simulate
   (case-lambda
     ((environment) (simulate environment (randomize!) (random-seed)))
@@ -91,7 +91,7 @@ Compose environments into a single environment suitable for
 
 `compose-environments' effectively `ands' over its constituent
 environments every step.
-; environments : The environments to be composed
+; {{environments}} : The environments to be composed
 <enscript highlight="scheme">(define (compose-environments . environments)
   (lambda ()
     (every identity (map (lambda (environment) (environment)) environments))))
@@ -100,8 +100,8 @@ environments every step.
 <procedure>(make-performance-measuring-environment measure-performance score-update!) → environment</procedure>
 Make an environment that updates a score according to a
 performance measure.
-; measure-performance : A nullary procedure which measures performance
-; score-update! : A function which receives the performance measure and updates the score accordingly
+; {{measure-performance}} : A nullary procedure which measures performance
+; {{score-update!}} : A function which receives the performance measure and updates the score accordingly
 <enscript highlight="scheme">(define (make-performance-measuring-environment
          measure-performance
          score-update!)
@@ -117,7 +117,7 @@ Default number of steps for the step-limited environment
 <procedure>(make-step-limited-environment steps) → environment</procedure>
 Make an environment that stops simulation after a certain number
 of steps.
-; steps : The number of steps after which to stop simulating
+; {{steps}} : The number of steps after which to stop simulating
 <enscript highlight="scheme">(define make-step-limited-environment
   (case-lambda
     (() (make-step-limited-environment (default-steps)))
@@ -131,8 +131,8 @@ of steps.
 <syntax>(make-debug-environment object make-printable-object) → environment</syntax>
 Make an environment that prints debugging information (according
 to `debug?').
-; object : The object to debug
-; make-printable-object : A function which optionally transforms the object before printing
+; {{object}} : The object to debug
+; {{make-printable-object}} : A function which optionally transforms the object before printing
 <enscript highlight="scheme">(define-syntax
   make-debug-environment
   (er-macro-transformer
@@ -183,15 +183,15 @@ CSP that are {{#f}}.
 ==== {{success?}}
 <procedure>(success? result) → boolean</procedure>
 Success is defined negatively as the absence of failure.
-; result : The result to test
+; {{result}} : The result to test
 <enscript highlight="scheme">(define success? (complement failure?))
 </enscript>
 ==== {{csp}}
 <record>csp</record>
 A constraint-satisfaction-problem
-; domains : A hash-table mapping variables to possible values
-; constraints : A hash-table mapping pairs of variables to a dyadic lambda which returns {{#f}} if the values don't satisfy the constraint
-; neighbors : A hash-table adjacency-list of constraints
+; {{domains}} : A hash-table mapping variables to possible values
+; {{constraints}} : A hash-table mapping pairs of variables to a dyadic lambda which returns {{#f}} if the values don't satisfy the constraint
+; {{neighbors}} : A hash-table adjacency-list of constraints
 <enscript highlight="scheme">(define-record-and-printer csp domains constraints neighbors)
 </enscript>
 ===== Examples
@@ -201,10 +201,12 @@ A trivial (but inconsistent) CSP
              (alist->hash-table
               `(((a . b) unquote neq?) ((b . a) unquote neq?)))
              (alist->hash-table '((a b) (b a)))))
+  => #<unspecified>
+ 
 ==== {{backtracking-search}}
 <procedure>(backtracking-search csp) → object or {{failure}}</procedure>
 Find a solution to the CSP or return {{failure}}.
-; csp : The CSP to solve
+; {{csp}} : The CSP to solve
 <enscript highlight="scheme">(define (backtracking-search csp)
   (let ((enumeration (backtracking-enumeration 1 csp)))
     (if (null? enumeration) failure (car enumeration))))
@@ -216,20 +218,22 @@ A trivial 2-coloring problem
              (alist->hash-table
               `(((a . b) unquote neq?) ((b . a) unquote neq?)))
              (alist->hash-table '((a b) (b a)))))
- (test "Arc-consistent coloring"
-   '((b . white) (a . black))
-   (hash-table->alist (backtracking-search arc-consistent-coloring)))
+  => #<unspecified>
+ 
+ (hash-table->alist (backtracking-search arc-consistent-coloring))
+  => ((a . white) (b . black))
+ 
 ==== {{backtracking-enumeration}}
 <procedure>(backtracking-enumeration csp) → list</procedure>
 <procedure>(backtracking-enumeration n csp) → list</procedure>
 <procedure>(backtracking-enumeration csp cons nil stop?) → list</procedure>
 Enumerate up to {{n}} solutions of the {{csp}}; enumerate all if {{n}}
 is {{#f}} or unspecified.
-; n : Enumerate up to {{n}} solutions
-; csp : The CSP to solve
-; cons : How to construct enumerations ({{cons}} by default)
-; nil : Base enumeration ({{()}} by default)
-; stop? : Unary function taking the current enumeration: {{#t}} stops, {{#f}} continues; by default, compares {{n}} to the length of the current enumeration.
+; {{n}} : Enumerate up to {{n}} solutions
+; {{csp}} : The CSP to solve
+; {{cons}} : How to construct enumerations ({{cons}} by default)
+; {{nil}} : Base enumeration ({{()}} by default)
+; {{stop?}} : Unary function taking the current enumeration: {{#t}} stops, {{#f}} continues; by default, compares {{n}} to the length of the current enumeration.
 <enscript highlight="scheme">(define backtracking-enumeration
   (case-lambda
     ((csp) (backtracking-enumeration #f csp))
@@ -248,7 +252,7 @@ is {{#f}} or unspecified.
 <procedure>(ac-3 csp) → boolean</procedure>
 Check arc-consistency of a csp; returns {{#t}} if the object is
 arc-consistent.
-; csp : A constraint-satisfaction object
+; {{csp}} : A constraint-satisfaction object
 <enscript highlight="scheme">(define (ac-3 csp)
   (let ((queue (list->queue (hash-table-keys (csp-constraints csp)))))
     (let iter ()
@@ -271,8 +275,8 @@ arc-consistent.
 <syntax>(xor x y) → boolean</syntax>
 Logical xor: whether one or the other proposition is true (but
 not both)
-; x : A proposition
-; y : Another proposition
+; {{x}} : A proposition
+; {{y}} : Another proposition
 <enscript highlight="scheme">(define-syntax
   xor
   (lambda (expression rename compare)
@@ -284,15 +288,15 @@ not both)
 ==== {{neq?}}
 <procedure>(neq? x y) → boolean</procedure>
 The complement to {{eq?}}
-; x : Comparandum
-; y : Comparator
+; {{x}} : Comparandum
+; {{y}} : Comparator
 <enscript highlight="scheme">(define neq? (complement eq?))
 </enscript>
 ==== {{random-map}}
 <procedure>(random-map n) → hash-table</procedure>
 Create a random k-coloring problem; returns an adjacency-list of
 nodes as a hash-table.
-; n : The number of nodes in the problem
+; {{n}} : The number of nodes in the problem
 <enscript highlight="scheme">(define (random-map n)
   (let ((random-points (random-points n)) (connections (make-hash-table)))
     (let iter-point ((points random-points) (modified? #f))
@@ -329,7 +333,7 @@ nodes as a hash-table.
 ==== {{shuffle}}
 <procedure>(shuffle list) → list</procedure>
 Shuffle a list.
-; list : The list to shuffle
+; {{list}} : The list to shuffle
 <enscript highlight="scheme">(define (shuffle list)
   (let ((vector (list->vector list))) (shuffle! vector) (vector->list vector)))
 </enscript>
@@ -366,27 +370,27 @@ that tessellation with a path.
 ==== {{node}}
 <record>node</record>
 Data structure for graphs
-; state : An indexable point
-; parent : The node-predecessor
-; action : Not used
-; path-cost : Cost of the path up to this point
+; {{state}} : An indexable point
+; {{parent}} : The node-predecessor
+; {{action}} : Not used
+; {{path-cost}} : Cost of the path up to this point
 <enscript highlight="scheme">(define-record node state parent action path-cost)
 </enscript>
 ==== {{tessellation}}
 <record>tessellation</record>
 tessellation contains point and adjacency information for a
 tessellated-plane; as well as start and end nodes.
-; points : The points in the tessellation
-; neighbors : The adjacency information for points
-; start : The start node for the problem
-; end : The end node for the problem
+; {{points}} : The points in the tessellation
+; {{neighbors}} : The adjacency information for points
+; {{start}} : The start node for the problem
+; {{end}} : The end node for the problem
 <enscript highlight="scheme">(define-record-and-printer tessellation R-object points neighbors start end)
 </enscript>
 ==== {{tessellate}}
 <procedure>(tessellate) → tessellation</procedure>
 <procedure>(tessellate n-vertices) → tessellation</procedure>
 Tessellate the plane into disjoint, convex polygons.
-; n-vertices : The numbers of vertices in the tessellation
+; {{n-vertices}} : The numbers of vertices in the tessellation
 <enscript highlight="scheme">(define tessellate
   (case-lambda
     (() (tessellate (n-vertices)))
@@ -399,8 +403,8 @@ Tessellate the plane into disjoint, convex polygons.
 ==== {{point-distance}}
 <procedure>(point-distance p1 p2) → distance</procedure>
 Calculate the distance between two points.
-; p1 : The first point
-; p2 : The second point
+; {{p1}} : The first point
+; {{p2}} : The second point
 <enscript highlight="scheme">(define (point-distance p1 p2)
   (sqrt (+ (expt (- (point-x p1) (point-x p2)) 2)
            (expt (- (point-y p1) (point-y p2)) 2))))
@@ -408,7 +412,7 @@ Calculate the distance between two points.
 ==== {{predecessor-path}}
 <procedure>(predecessor-path node) → list</procedure>
 List the predecessors of this node.
-; node : The node to predecess
+; {{node}} : The node to predecess
 <enscript highlight="scheme">(define (predecessor-path node)
   (let iter ((path (list node)))
     (let ((parent (node-parent (car path))))
@@ -418,10 +422,10 @@ List the predecessors of this node.
 <procedure>(plot-tessellation tessellation path title filename) → unspecified</procedure>
 Plot the tessellation with its start and end nodes, as well as
 the path taken from start to end.
-; tessellation : The tessellation to plot
-; path : A list of nodes
-; title : Title for the graph
-; filename : The PNG to which to write
+; {{tessellation}} : The tessellation to plot
+; {{path}} : A list of nodes
+; {{title}} : Title for the graph
+; {{filename}} : The PNG to which to write
 <enscript highlight="scheme">(define (plot-tessellation tessellation path title filename)
   (let ((title (make-title title (length path) (node-path-cost (car path)))))
     (let ((start (tessellation-start tessellation))
@@ -440,10 +444,10 @@ the path taken from start to end.
 ==== {{plot-tessellation/animation}}
 <procedure>(plot-tessellation/animation tessellation path title filename) → unspecified</procedure>
 Plot the tessellation as an animation fit for YouTube.
-; tessellation : The tessellation to plot
-; path : A list of nodes
-; title : Title for the animation
-; filename : A filename for the movie (ending in e.g. `.avi')
+; {{tessellation}} : The tessellation to plot
+; {{path}} : A list of nodes
+; {{title}} : Title for the animation
+; {{filename}} : A filename for the movie (ending in e.g. `.avi')
 <enscript highlight="scheme">(define (plot-tessellation/animation tessellation path title filename)
   (let ((directory (create-temporary-directory)))
     (let iter ((path path) (i (- (length path) 1)))
@@ -472,8 +476,8 @@ Plot the tessellation as an animation fit for YouTube.
 ==== {{join-animations}}
 <procedure>(join-animations output . animations) → unspecified</procedure>
 Join the animation files into one long file.
-; output : The resultant file
-; animations : The input files
+; {{output}} : The resultant file
+; {{animations}} : The input files
 <enscript highlight="scheme">(define (join-animations output . animations)
   (run (mencoder -ovc copy -idx -o ,output ,@animations)))
 </enscript>
@@ -548,7 +552,7 @@ Intelligent Agents.
 ===== {{display-world}}
 <procedure>(display-world world) → unspecified</procedure>
 Display the two-square vacuum world as a vector.
-; world : The two-square vacuum world to be displayed
+; {{world}} : The two-square vacuum world to be displayed
 <enscript highlight="scheme">(define (display-world world)
   (pp (vector-append
         '#(world)
@@ -579,7 +583,7 @@ Index of the left square
 ===== {{left?}}
 <procedure>(left? square) → true if it is the left square</procedure>
 Is this the left square?
-; square : The square to be lefted
+; {{square}} : The square to be lefted
 <enscript highlight="scheme">(define left? zero?)
 </enscript>
 ===== {{right}}
@@ -590,44 +594,44 @@ Index of the right square
 ===== {{right?}}
 <procedure>(right? square) → true if it is the right square</procedure>
 Is this the right square?
-; square : The square to be righted
+; {{square}} : The square to be righted
 <enscript highlight="scheme">(define right? (cute = <> 1))
 </enscript>
 ===== {{make-world}}
 <procedure>(make-world left right) → a two-square vacuum world</procedure>
 Make a two-square vacuum-world.
-; left : State of the left square (clean or dirty)
-; right : State of the left square (clean or dirty)
+; {{left}} : State of the left square (clean or dirty)
+; {{right}} : State of the left square (clean or dirty)
 <enscript highlight="scheme">(define make-world vector)
 </enscript>
 ===== {{world-location}}
 <procedure>(world-location square) → the square-status</procedure>
 Get a square-status (dirty, clean, unknown, &c.) from the
 two-square vacuum-world.
-; square : The square's index (`left' or `right')
+; {{square}} : The square's index (`left' or `right')
 <enscript highlight="scheme">(define world-location vector-ref)
 </enscript>
 ===== {{world-location-set!}}
 <procedure>(world-location-set! square status) → unspecified</procedure>
 Set the status of a square to dirty, clean, unknown, &c.
-; square : The square to be set
-; status : The status to set it to
+; {{square}} : The square to be set
+; {{status}} : The status to set it to
 <enscript highlight="scheme">(define world-location-set! vector-set!)
 </enscript>
 ===== {{agent}}
 <record>agent</record>
 The fundamental agent-record
-; location : Where the agent is located
-; score : The agent's score at a given time
-; program : The agent's program: an n-ary procedure where each argument corresponds to a sensor; what is received by the sensors depends on the environments contract with its agents.
+; {{location}} : Where the agent is located
+; {{score}} : The agent's score at a given time
+; {{program}} : The agent's program: an n-ary procedure where each argument corresponds to a sensor; what is received by the sensors depends on the environments contract with its agents.
 <enscript highlight="scheme">(define-record agent location score program)
 </enscript>
 ===== {{simple-agent-program}}
 <procedure>(simple-agent-program location clean?) → one of 'left, 'right, 'suck, 'noop</procedure>
 Example of a simple two-square vacuum-agent that merely responds to 
 its percept.
-; location : The location of the agent
-; clean? : Whether or not this square is clean
+; {{location}} : The location of the agent
+; {{clean?}} : Whether or not this square is clean
 <enscript highlight="scheme">(define (simple-agent-program location clean?)
   (if clean? (if (left? location) 'right 'left) 'suck))
 </enscript>
@@ -650,8 +654,8 @@ and stops cleaning.
 <procedure>(make-reflex-agent location program) → unspecified</procedure>
 Make a stateless agent that merely responds to its current
 percept.
-; location : Where does the agent start? `left' or `right'
-; program : The agent's program; should be a binary procedure that takes a location and whether that location is clean. See `simple-agent-program'.
+; {{location}} : Where does the agent start? `left' or `right'
+; {{program}} : The agent's program; should be a binary procedure that takes a location and whether that location is clean. See `simple-agent-program'.
 <enscript highlight="scheme">(define make-reflex-agent
   (case-lambda
     ((location) (make-reflex-agent location (default-agent-program)))
@@ -660,14 +664,14 @@ percept.
 ===== {{make-simple-reflex-agent}}
 <procedure>(make-simple-reflex-agent location) → a simple reflex agent</procedure>
 Make a simple reflex agent and place it in the given location.
-; location : Where to place the agent: `left' or `right'
+; {{location}} : Where to place the agent: `left' or `right'
 <enscript highlight="scheme">(define (make-simple-reflex-agent location)
   (make-reflex-agent location simple-agent-program))
 </enscript>
 ===== {{make-stateful-reflex-agent}}
 <procedure>(make-stateful-reflex-agent location) → a stateful reflex agent</procedure>
 Make a stateful reflex agent and place it in the given location.
-; location : Where to place the agent: `left' or `right'
+; {{location}} : Where to place the agent: `left' or `right'
 <enscript highlight="scheme">(define (make-stateful-reflex-agent location)
   (make-reflex-agent location (make-stateful-agent-program)))
 </enscript>
@@ -682,7 +686,7 @@ square.
 ===== {{make-score-update!}}
 <procedure>(make-score-update! agent) → a monadic procedure that takes the score to add</procedure>
 Make a score-updater that adds score to the score of an agent.
-; agent : The agent whose score to add to
+; {{agent}} : The agent whose score to add to
 <enscript highlight="scheme">(define (make-score-update! agent)
   (lambda (score) (agent-score-set! agent (+ (agent-score agent) score))))
 </enscript>
@@ -691,10 +695,10 @@ Make a score-updater that adds score to the score of an agent.
 <procedure>(simulate-vacuum world agent steps) → the agent-score</procedure>
 <procedure>(simulate-vacuum world agent steps make-environment) → the agent-score</procedure>
 Simulate the two-square vacuum-world.
-; world : The two-square vacuum world (see `make-world')
-; agent : The agent to inhabit the world
-; steps : The number of steps to simulate (default: 1000)
-; make-environment : The environment constructor (default: `make-environment')
+; {{world}} : The two-square vacuum world (see `make-world')
+; {{agent}} : The agent to inhabit the world
+; {{steps}} : The number of steps to simulate (default: 1000)
+; {{make-environment}} : The environment constructor (default: `make-environment')
 <enscript highlight="scheme">(define simulate-vacuum
   (case-lambda
     ((world agent) (simulate-vacuum world agent (default-steps)))
@@ -721,9 +725,9 @@ Simulate the two-square vacuum-world.
 <procedure>(simulate-penalizing-vacuum world agent) → the agent-score</procedure>
 <procedure>(simulate-penalizing-vacuum world agent steps) → the agent-score</procedure>
 Like `simulate-vacuum', but penalizes agents for every movement.
-; world : The two-square vacuum world (see `make-world')
-; agent : The agent to inhabit the world
-; steps : The number of steps to simulate (default: 1000)
+; {{world}} : The two-square vacuum world (see `make-world')
+; {{agent}} : The agent to inhabit the world
+; {{steps}} : The number of steps to simulate (default: 1000)
 <enscript highlight="scheme">(define simulate-penalizing-vacuum
   (case-lambda
     ((world agent) (simulate-penalizing-vacuum world agent (default-steps)))
@@ -771,7 +775,7 @@ square and its neighbors at `left', `right', `down', `up'.
 ===== {{copy-world}}
 <procedure>(copy-world world) → graph-world</procedure>
 Make a deep copy of a graph-world.
-; world : The world to copy
+; {{world}} : The world to copy
 <enscript highlight="scheme">(define (copy-world world)
   (let ((world (hash-table-copy world)))
     (hash-table-walk
@@ -788,10 +792,10 @@ Make a unique symbol suitable for a node-name.
 ===== {{connect!}}
 <procedure>(connect! world connectend connector direction) → unspecified</procedure>
 Bi-connect two locations over a direction and its inverse.
-; world : The graph-world within which to connect
-; connectend : The node to be connected
-; connector : The connecting node
-; direction : The relative direction to connect over
+; {{world}} : The graph-world within which to connect
+; {{connectend}} : The node to be connected
+; {{connector}} : The connecting node
+; {{direction}} : The relative direction to connect over
 <enscript highlight="scheme">(define (connect! world connectend connector direction)
   (hash-table-update!/default
     world
@@ -814,7 +818,7 @@ Bi-connect two locations over a direction and its inverse.
 ===== {{random-start}}
 <procedure>(random-start world) → symbol</procedure>
 Find a random starting node in the given world.
-; world : The world to search
+; {{world}} : The world to search
 <enscript highlight="scheme">(define (random-start world)
   (let ((nodes (hash-table-keys world)))
     (list-ref nodes (bsd-random-integer (length nodes)))))
@@ -823,7 +827,7 @@ Find a random starting node in the given world.
 <procedure>(make-randomized-graph-agent start) → agent</procedure>
 Make a simply reflex agent that randomly searches the graph and
 cleans dirty squares.
-; start : Starting square (see `random-start')
+; {{start}} : Starting square (see `random-start')
 <enscript highlight="scheme">(define (make-randomized-graph-agent start)
   (make-reflex-agent
     start
@@ -840,7 +844,7 @@ Default number of nodes for a graph
 <procedure>(make-linear-world n-nodes) → graph</procedure>
 Make a world that consists of a line of nodes (for testing
 pathological cases.
-; n-nodes : Number of nodes in the graph (default: (default-n-nodes))
+; {{n-nodes}} : Number of nodes in the graph (default: (default-n-nodes))
 <enscript highlight="scheme">(define make-linear-world
   (case-lambda
     (() (make-linear-world (default-n-nodes)))
@@ -860,7 +864,7 @@ Create a random-graph using depth-first search that nevertheless
 shows preference for connected nodes (á la Barabási-Albert).
 
 The graph has no cycles.
-; n-nodes : The number of nodes in the graph (default: (default-n-nodes))
+; {{n-nodes}} : The number of nodes in the graph (default: (default-n-nodes))
 <enscript highlight="scheme">(define make-preferential-depth-first-world
   (case-lambda
     (() (make-preferential-depth-first-world (default-n-nodes)))
@@ -908,7 +912,7 @@ The graph has no cycles.
 ===== {{make-graph-world}}
 <procedure>(make-graph-world n-nodes) → graph</procedure>
 Make a random graph.
-; n-nodes : The number of nodes in the graph (default: (default-n-nodes))
+; {{n-nodes}} : The number of nodes in the graph (default: (default-n-nodes))
 <enscript highlight="scheme">(define make-graph-world make-preferential-depth-first-world)
 </enscript>
 ===== {{write-world-as-dot}}
@@ -916,13 +920,13 @@ Make a random graph.
 <procedure>(write-world-as-dot world agent step) → unspecified</procedure>
 <procedure>(write-world-as-dot world agent step width height font-size title) → unspecified</procedure>
 Output the graph-world as in dot-notation (i.e. Graphviz).
-; world : The graph-world to output
-; agent : The agent inhabiting the graph-world
-; step : The current step or false
-; width : Width of the output
-; height : Height of the output
-; font-size : Font-size of the output
-; title : Title of the output
+; {{world}} : The graph-world to output
+; {{agent}} : The agent inhabiting the graph-world
+; {{step}} : The current step or false
+; {{width}} : Width of the output
+; {{height}} : Height of the output
+; {{font-size}} : Font-size of the output
+; {{title}} : Title of the output
 <enscript highlight="scheme">(define write-world-as-dot
   (case-lambda
     ((world agent) (write-world-as-dot world agent #f))
@@ -944,9 +948,9 @@ Output the graph-world as in dot-notation (i.e. Graphviz).
 ===== {{write-world-as-pdf}}
 <procedure>(write-world-as-pdf world agent pdf) → unspecified</procedure>
 Output the graph-world as a pdf via graphviz.
-; world : The world to output
-; agent : The agent that inhabits the world
-; pdf : The file to write to
+; {{world}} : The world to output
+; {{agent}} : The agent that inhabits the world
+; {{pdf}} : The file to write to
 <enscript highlight="scheme">(define (write-world-as-pdf world agent pdf)
   (receive
     (input output id)
@@ -962,14 +966,14 @@ Output the graph-world as a pdf via graphviz.
 <procedure>(write-world-as-gif world agent frame gif) → unspecified</procedure>
 <procedure>(write-world-as-gif world agent frame gif width height font-size title) → unspecified</procedure>
 Output the graph-world as gif via Graphviz (useful for e.g. animations).
-; world : The graph-world to output
-; agent : The agent inhabiting the graph-world
-; frame : The frame-number
-; gif : The base-name of the gif to write to
-; width : Width of the output
-; height : Height of the output
-; font-size : Font-size of the output
-; title : Title of the output
+; {{world}} : The graph-world to output
+; {{agent}} : The agent inhabiting the graph-world
+; {{frame}} : The frame-number
+; {{gif}} : The base-name of the gif to write to
+; {{width}} : Width of the output
+; {{height}} : Height of the output
+; {{font-size}} : Font-size of the output
+; {{title}} : Title of the output
 <enscript highlight="scheme">(define write-world-as-gif
   (case-lambda
     ((world agent frame gif)
@@ -1004,7 +1008,7 @@ Output the graph-world as gif via Graphviz (useful for e.g. animations).
 ===== {{make-unknown-location}}
 <procedure>(make-unknown-location clean?) → location</procedure>
 Make a graph-location whose neighbors are all unknown.
-; clean? : Is the graph-location clean?
+; {{clean?}} : Is the graph-location clean?
 <enscript highlight="scheme">(define (make-unknown-location clean?)
   (make-location
     (if clean? clean dirty)
@@ -1013,20 +1017,20 @@ Make a graph-location whose neighbors are all unknown.
 ===== {{reverse-move}}
 <procedure>(reverse-move move) → direction</procedure>
 Reverse the relative direction.
-; move : The relative direction to reverse
+; {{move}} : The relative direction to reverse
 <enscript highlight="scheme">(define (reverse-move move)
   (case move ((left) 'right) ((right) 'left) ((up) 'down) ((down) 'up)))
 </enscript>
 ===== {{direction->move}}
 <procedure>(direction->move direction) → relative direction</procedure>
 Convert a neighbor-index into a relative direction.
-; direction : The index to convert
+; {{direction}} : The index to convert
 <enscript highlight="scheme">(define (direction->move direction) (list-ref '(left right up down) direction))
 </enscript>
 ===== {{move->direction}}
 <procedure>(move->direction move) → index</procedure>
 Convert a relative direction into a neighbor index.
-; move : The relative direction to convert
+; {{move}} : The relative direction to convert
 <enscript highlight="scheme">(define (move->direction move)
   (case move ((left) left) ((right) right) ((up) up) ((down) down)))
 </enscript>
@@ -1035,7 +1039,7 @@ Convert a relative direction into a neighbor index.
 Make a graph-traversal agent that models the graph and searches it thoroughly, stopping when the world is clean.
 
 The agent can detect cycles.
-; start : Starting position of the agent (see `random-start')
+; {{start}} : Starting position of the agent (see `random-start')
 <enscript highlight="scheme">(define (make-stateful-graph-agent start)
   (make-reflex-agent
     start
@@ -1099,9 +1103,9 @@ The agent can detect cycles.
 <procedure>(simulate-graph world agent) → unspecified</procedure>
 <procedure>(simulate-graph world agent steps) → unspecified</procedure>
 Simulate the graph world.
-; world : The world to simulate
-; agent : The agent to inhabit the world
-; steps : The steps to simulate (default: (default-steps))
+; {{world}} : The world to simulate
+; {{agent}} : The agent to inhabit the world
+; {{steps}} : The steps to simulate (default: (default-steps))
 <enscript highlight="scheme">(define simulate-graph
   (case-lambda
     ((world agent) (simulate-graph world agent (default-steps)))
@@ -1123,14 +1127,14 @@ Simulate the graph world, creating an animation along the way;
 see, for instance, <http://youtu.be/EvZvyxAoNdo>.
 
 Requires Graphviz.
-; world : The world to simulate
-; agent : The agent that inhabits the world
-; file : The base-name of the animation file
-; steps : The steps to simulation (default: `(default-steps)'
-; width : Width of the animation in pixels
-; hight : Height of the animation in pixels
-; font-size : Font-size of the animation in points
-; title : Title of the animation
+; {{world}} : The world to simulate
+; {{agent}} : The agent that inhabits the world
+; {{file}} : The base-name of the animation file
+; {{steps}} : The steps to simulation (default: `(default-steps)'
+; {{width}} : Width of the animation in pixels
+; {{hight}} : Height of the animation in pixels
+; {{font-size}} : Font-size of the animation in points
+; {{title}} : Title of the animation
 <enscript highlight="scheme">(define simulate-graph/animation
   (case-lambda
     ((world agent file)
@@ -1175,12 +1179,12 @@ Simulate two agents in a given world and animate their progress
 side-by-side; see, for instance, <http://youtu.be/B28ay_zSnoY>.
 
 Requires Graphviz.
-; world : The world to simulate
-; agent-one : The first inhabiting agent
-; title-one : Title of the first agent
-; agent-two : The second inhabiting agent
-; title-two : Title of the second agent
-; composite-file : Base-name of the composite animation
+; {{world}} : The world to simulate
+; {{agent-one}} : The first inhabiting agent
+; {{title-one}} : Title of the first agent
+; {{agent-two}} : The second inhabiting agent
+; {{title-two}} : Title of the second agent
+; {{composite-file}} : Base-name of the composite animation
 <enscript highlight="scheme">(define compare-graphs
   (case-lambda
     ((world agent-one title-one agent-two title-two composite-file)
@@ -1241,7 +1245,6 @@ Requires Graphviz.
 BSD
 ==== Dependencies
 * [[cock]]
-* [[debug]]
 * [[define-record-and-printer]]
 * [[foof-loop]]
 * [[format]]
@@ -1259,39 +1262,41 @@ BSD
 * [[vector-lib]]
 
 ==== Versions
-; 0.1 : Version 0.1
-; 0.2 : 0.2
-; 0.3 : Version 0.3
-; 0.4 : Version 0.4
-; 0.5 : Version 0.5
-; 0.5.1 : Add some docs.
-; 0.5.2 : Add cock to depends.
-; 0.5.3 : Generate docs at setup-time.
-; 0.6 : Version 0.6
-; 0.7 : Tessellation!
-; 0.7.1 : Animated plots of tessellations
-; 0.7.2 : Fix dependency in R.
-; 0.7.3 : Add lolevel.
-; 0.7.4 : Use lavc.
-; 0.7.5 : With a note about cock-utils
-; 0.7.6 : Use numbers.
-; 0.7.7 : Add test-exit.
-; 0.8 : Search
-; 0.8.1 : Fix +inf; `goal?' is node, not state.
-; 0.8.2 : make-random-points
-; 0.8.3 : Add random-bsd.
-; 0.8.4 : Tessellation has its own point?
-; 0.9 : Add CSPs.
-; 0.9.1 : Add some csp-functions.
-; 0.9.10 : Use the new graphviz.
-; 0.9.2 : CSP: Use null-neighbors as default.
-; 0.9.3 : Debug
-; 0.9.4 : Fix some tests; export a few functions; &c.
-; 0.9.5 : Fix test.
-; 0.9.6 : Random-map
-; 0.9.7 : Graph visualization functions
-; 0.9.8 : Cons in enumeration
-; 0.9.9 : Export shuffle.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.1|0.1]] : Version 0.1
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.2|0.2]] : 0.2
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.3|0.3]] : Version 0.3
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.4|0.4]] : Version 0.4
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.5|0.5]] : Version 0.5
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.5.1|0.5.1]] : Add some docs.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.5.2|0.5.2]] : Add cock to depends.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.5.3|0.5.3]] : Generate docs at setup-time.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.6|0.6]] : Version 0.6
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7|0.7]] : Tessellation!
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.1|0.7.1]] : Animated plots of tessellations
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.2|0.7.2]] : Fix dependency in R.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.3|0.7.3]] : Add lolevel.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.4|0.7.4]] : Use lavc.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.5|0.7.5]] : With a note about cock-utils
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.6|0.7.6]] : Use numbers.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.7.7|0.7.7]] : Add test-exit.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8|0.8]] : Search
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8.1|0.8.1]] : Fix +inf; `goal?' is node, not state.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8.2|0.8.2]] : make-random-points
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8.3|0.8.3]] : Add random-bsd.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.8.4|0.8.4]] : Tessellation has its own point?
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9|0.9]] : Add CSPs.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.1|0.9.1]] : Add some csp-functions.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.2|0.9.2]] : CSP: Use null-neighbors as default.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.3|0.9.3]] : Debug
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.4|0.9.4]] : Fix some tests; export a few functions; &c.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.5|0.9.5]] : Fix test.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.6|0.9.6]] : Random-map
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.7|0.9.7]] : Graph visualization functions
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.8|0.9.8]] : Cons in enumeration
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.9|0.9.9]] : Export shuffle.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.10|0.9.10]] : Use the new graphviz.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.11|0.9.11]] : Remove the dependency on setup-helper-cock.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.12|0.9.12]] : Remove the dependency on debug.
 ==== Colophon
 
 Documented by [[/egg/cock|cock]].

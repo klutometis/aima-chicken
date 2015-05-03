@@ -20,16 +20,16 @@ CSP that are {{#f}}.")
     (constraints "A hash-table mapping pairs of variables to a dyadic
 lambda which returns {{#f}} if the values don't satisfy the constraint")
     (neighbors "A hash-table adjacency-list of constraints")
-    (@example-no-eval "A trivial (but inconsistent) CSP"
-                      (define arc-inconsistent-coloring
-                        (make-csp
-                         ;; Domain can also be lambdas?
-                         (alist->hash-table '((a . (white))
-                                              (b . (white))))
-                         (alist->hash-table `(((a . b) . ,neq?)
-                                              ((b . a) . ,neq?)))
-                         (alist->hash-table '((a b)
-                                              (b a)))))))
+    (@example "A trivial (but inconsistent) CSP"
+              (define arc-inconsistent-coloring
+                (make-csp
+                 ;; Domain can also be lambdas?
+                 (alist->hash-table '((a . (white))
+                                      (b . (white))))
+                 (alist->hash-table `(((a . b) . ,neq?)
+                                      ((b . a) . ,neq?)))
+                 (alist->hash-table '((a b)
+                                      (b a)))))))
   domains
   constraints
   neighbors)
@@ -49,19 +49,17 @@ lambda which returns {{#f}} if the values don't satisfy the constraint")
   @("Find a solution to the CSP or return {{failure}}."
     (csp "The CSP to solve")
     (@to "object or {{failure}}")
-    (@example-no-eval "A trivial 2-coloring problem"
-                      (define arc-consistent-coloring
-                        (make-csp
-                         ;; Domain can also be lambdas?
-                         (alist->hash-table '((a . (white black))
-                                              (b . (white black))))
-                         (alist->hash-table `(((a . b) . ,neq?)
-                                              ((b . a) . ,neq?)))
-                         (alist->hash-table '((a b)
-                                              (b a)))))
-                      (test "Arc-consistent coloring"
-                            '((b . white) (a . black))
-                            (hash-table->alist (backtracking-search arc-consistent-coloring)))))
+    (@example "A trivial 2-coloring problem"
+              (define arc-consistent-coloring
+                (make-csp
+                 ;; Domain can also be lambdas?
+                 (alist->hash-table '((a . (white black))
+                                      (b . (white black))))
+                 (alist->hash-table `(((a . b) . ,neq?)
+                                      ((b . a) . ,neq?)))
+                 (alist->hash-table '((a b)
+                                      (b a)))))
+              (hash-table->alist (backtracking-search arc-consistent-coloring))))
   (let ((enumeration (backtracking-enumeration 1 csp)))
     ;; Return #f here? No, need to distinguish between failure and the
     ;; legitimate value #f.

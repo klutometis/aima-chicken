@@ -133,7 +133,7 @@
                                      goal?
                                      heuristic)
   (define (search return predecessor f-limit)
-    (debug (node-state predecessor))
+    ;; (debug (node-state predecessor))
     (if (goal? (node-state predecessor))
         (return (predecessor-path predecessor))
         (let ((successors (successors predecessor)))
@@ -160,9 +160,9 @@
                 (let iter ()
                   (let* ((best (heap-extremum heap))
                          (best-path-cost (node-path-cost best)))
-                    (debug heap
-                           (heap-size heap)
-                           (node-state (heap-extremum heap)))
+                    ;; (debug heap
+                    ;;        (heap-size heap)
+                    ;;        (node-state (heap-extremum heap)))
                     (if (> best-path-cost f-limit)
                         (values #f best-path-cost)
                         (let ((alternative
@@ -173,16 +173,16 @@
                                          (alternative
                                           (node-path-cost
                                            (heap-extremum heap))))
-                                     (debug heap
-                                            (heap-size heap)
-                                            (node-state (heap-extremum heap))
-                                            (node-path-cost first)
-                                            first
-                                            (node-state first)
-                                            'iter
-                                            (heap-member? heap first))
+                                     ;; (debug heap
+                                     ;;        (heap-size heap)
+                                     ;;        (node-state (heap-extremum heap))
+                                     ;;        (node-path-cost first)
+                                     ;;        first
+                                     ;;        (node-state first)
+                                     ;;        'iter
+                                     ;;        (heap-member? heap first))
                                      (heap-delete! heap first)
-                                     (debug 'iter (heap-member? heap first))
+                                     ;; (debug 'iter (heap-member? heap first))
                                      (heap-insert!
                                       heap
                                       (node-path-cost first)
