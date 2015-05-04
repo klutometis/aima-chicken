@@ -1249,7 +1249,7 @@ BSD
 * [[foof-loop]]
 * [[format]]
 * [[graphviz]]
-* [[(hahn 0.9.3)]]
+* [[hahn]]
 * [[heap]]
 * [[list-utils]]
 * [[matchable]]
@@ -1299,6 +1299,7 @@ BSD
 ; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.11|0.9.11]] : Remove the dependency on setup-helper-cock.
 ; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.12|0.9.12]] : Remove the dependency on debug.
 ; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.13|0.9.13]] : Evaluate examples.
+; [[https://github.com/klutometis/aima-chicken/releases/tag/0.9.14|0.9.14]] : Use hahn.
 ==== Colophon
 
 Documented by [[/egg/hahn|hahn]].
